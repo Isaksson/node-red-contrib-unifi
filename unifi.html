@@ -1,0 +1,85 @@
+<script type="text/javascript">
+    RED.nodes.registerType('Unifi',{
+        category: 'output',
+        color: '#C0DEED',
+        defaults: {
+            name: {value:""},
+			ip: {value:""},
+			port: {value:8443, validate:RED.validators.number()},
+			site: {value:"default"},
+			command: {value:1, required: true },
+        },
+		credentials: {
+		username: {type:"text"},
+		password: {type:"password"}
+		},
+        inputs:1,
+        outputs:1,
+        icon: "bridge.png",
+        label: function() {
+            return this.name||"Unifi";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="Unifi">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+	<div class="form-row">
+        <label for="node-input-ip"><i class="fa fa-globe"></i> Server</label>
+        <input class="input-append-left" type="text" id="node-input-ip" placeholder="IP Address" style="width: 40%;" >
+        <label for="node-input-port" style="margin-left: 10px; width: 35px; "> Port</label>
+        <input type="text" id="node-input-port" placeholder="Port" style="width:45px">
+    </div>
+	<div class="form-row">
+        <label for="node-input-site"><i class="fa fa-list"></i> Site</label>
+        <input type="text" id="node-input-site" placeholder="Site Name">
+    </div>
+	<div class="form-row">
+		<label for="node-input-username"><i class="fa fa-user"></i> Username</label>
+		<input type="text" id="node-input-username" placeholder="Username">
+	</div>
+	<div class="form-row">
+		<label for="node-input-password"><i class="fa fa-lock"></i> Password</label>
+		<input type="password" id="node-input-password" placeholder="Password">
+	</div>
+	
+	<div class="form-row">
+        <label for="node-input-command"><i class="fa fa-dot-circle-o"></i> Command</label>
+        <select id="node-input-command">
+           <option value="1">SitesStats</option>
+           <option value="10">SiteSysinfo</option>
+           <option value="20">ClientDevices</option>
+		   <option value="30">AllUsers</option>
+		   <option value="40">UserGroups</option>	
+		   <option value="50">Health</option>
+		   <option value="60">Dashboard</option>
+		   <option value="70">AccessDevices</option>
+		   <option value="80">RogueAccessPoints</option>
+		   <option value="90">Events</option>
+		   <option value="100">Alarms</option>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="Unifi">
+	<p>Connects to a Unifi Controller and query/control UniFi devices.</p>
+    <p><code>msg.payload.command</code> is used to override the command selected in the node.<br> Example how to send a command from a function Node<br> <code>msg.payload = { command: "ClientDevices"};</code></p>
+    <p>Available Commands:</p>
+	<ul>
+            <li><code>SitesStats</code> : Site stats</li>
+            <li><code>SiteSysinfo</code> : Site sysinfo</li>
+			<li><code>ClientDevices</code> : Online client device(s)</li>
+            <li><code>AllUsers</code> : All client devices ever connected to the site</li>
+			<li><code>UserGroups</code> : User groups</li>
+            <li><code>Health</code> : Health metrics</li>
+			<li><code>Dashboard</code> : Dashboard metrics</li>
+            <li><code>AccessDevices</code> : Access points</li>
+			<li><code>RogueAccessPoints</code> : Rogue access points</li>
+            <li><code>Events</code> : Events</li>
+			<li><code>Alarms</code> : Alarms</li>
+        </ul>
+	<p>Returns all data in JSON parsable strings/objects</p>	
+    <p>For more information see the <a href="https://github.com/Isaksson/node-red-contrib-unifi" target="_blank">GitHub</a> site.</p>
+</script>
