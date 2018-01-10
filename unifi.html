@@ -59,7 +59,8 @@
 		   <option value="70">AccessDevices</option>
 		   <option value="80">RogueAccessPoints</option>
 		   <option value="90">Events</option>
-		   <option value="100">Alarms</option>
+           <option value="100">Alarms</option>
+           <option value="110">WLanSettings</option>
     </div>
 </script>
 
@@ -78,8 +79,11 @@
             <li><code>AccessDevices</code> : Access points</li>
 			<li><code>RogueAccessPoints</code> : Rogue access points</li>
             <li><code>Events</code> : Events</li>
-			<li><code>Alarms</code> : Alarms</li>
-        </ul>
+            <li><code>Alarms</code> : Alarms</li>
+            <li><code>WLanSettings</code> : WLan Settings</li>
+    </ul>
+    <p>Special Commands: (No GUI)</p>
+            <li><code>DisableWLan</code> : Disable/Enable WLan { command: "disableWLan", wlan_id: "use _id from command WLanSettings", disable: true }</li>
 	<p>Returns all data in JSON parsable strings/objects</p>	
     <p>For more information see the <a href="https://github.com/Isaksson/node-red-contrib-unifi" target="_blank">GitHub</a> site.</p>
 </script>

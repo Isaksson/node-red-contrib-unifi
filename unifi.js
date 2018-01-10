@@ -166,6 +166,28 @@ module.exports = function(RED) {
 					sendData(alarms_data);
 					}
 				});
+			} else if (command == '110' || command == 'wlanconf') {
+				controller.getWLanSettings(site, function(err, wlanconf_data) {
+					if(err)
+					{
+					console.log('ERROR: ' + err);
+					node.status(STATUS_ERROR);
+					return;
+					} else {
+					sendData(wlanconf_data);
+					}
+				});
+			} else if (command == 'disablewlan') {
+				controller.disableWLan(site, msg.payload.wlan_id, msg.payload.disable, function(err, disableWLan_data) {
+					if(err)
+					{
+					console.log('ERROR: ' + err);
+					node.status(STATUS_ERROR);
+					return;
+					} else {
+					sendData(disableWLan_data);
+					}
+				});
 			} else {
 				controller.logout();
 				node.status(STATUS_ERROR);
