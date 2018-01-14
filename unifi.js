@@ -166,15 +166,15 @@ module.exports = function(RED) {
 					sendData(alarms_data);
 					}
 				});
-			} else if (command == '110' || command == 'wlanconf') {
-				controller.getWLanSettings(site, function(err, wlanconf_data) {
+			} else if (command == '110' || command == 'wlansettings') {
+				controller.getWLanSettings(site, function(err, wlansettings_data) {
 					if(err)
 					{
 					console.log('ERROR: ' + err);
 					node.status(STATUS_ERROR);
 					return;
 					} else {
-					sendData(wlanconf_data);
+					sendData(wlansettings_data);
 					}
 				});
 			} else if (command == 'disablewlan') {
