@@ -7,12 +7,6 @@ module.exports = function(RED) {
         shape: "dot",
         text: "OK"
     };
-
-    const STATUS_ERROR = {
-        fill: "red",
-        shape: "dot",
-        text: "Error"
-    };
 	
 	var unifi = require('node-unifi');
 	
@@ -39,7 +33,11 @@ module.exports = function(RED) {
 			if(err)
 			{
 			console.log('ERROR: ' + err);
-			node.status(STATUS_ERROR);
+			node.status({
+				fill: "red",
+				shape: "dot",
+				text: err
+			});
 			return;
 			}
 			
@@ -48,7 +46,11 @@ module.exports = function(RED) {
 					if(err)
 					{
 					console.log('ERROR: ' + err);
-					node.status(STATUS_ERROR);
+					node.status({
+						fill: "red",
+						shape: "dot",
+						text: err
+					});
 					return;
 					} else {
 					sendData(site_data);
@@ -60,7 +62,11 @@ module.exports = function(RED) {
 					if(err)
 					{
 					console.log('ERROR: ' + err);
-					node.status(STATUS_ERROR);
+					node.status({
+						fill: "red",
+						shape: "dot",
+						text: err
+					});
 					return;
 					} else {
 					sendData(sysinfo);
@@ -71,7 +77,11 @@ module.exports = function(RED) {
 					if(err)
 					{
 					console.log('ERROR: ' + err);
-					node.status(STATUS_ERROR);
+					node.status({
+						fill: "red",
+						shape: "dot",
+						text: err
+					});
 					return;
 					} else {
 					sendData(client_data);
@@ -83,7 +93,11 @@ module.exports = function(RED) {
 					if(err)
 					{
 					console.log('ERROR: ' + err);
-					node.status(STATUS_ERROR);
+					node.status({
+						fill: "red",
+						shape: "dot",
+						text: err
+					});
 					return;
 					} else {
 					sendData(users_data);
@@ -94,7 +108,11 @@ module.exports = function(RED) {
 					if(err)
 					{
 					console.log('ERROR: ' + err);
-					node.status(STATUS_ERROR);
+					node.status({
+						fill: "red",
+						shape: "dot",
+						text: err
+					});
 					return;
 					} else {
 					sendData(groups_data);
@@ -105,7 +123,11 @@ module.exports = function(RED) {
 					if(err)
 					{
 					console.log('ERROR: ' + err);
-					node.status(STATUS_ERROR);
+					node.status({
+						fill: "red",
+						shape: "dot",
+						text: err
+					});
 					return;
 					} else {
 					sendData(health_data);
@@ -116,7 +138,11 @@ module.exports = function(RED) {
 					if(err)
 					{
 					console.log('ERROR: ' + err);
-					node.status(STATUS_ERROR);
+					node.status({
+						fill: "red",
+						shape: "dot",
+						text: err
+					});
 					return;
 					} else {
 					sendData(dashboard_data);
@@ -127,7 +153,11 @@ module.exports = function(RED) {
 					if(err)
 					{
 					console.log('ERROR: ' + err);
-					node.status(STATUS_ERROR);
+					node.status({
+						fill: "red",
+						shape: "dot",
+						text: err
+					});
 					return;
 					} else {
 					sendData(accessdevices_data);
@@ -138,7 +168,11 @@ module.exports = function(RED) {
 					if(err)
 					{
 					console.log('ERROR: ' + err);
-					node.status(STATUS_ERROR);
+					node.status({
+						fill: "red",
+						shape: "dot",
+						text: err
+					});
 					return;
 					} else {
 					sendData(rogue_data);
@@ -149,7 +183,11 @@ module.exports = function(RED) {
 					if(err)
 					{
 					console.log('ERROR: ' + err);
-					node.status(STATUS_ERROR);
+					node.status({
+						fill: "red",
+						shape: "dot",
+						text: err
+					});
 					return;
 					} else {
 					sendData(events_data);
@@ -160,7 +198,11 @@ module.exports = function(RED) {
 					if(err)
 					{
 					console.log('ERROR: ' + err);
-					node.status(STATUS_ERROR);
+					node.status({
+						fill: "red",
+						shape: "dot",
+						text: err
+					});
 					return;
 					} else {
 					sendData(alarms_data);
@@ -171,7 +213,11 @@ module.exports = function(RED) {
 					if(err)
 					{
 					console.log('ERROR: ' + err);
-					node.status(STATUS_ERROR);
+					node.status({
+						fill: "red",
+						shape: "dot",
+						text: err
+					});
 					return;
 					} else {
 					sendData(wlansettings_data);
@@ -182,7 +228,11 @@ module.exports = function(RED) {
 					if(err)
 					{
 					console.log('ERROR: ' + err);
-					node.status(STATUS_ERROR);
+					node.status({
+						fill: "red",
+						shape: "dot",
+						text: err
+					});
 					return;
 					} else {
 					sendData(disableWLan_data);
@@ -190,7 +240,11 @@ module.exports = function(RED) {
 				});
 			} else {
 				controller.logout();
-				node.status(STATUS_ERROR);
+				node.status({
+					fill: "red",
+					shape: "dot",
+					text: "No command"
+				});
 				return;		
 			}
 			
