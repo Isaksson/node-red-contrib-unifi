@@ -20,6 +20,7 @@ node-red-contrib-unifi is a Node-RED module that allows to query/control [UniFi 
 
 ## Requirements
 * Installed [UniFi-Controller](https://www.ubnt.com/download/unifi) version v4 or v5
+* Unifi controller user must have at least 'administrator' rights (not read-only)
 
 ## Installation recommended
 The recommended way to install this module is from the Node-RED GUI itself.
