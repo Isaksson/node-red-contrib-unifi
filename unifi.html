@@ -84,6 +84,11 @@
     </ul>
     <p>Special Commands: (No GUI)</p>
             <li><code>DisableWLan</code> : Disable/Enable WLan { command: "disableWLan", wlan_id: "use _id from command WLanSettings", disable: true }</li>
+            <li><code>blockClient</code> : Block Client { command: "blockClient", mac: "client MAC address" }</li>
+            <li><code>unblockClient</code> : Unblock Client { command: "unblockClient", mac: "client MAC address" }</li>
+            <li><code>reconnectClient</code> : Reconnect Client { command: "reconnectClient", mac: "client MAC address" }</li>
+            <li><code>authorizeGuest</code> : Authorize Client { command: "authorizeGuest", mac: "client MAC address", minutes: "minutes until authorization expires" }</li>     
+            <li><code>unauthorizeGuest</code> : Unauthorize Client { command: "unauthorizeGuest", mac: "client MAC address" }</li>  
 	<p>Returns all data in JSON parsable strings/objects</p>	
     <p>For more information see the <a href="https://github.com/Isaksson/node-red-contrib-unifi" target="_blank">GitHub</a> site.</p>
 </script>

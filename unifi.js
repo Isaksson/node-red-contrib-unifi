@@ -238,6 +238,81 @@ module.exports = function(RED) {
 					sendData(disableWLan_data);
 					}
 				});
+			} else if (command == 'blockclient') {
+				controller.blockClient(site, msg.payload.mac, function(err, blockClient_data) {
+					if(err)
+					{
+					console.log('ERROR: ' + err);
+					node.status({
+						fill: "red",
+						shape: "dot",
+						text: err
+					});
+					return;
+					} else {
+					sendData(blockClient_data);
+					}
+				});
+			} else if (command == 'unblockclient') {
+				controller.unblockClient(site, msg.payload.mac, function(err, unblockClient_data) {
+					if(err)
+					{
+					console.log('ERROR: ' + err);
+					node.status({
+						fill: "red",
+						shape: "dot",
+						text: err
+					});
+					return;
+					} else {
+					sendData(unblockClient_data);
+					}
+				});
+			} else if (command == 'reconnectclient') {
+				controller.reconnectClient(site, msg.payload.mac, function(err, reconnectClient_data) {
+					if(err)
+					{
+					console.log('ERROR: ' + err);
+					node.status({
+						fill: "red",
+						shape: "dot",
+						text: err
+					});
+					return;
+					} else {
+					sendData(reconnectClient_data);
+					}
+				});
+			} else if (command == 'unauthorizeguest') {
+				controller.unauthorizeGuest(site, msg.payload.mac, function(err, unauthorizeGuest_data) {
+					if(err)
+					{
+					console.log('ERROR: ' + err);
+					node.status({
+						fill: "red",
+						shape: "dot",
+						text: err
+					});
+					return;
+					} else {
+					sendData(unauthorizeGuest_data);
+					}
+				});
+			} else if (command == 'authorizeguest') {
+				controller.authorizeGuest(site, msg.payload.mac, msg.payload.minutes, function(err, authorizeGuest_data) {
+					if(err)
+					{
+					console.log('ERROR: ' + err);
+					node.status({
+						fill: "red",
+						shape: "dot",
+						text: err
+					});
+					return;
+					} else {
+					sendData(authorizeGuest_data);
+					}
+				});
 			} else {
 				controller.logout();
 				node.status({
