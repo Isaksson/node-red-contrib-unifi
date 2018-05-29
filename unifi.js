@@ -27,6 +27,10 @@ module.exports = function(RED) {
 			if (msg.payload.command != null) {
 				command = msg.payload.command.toLowerCase();
 			}
+
+			if (msg.payload.site != null) {
+				site = msg.payload.site;
+			}
 			
 			controller.login(username, password, function(err) {
 	
