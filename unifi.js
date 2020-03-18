@@ -317,6 +317,21 @@ module.exports = function(RED) {
 					sendData(authorizeGuest_data);
 					}
 				});
+			} else if (command == 'restartap') {
+				controller.rebootAccessPoint(site, msg.payload.mac, function(err, rebootAccessPoint_data) {
+					if(err)
+					{
+					console.log('ERROR: ' + err);
+					node.status({
+						fill: "red",
+						shape: "dot",
+						text: err
+					});
+					return;	
+					} else {
+					sendData(rebootAccessPoint_data);	
+					}
+				});
 			} else {
 				controller.logout();
 				node.status({
