@@ -8,7 +8,7 @@ module.exports = function(RED) {
         text: "OK"
     };
 	
-	var unifi = require('node-unifi');
+	var unifi = require('./unifi-helper');
 	
     function UnifiNode(config) {
         RED.nodes.createNode(this,config);
@@ -19,8 +19,9 @@ module.exports = function(RED) {
 		var ip = config.ip;
 		var port = config.port;
 		var command = config.command;
+		var unifios = config.unifios;
 		
-		var controller = new unifi.Controller(ip, port);
+		var controller = new unifi.Controller(ip, port, unifios);
 			
         this.on('input', function(msg) {
 			
