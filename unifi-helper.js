@@ -1398,7 +1398,7 @@ var Controller = function(hostname, port, unifios)
       function() { return count < proc_sites.length; },
       function(callback) {
         var reqfunc;
-        if(_self._unifios)
+        if(_self._unifios && url != '/api/auth/login' && url != '/api/login')
         var reqjson = {url: _self._baseurl + '/proxy/network' + url.replace('<SITE>', proc_sites[count])};
         else
         var reqjson = {url: _self._baseurl + url.replace('<SITE>', proc_sites[count])};
