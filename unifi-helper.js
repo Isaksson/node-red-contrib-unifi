@@ -1395,7 +1395,7 @@ var Controller = function(hostname, port, unifios)
     var count = 0;
     var results = [];
     async.whilst(
-      function() { return count < proc_sites.length; },
+      function(cb) { cb(null, count < proc_sites.length); },
       function(callback) {
         var reqfunc;
         if(_self._unifios && url != '/api/auth/login' && url != '/api/login')
