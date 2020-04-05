@@ -35,6 +35,8 @@ module.exports = function (RED) {
             }
         }
 
+        const matchCaseInsensitive = (a, b) => a.toLowerCase() === b.toLowerCase();
+
         this.on('input', function (msg) {
 
             if (msg.payload.command != null) {
@@ -57,45 +59,43 @@ module.exports = function (RED) {
                     return;
                 }
 
-                if (command === '1' || command === 'sitesstats') {
+                if (command === '1' || matchCaseInsensitive('sitesstats')) {
                     controller.getSitesStats(handleDataCallback);
-
-                } else if (command === '10' || command === 'sitesysinfo') {
+                } else if (command === '10' || matchCaseInsensitive('sitesysinfo')) {
                     controller.getSiteSysinfo(site, handleDataCallback);
-                } else if (command === '20' || command === 'clientdevices') {
+                } else if (command === '20' || matchCaseInsensitive('clientdevices')) {
                     controller.getClientDevices(site, handleDataCallback);
-
-                } else if (command === '30' || command === 'allusers') {
+                } else if (command === '30' || matchCaseInsensitive('allusers')) {
                     controller.getAllUsers(site, handleDataCallback);
-                } else if (command === '40' || command === 'usergroups') {
+                } else if (command === '40' || matchCaseInsensitive('usergroups')) {
                     controller.getUserGroups(site, handleDataCallback);
-                } else if (command === '50' || command === 'health') {
+                } else if (command === '50' || matchCaseInsensitive('health')) {
                     controller.getHealth(site, handleDataCallback);
-                } else if (command === '60' || command === 'dashboard') {
+                } else if (command === '60' || matchCaseInsensitive('dashboard')) {
                     controller.getDashboard(site, handleDataCallback);
-                } else if (command === '70' || command === 'accessdevices') {
+                } else if (command === '70' || matchCaseInsensitive('accessdevices')) {
                     controller.getAccessDevices(site, handleDataCallback);
-                } else if (command === '80' || command === 'rogueaccesspoints') {
+                } else if (command === '80' || matchCaseInsensitive('rogueaccesspoints')) {
                     controller.getRogueAccessPoints(site, handleDataCallback);
-                } else if (command === '90' || command === 'events') {
+                } else if (command === '90' || matchCaseInsensitive('events')) {
                     controller.getEvents(site, handleDataCallback);
-                } else if (command === '100' || command === 'alarms') {
+                } else if (command === '100' || matchCaseInsensitive('alarms')) {
                     controller.getAlarms(site, handleDataCallback);
-                } else if (command === '110' || command === 'wlansettings') {
+                } else if (command === '110' || matchCaseInsensitive('wlansettings')) {
                     controller.getWLanSettings(site, handleDataCallback);
-                } else if (command === 'disablewlan') {
+                } else if (matchCaseInsensitive('disablewlan')) {
                     controller.disableWLan(site, msg.payload.wlan_id, msg.payload.disable, handleDataCallback);
-                } else if (command === 'blockclient') {
+                } else if (matchCaseInsensitive('blockclient')) {
                     controller.blockClient(site, msg.payload.mac, handleDataCallback);
-                } else if (command === 'unblockclient') {
+                } else if (matchCaseInsensitive('unblockclient')) {
                     controller.unblockClient(site, msg.payload.mac, handleDataCallback);
-                } else if (command === 'reconnectclient') {
+                } else if (matchCaseInsensitive('reconnectclient')) {
                     controller.reconnectClient(site, msg.payload.mac, handleDataCallback);
-                } else if (command === 'unauthorizeguest') {
+                } else if (matchCaseInsensitive('unauthorizeguest')) {
                     controller.unauthorizeGuest(site, msg.payload.mac, handleDataCallback);
-                } else if (command === 'authorizeguest') {
+                } else if (matchCaseInsensitive('authorizeguest')) {
                     controller.authorizeGuest(site, msg.payload.mac, msg.payload.minutes, handleDataCallback);
-                } else if (command === 'restartap') {
+                } else if (matchCaseInsensitive('restartAP')) {
                     controller.rebootAccessPoint(site, msg.payload.mac, handleDataCallback);
                 } else {
                     controller.logout();
