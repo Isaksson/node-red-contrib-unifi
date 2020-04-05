@@ -97,6 +97,10 @@ module.exports = function (RED) {
                     controller.authorizeGuest(site, msg.payload.mac, msg.payload.minutes, handleDataCallback);
                 } else if (matchCaseInsensitive('restartAP')) {
                     controller.rebootAccessPoint(site, msg.payload.mac, handleDataCallback);
+                }else if (matchCaseInsensitive('enableAP')) {
+                    controller.disableAccessPoint(site, msg.payload.mac, false, handleDataCallback)
+                } else if (matchCaseInsensitive('disableAP')) {
+                    controller.disableAccessPoint(site, msg.payload.mac, true, handleDataCallback)
                 } else {
                     controller.logout();
                     node.status({
