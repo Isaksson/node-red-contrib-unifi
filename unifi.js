@@ -35,7 +35,6 @@ module.exports = function (RED) {
             }
         }
 
-        const matchCaseInsensitive = (a, b) => a.toLowerCase() === b.toLowerCase();
 
         this.on('input', function (msg) {
 
@@ -59,58 +58,91 @@ module.exports = function (RED) {
                     return;
                 }
 
-                if (command === '1' || matchCaseInsensitive('sitesstats')) {
-                    controller.getSitesStats(handleDataCallback);
-                } else if (command === '10' || matchCaseInsensitive('sitesysinfo')) {
-                    controller.getSiteSysinfo(site, handleDataCallback);
-                } else if (command === '20' || matchCaseInsensitive('clientdevices')) {
-                    controller.getClientDevices(site, handleDataCallback);
-                } else if (command === '30' || matchCaseInsensitive('allusers')) {
-                    controller.getAllUsers(site, handleDataCallback);
-                } else if (command === '40' || matchCaseInsensitive('usergroups')) {
-                    controller.getUserGroups(site, handleDataCallback);
-                } else if (command === '50' || matchCaseInsensitive('health')) {
-                    controller.getHealth(site, handleDataCallback);
-                } else if (command === '60' || matchCaseInsensitive('dashboard')) {
-                    controller.getDashboard(site, handleDataCallback);
-                } else if (command === '70' || matchCaseInsensitive('accessdevices')) {
-                    controller.getAccessDevices(site, handleDataCallback);
-                } else if (command === '80' || matchCaseInsensitive('rogueaccesspoints')) {
-                    controller.getRogueAccessPoints(site, handleDataCallback);
-                } else if (command === '90' || matchCaseInsensitive('events')) {
-                    controller.getEvents(site, handleDataCallback);
-                } else if (command === '100' || matchCaseInsensitive('alarms')) {
-                    controller.getAlarms(site, handleDataCallback);
-                } else if (command === '110' || matchCaseInsensitive('wlansettings')) {
-                    controller.getWLanSettings(site, handleDataCallback);
-                } else if (matchCaseInsensitive('disablewlan')) {
-                    controller.disableWLan(site, msg.payload.wlan_id, msg.payload.disable, handleDataCallback);
-                } else if (matchCaseInsensitive('blockclient')) {
-                    controller.blockClient(site, msg.payload.mac, handleDataCallback);
-                } else if (matchCaseInsensitive('unblockclient')) {
-                    controller.unblockClient(site, msg.payload.mac, handleDataCallback);
-                } else if (matchCaseInsensitive('reconnectclient')) {
-                    controller.reconnectClient(site, msg.payload.mac, handleDataCallback);
-                } else if (matchCaseInsensitive('unauthorizeguest')) {
-                    controller.unauthorizeGuest(site, msg.payload.mac, handleDataCallback);
-                } else if (matchCaseInsensitive('authorizeguest')) {
-                    controller.authorizeGuest(site, msg.payload.mac, msg.payload.minutes, handleDataCallback);
-                } else if (matchCaseInsensitive('restartAP')) {
-                    controller.rebootAccessPoint(site, msg.payload.mac, handleDataCallback);
-                }else if (matchCaseInsensitive('enableAP')) {
-                    controller.disableAccessPoint(site, msg.payload.mac, false, handleDataCallback)
-                } else if (matchCaseInsensitive('disableAP')) {
-                    controller.disableAccessPoint(site, msg.payload.mac, true, handleDataCallback)
-                } else {
-                    controller.logout();
-                    node.status({
-                        fill: "red",
-                        shape: "dot",
-                        text: "No command"
-                    });
-
+                switch(command.toLowerCase()){
+                    case '1':
+                    case 'sitestats':
+                        controller.getSitesStats(handleDataCallback);
+                        break;
+                    case '10':
+                    case 'sitesysinfo':
+                        controller.getSiteSysinfo(site, handleDataCallback);
+                        break;
+                    case '20':
+                    case 'clientdevices':
+                        controller.getClientDevices(site, handleDataCallback);
+                        break;
+                    case '30':
+                    case 'allusers':
+                        controller.getAllUsers(site, handleDataCallback);
+                        break;
+                    case '40':
+                    case 'usergroups':
+                        controller.getUserGroups(site, handleDataCallback);
+                        break;
+                    case '50':
+                    case 'health':
+                        controller.getHealth(site, handleDataCallback);
+                        break;
+                    case '60':
+                    case 'dashboard':
+                        controller.getDashboard(site, handleDataCallback);
+                        break;
+                    case '70':
+                    case 'accessdevices':
+                        controller.getAccessDevices(site, handleDataCallback);
+                        break;
+                    case '80':
+                    case 'rogueaccesspoints':
+                        controller.getRogueAccessPoints(site, handleDataCallback);
+                        break;
+                    case '90':
+                    case 'events':
+                        controller.getEvents(site, handleDataCallback);
+                        break;
+                    case '100':
+                    case 'alarms':
+                        controller.getAlarms(site, handleDataCallback);
+                        break;
+                    case '110':
+                    case 'wlansettings':
+                        controller.getWLanSettings(site, handleDataCallback);
+                        break;
+                    case 'disablewlan':
+                        controller.disableWLan(site, msg.payload.wlan_id, msg.payload.disable, handleDataCallback);
+                        break;
+                    case 'blockclient':
+                        controller.blockClient(site, msg.payload.mac, handleDataCallback);
+                        break;
+                    case 'unblockclient':
+                        controller.unblockClient(site, msg.payload.mac, handleDataCallback);
+                        break;
+                    case 'reconnectclient':
+                        controller.reconnectClient(site, msg.payload.mac, handleDataCallback);
+                        break;
+                    case 'unauthorizeguest':
+                        controller.unauthorizeGuest(site, msg.payload.mac, handleDataCallback);
+                        break;
+                    case 'authorizeguest':
+                        controller.authorizeGuest(site, msg.payload.mac, msg.payload.minutes, handleDataCallback);
+                        break;
+                    case 'restartap':
+                        controller.rebootAccessPoint(site, msg.payload.mac, handleDataCallback);
+                        break;
+                    case 'enableap':
+                        controller.disableAccessPoint(site, msg.payload.mac, false, handleDataCallback);
+                        break;
+                    case 'disableap':
+                        controller.disableAccessPoint(site, msg.payload.mac, true, handleDataCallback);
+                        break;
+                    default:
+                        controller.logout();
+                        node.status({
+                            fill: "red",
+                            shape: "dot",
+                            text: "No command"
+                        });
+                        break;
                 }
-
 
             });
         });
