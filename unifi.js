@@ -18,24 +18,6 @@ module.exports = function (RED) {
 
         const controller = new unifi.Controller(ip, port, unifios);
 
-        function handleDataCallback(err, data) {
-            if (err) {
-                console.log('ERROR: ' + err.message);
-                node.status({
-                    fill: "red",
-                    shape: "dot",
-                    text: err.message
-                });
-
-            } else {
-                controller.logout();
-                msg.payload = data;
-                node.send(msg);
-                node.status(STATUS_OK);
-            }
-        }
-
-
         this.on('input', function (msg) {
 
             if (msg.payload.command != null) {
@@ -145,6 +127,23 @@ module.exports = function (RED) {
                 }
 
             });
+
+            function handleDataCallback(err, data) {
+                if (err) {
+                    console.log('ERROR: ' + err.message);
+                    node.status({
+                        fill: "red",
+                        shape: "dot",
+                        text: err.message
+                    });
+    
+                } else {
+                    controller.logout();
+                    msg.payload = data;
+                    node.send(msg);
+                    node.status(STATUS_OK);
+                }
+            }
         });
     }
 
