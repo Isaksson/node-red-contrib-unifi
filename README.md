@@ -21,9 +21,9 @@ node-red-contrib-unifi is a Node-RED module that allows to query/control [UniFi 
 * reconnectClient : Reconnect Client { command: "reconnectClient", mac: "client MAC address" }
 * authorizeGuest : Authorize Client { command: "authorizeGuest", mac: "client MAC address", minutes: "minutes until authorization expires" }   
 * unauthorizeGuest : Unauthorize Client { command: "unauthorizeGuest", mac: "client MAC address" }
-* enableAP : Reboot an Access point { command: "restartAP", mac: "device MAC address" }
-* disableAP : Reboot an Access point { command: "restartAP", mac: "device MAC address" }
 * restartAP : Reboot an Access point { command: "restartAP", mac: "device MAC address" }
+* enableAP : Enable an Access point { command: "enableAP", mac: "device MAC address" }
+* disableAP : Disable an Access point { command: "disableAP", mac: "device MAC address" }
 * site : Connect to site name { site: "site name"}
 
 
