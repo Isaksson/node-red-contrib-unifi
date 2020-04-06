@@ -51,7 +51,7 @@
 		<label for="node-input-password"><i class="fa fa-lock"></i> Password</label>
 		<input type="password" id="node-input-password" placeholder="Password">
 	</div>
-	
+
 	<div class="form-row">
         <label for="node-input-command"><i class="fa fa-dot-circle-o"></i> Command</label>
         <select id="node-input-command">
@@ -59,7 +59,7 @@
            <option value="10">SiteSysinfo</option>
            <option value="20">ClientDevices</option>
 		   <option value="30">AllUsers</option>
-		   <option value="40">UserGroups</option>	
+		   <option value="40">UserGroups</option>
 		   <option value="50">Health</option>
 		   <option value="60">Dashboard</option>
 		   <option value="70">AccessDevices</option>
@@ -94,10 +94,12 @@
             <li><code>blockClient</code> : Block Client { command: "blockClient", mac: "client MAC address" }</li>
             <li><code>unblockClient</code> : Unblock Client { command: "unblockClient", mac: "client MAC address" }</li>
             <li><code>reconnectClient</code> : Reconnect Client { command: "reconnectClient", mac: "client MAC address" }</li>
-            <li><code>authorizeGuest</code> : Authorize Client { command: "authorizeGuest", mac: "client MAC address", minutes: "minutes until authorization expires" }</li>     
+            <li><code>authorizeGuest</code> : Authorize Client { command: "authorizeGuest", mac: "client MAC address", minutes: "minutes until authorization expires" }</li>
             <li><code>unauthorizeGuest</code> : Unauthorize Client { command: "unauthorizeGuest", mac: "client MAC address" }</li>
             <li><code>restartAP</code> : Reboot an Access point { command: "restartAP", mac: "device MAC address" }</li>
+            <li><code>enableAP</code> : Reboot an Access point { command: "enableAP", mac: "device MAC address" }</li>
+            <li><code>disableAP</code> : Reboot an Access point { command: "disableAP", mac: "device MAC address" }</li>
             <li><code>site</code> : Connect to site name { site: "site name"}</li>
-	<p>Returns all data in JSON parsable strings/objects</p>	
+	<p>Returns all data in JSON parsable strings/objects</p>
     <p>For more information see the <a href="https://github.com/Isaksson/node-red-contrib-unifi" target="_blank">GitHub</a> site.</p>
 </script>

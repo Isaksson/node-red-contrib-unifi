@@ -12,15 +12,17 @@ node-red-contrib-unifi is a Node-RED module that allows to query/control [UniFi 
 * RogueAccessPoints : Rogue access points
 * Events : Events
 * Alarms : Alarms
-* WLanSettings : WLan Settings
+* WlanSettings : Wlan Settings
 
 ## Special Commands: (No GUI)
-* disableWLan : Disable/Enable WLan { command: "disableWLan", wlan_id: "use _id from command WLanSettings", disable: true }
+* disableWlan : Disable/Enable Wlan { command: "disableWlan", wlan_id: "use _id from command WlanSettings", disable: true }
 * blockClient : Block Client { command: "blockClient", mac: "client MAC address" }
 * unblockClient : Unblock Client { command: "unblockClient", mac: "client MAC address" }
 * reconnectClient : Reconnect Client { command: "reconnectClient", mac: "client MAC address" }
 * authorizeGuest : Authorize Client { command: "authorizeGuest", mac: "client MAC address", minutes: "minutes until authorization expires" }   
 * unauthorizeGuest : Unauthorize Client { command: "unauthorizeGuest", mac: "client MAC address" }
+* enableAP : Reboot an Access point { command: "restartAP", mac: "device MAC address" }
+* disableAP : Reboot an Access point { command: "restartAP", mac: "device MAC address" }
 * restartAP : Reboot an Access point { command: "restartAP", mac: "device MAC address" }
 * site : Connect to site name { site: "site name"}
 
