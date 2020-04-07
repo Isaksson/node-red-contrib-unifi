@@ -998,8 +998,8 @@ var Controller = function (hostname, port, unifios) {
      *                                      "on" will enable the LED of the device,
      *                                      "default" will apply the site-wide setting for device LEDs
      */
-    _self.setLEDOverride = function (sites, device_id, override_mode, cb) {
-        _self._request('/api/s/<SITE>/rest/device/' + device_id.trim(), {led_override: override_mode}, sites, cb);
+    _self.setLEDOverride = function (sites, device_id, override_mode, cb,) {
+        _self._request('/api/s/<SITE>/rest/device/' + device_id.trim(), {led_override: override_mode}, sites, cb, "PUT");
     };
 
     /**
