@@ -999,7 +999,7 @@ var Controller = function (hostname, port, unifios) {
      *                                      "default" will apply the site-wide setting for device LEDs
      */
     _self.setLEDOverride = function (sites, device_id, override_mode, cb,) {
-        _self._request('/api/s/<SITE>/rest/device/' + device_id.trim(), {led_override: override_mode}, sites, cb, "PUT");
+        _self._request('/api/s/<SITE>/rest/device/' + device_id.trim(), {led_override: override_mode}, sites, cb, 'PUT');
     };
 
     /**
@@ -1186,7 +1186,7 @@ var Controller = function (hostname, port, unifios) {
     _self.disableWLan = function (sites, wlan_id, disable, cb) {
         var json = {enabled: disable == true ? false : true};
 
-        _self._request('/api/s/<SITE>/upd/wlanconf/' + wlan_id.trim(), json, sites, cb);
+        _self._request('/api/s/<SITE>/rest/wlanconf/' + wlan_id.trim(), json, sites, cb, 'PUT');
     };
 
     /**
