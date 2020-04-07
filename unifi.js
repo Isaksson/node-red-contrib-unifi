@@ -116,6 +116,9 @@ module.exports = function (RED) {
                     case 'disableap':
                         controller.disableAccessPoint(site, msg.payload.mac, true, handleDataCallback);
                         break;
+                    case 'setapled':
+                        controller.disableAccessPoint(site, msg.payload.device_id, msg.payload.mode, handleDataCallback);
+                        break;
                     default:
                         controller.logout();
                         node.status({
