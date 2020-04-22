@@ -399,7 +399,7 @@ var Controller = function (hostname, port, unifios) {
             within: within
         };
 
-        _self._request('/api/s/<SITE>/stat/alluser', json, sites, cb);
+        _self._request('/api/s/<SITE>/stat/alluser', json, sites, cb, 'GET');    
     };
 
     /**
@@ -1381,6 +1381,8 @@ var Controller = function (hostname, port, unifios) {
                 if (json !== null) {
                     if (method === 'PUT')
                         reqfunc = request.put;
+                    else if (method === 'GET')
+                        reqfunc = request.get;   
                     else
                         reqfunc = request.post;
                     reqjson.json = json;
