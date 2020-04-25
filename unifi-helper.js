@@ -422,7 +422,7 @@ var Controller = function (hostname, port, unifios) {
             within: within
         };
 
-        _self._request('/api/s/<SITE>/stat/alluser', json, sites, cb);
+        _self._request('/api/s/<SITE>/stat/alluser', json, sites, cb, 'GET');
     };
 
     /**
