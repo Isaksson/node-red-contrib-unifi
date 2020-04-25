@@ -118,7 +118,19 @@ module.exports = function (RED) {
                         break;
                     case 'setapled':
                         controller.setLEDOverride(site, msg.payload.device_id, msg.payload.mode, handleDataCallback);
-                        break;    
+                        break;
+                    case 'getfirewallgroups':
+                        controller.getFirewallGroups(site, handleDataCallback);
+                        break;
+                    case 'editfirewallgroup':
+                        controller.editFirewallGroup(site, msg.payload.group_id, msg.payload.site_id, msg.payload.group_name, msg.payload.group_type, handleDataCallback, msg.payload.group_members);
+                        break;
+                    case 'addfirewallgroup':
+                        controller.addFirewallGroup(site, msg.payload.group_name, msg.payload.group_type, handleDataCallback, msg.payload.group_members);
+                        break;
+                    case 'deletefirewallgroup':
+                        controller.deleteFirewallGroup(site, msg.payload.group_id, handleDataCallback);
+                        break;
                     default:
                         controller.logout();
                         node.status({

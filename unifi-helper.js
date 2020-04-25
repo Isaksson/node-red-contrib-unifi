@@ -23,13 +23,13 @@ var async = require('async');
 // make sure we setup request correctly for our
 // processing
 request = request.defaults({
-    jar: true,
     json: true,
     strictSSL: false
 });
 
 var Controller = function (hostname, port, unifios) {
     var _self = this;
+    _self._jar = request.jar();
     _self._unifios = unifios;
     /** INIT CODE **/
 
@@ -1345,8 +1345,93 @@ var Controller = function (hostname, port, unifios) {
         _self._request('/api/s/<SITE>/cmd/devmgr/upgrade-external', json, sites, cb);
     };
 
+    /**
+     * List firewall groups - list_firewallgroups()
+     * ----------------
+     *
+     * required paramater <sites>   = name or array of site names
+     */
+    _self.getFirewallGroups = function (sites, cb) {
+        _self._request('/api/s/<SITE>/rest/firewallgroup', null, sites, cb);
+    };
+
+    /**
+     * Edit firewall group - edit_firewallgroup()
+     * ---------------
+     * returns an array containing a single object with attributes of the updated firewallgroup on success
+     *
+     * required paramater <sites>         = name or array of site names
+     * required parameter <group_id>      = id of the firewall group
+     * required parameter <site_id>       = id of the site
+     * required parameter <group_name>    = name of the firewall group
+     * required parameter <group_type>    = type of firewall group (address-group, ipv6-address-group or port-group)
+     * optional parameter <group_members> = array of group member CIDRs/IPs or ports (default = [], which empties the group)
+     *
+     */
+    _self.editFirewallGroup = function (sites, group_id, site_id, group_name, group_type, cb,
+                                    group_members) {
+        if (['address-group', 'ipv6-address-group', 'port-group'].includes(group_type)) {
+            var json = {
+                _id: group_id,
+                site_id: site_id,
+                name: group_name,
+                group_type: group_type,
+                group_members: typeof (group_members) !== 'undefined' ? group_members : []
+            };
+
+            _self._request('/api/s/<SITE>/rest/firewallgroup/' + group_id.trim(), json, sites, cb, 'PUT');
+        } else
+            cb({message: `Invalid group_type: ${group_type}`});
+    };
+
+    /**
+     * Add firewall group - add_firewallgroup()
+     * --------------
+     * returns an array containing a single object with attributes of the new firewallgroup ("_id", "name", "group_type", "group_members", "site_id") on success
+     *
+     * required paramater <sites>         = name or array of site names
+     * required parameter <group_name>    = name of the firewall group
+     * required parameter <group_type>    = type of firewall group (address-group, ipv6-address-group or port-group)
+     * optional parameter <group_members> = array of group member CIDRs/IPs or ports (default = [], which creates an empty group)
+     *
+     */
+    _self.addFirewallGroup = function (sites, group_name, group_type, cb,
+                                  group_members) {
+        if (['address-group', 'ipv6-address-group', 'port-group'].includes(group_type)) {
+            var json = {
+                name: group_name,
+                group_type: group_type,
+                group_members: typeof (group_members) !== 'undefined' ? group_members : []
+            };
+
+            _self._request('/api/s/<SITE>/rest/firewallgroup', json, sites, cb);
+        } else
+            cb({message: `Invalid group_type: ${group_type}`});
+    };
+
+    /**
+     * Delete firewall group - delete_firewallgroup()
+     * -----------------
+     * returns true on success
+     *
+     * required paramater <sites>    = name or array of site names
+     * required parameter <group_id> = id of the firewall group
+     *
+     */
+    _self.deleteFirewallGroup = function (sites, group_id, cb) {
+        _self._request('/api/s/<SITE>/rest/firewallgroup/' + group_id.trim(), null, sites, cb, 'DELETE');
+    };
+
 
     /** PRIVATE FUNCTIONS **/
+
+    /**
+     * Private function to extract the CSRF token from our cookies
+     */
+    _self._extract_csrf_token_from_cookie = function() {
+        var cookie = _self._jar.getCookies(_self._baseurl).find(cookie => cookie.key == 'TOKEN');
+        return cookie != undefined ? JSON.parse(Buffer.from(cookie.value.split('.')[1], 'base64')).csrfToken : undefined;
+    };
 
     /**
      * Private function to send out a generic URL request to a UniFi-Controller
@@ -1375,6 +1460,7 @@ var Controller = function (hostname, port, unifios) {
                 else
                     var reqjson = {url: _self._baseurl + url.replace('<SITE>', proc_sites[count])};
                 var req;
+                reqjson.jar = _self._jar;
 
                 // identify which request method we are using (GET, POST, DELETE) based
                 // on the json data supplied and the overriding method
@@ -1396,6 +1482,12 @@ var Controller = function (hostname, port, unifios) {
                     reqfunc = request.put;
                 else
                     reqfunc = request.get;
+                
+                if (_self._unifios && (json !== null || url == '/api/auth/logout' || method === 'DELETE')) {
+                    var token = _self._extract_csrf_token_from_cookie();
+                    if (token !== undefined)
+                        reqjson.headers = {'x-csrf-token': token};
+                }
 
                 req = reqfunc(reqjson, function (error, response, body) {
                     if (!error && body && response.statusCode >= 200 && response.statusCode < 400 &&
