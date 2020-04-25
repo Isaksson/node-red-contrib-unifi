@@ -26,7 +26,10 @@ node-red-contrib-unifi is a Node-RED module that allows to query/control [UniFi 
 * disableAP : Disable an Access point { command: "disableAP", mac: "device MAC address" }
 * setAPLed : Set LED for Access point { command: "setapled", device_id: "24 char device id", mode: "off/on/default" }
 * site : Connect to site name { site: "site name"}
-
+* getFirewallGroups: Get list of firewall groups { command: "getFirewallGroups" }
+* addFirewallGroup: Add firewall group { command: "addFirewallGroup", group_name: "group-name", group_type: "address-group|ipv6-address-group|port-group", group_members: ["CIDRs", "IPs"] }
+* editFirewallGroup: Edit firewall group { command: "editFirewallGroup", group_id: "group id", group_name: "group-name", group_type: "address-group|ipv6-address-group|port-group", group_members: ["CIDRs", "IPs"] }
+* deleteFirewallGroup: Delete firewall group { command: "deleteFirewallGroup", group_id: "group id" }
 
 ## Tips
 * Use the command SiteStats to get your Unifi Site Name	
