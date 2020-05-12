@@ -21,7 +21,7 @@ module.exports = function (RED) {
         this.on('input', function (msg) {
 
             if (msg.payload.command != null) {
-                command = msg.payload.command.toLowerCase();
+                command = msg.payload.command.toString().toLowerCase();
             }
 
             if (msg.payload.site != null) {
