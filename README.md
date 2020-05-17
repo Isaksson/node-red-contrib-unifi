@@ -30,6 +30,7 @@ node-red-contrib-unifi is a Node-RED module that allows to query/control [UniFi 
 * addFirewallGroup: Add firewall group { command: "addFirewallGroup", group_name: "group-name", group_type: "address-group|ipv6-address-group|port-group", group_members: ["CIDRs", "IPs"] }
 * editFirewallGroup: Edit firewall group { command: "editFirewallGroup", group_id: "group id", group_name: "group-name", group_type: "address-group|ipv6-address-group|port-group", group_members: ["CIDRs", "IPs"] }
 * deleteFirewallGroup: Delete firewall group { command: "deleteFirewallGroup", group_id: "group id" }
+* forceProvision : Force provision { command: "forceProvision", mac: "device MAC address" }
 
 ## Tips
 * Use the command SiteStats to get your Unifi Site Name	

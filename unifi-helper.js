@@ -1422,6 +1422,20 @@ var Controller = function (hostname, port, unifios) {
         _self._request('/api/s/<SITE>/rest/firewallgroup/' + group_id.trim(), null, sites, cb, 'DELETE');
     };
 
+    /**
+     * Force Provision of a device
+     * -----------------
+     * returns true on success
+     * required parameter <mac> = device MAC address
+     */
+    _self.forceProvision = function (sites, mac, cb) {
+        var json = {
+            mac: mac.toLowerCase(),
+            cmd: 'force-provision',
+        };
+
+        _self._request('/api/s/<SITE>/cmd/devmgr', json, sites, cb);
+    };
 
     /** PRIVATE FUNCTIONS **/
 

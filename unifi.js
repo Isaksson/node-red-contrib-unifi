@@ -131,6 +131,9 @@ module.exports = function (RED) {
                     case 'deletefirewallgroup':
                         controller.deleteFirewallGroup(site, msg.payload.group_id, handleDataCallback);
                         break;
+                    case 'forceprovision':
+                        controller.forceProvision(site, msg.payload.mac, handleDataCallback);
+                        break;    
                     default:
                         controller.logout();
                         node.status({
