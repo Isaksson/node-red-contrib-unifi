@@ -79,7 +79,7 @@ module.exports = function (RED) {
                         break;
                     case '90':
                     case 'events':
-                        controller.getEvents(site, handleDataCallback);
+                        controller.getEvents(site, handleDataCallback, msg.payload.historyhours, msg.payload.start, msg.payload.limit);
                         break;
                     case '100':
                     case 'alarms':
