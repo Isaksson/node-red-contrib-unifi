@@ -986,7 +986,7 @@ var Controller = function (hostname, port, unifios) {
      * - available since controller versions 5.2.X
      */
     _self.disableAccessPoint = function (sites, ap_id, disable, cb) {
-        _self._request('/api/s/<SITE>/rest/device/' + ap_id.trim(), {disabled: disabled}, sites, cb);
+        _self._request('/api/s/<SITE>/rest/device/' + ap_id.trim(), {disabled: disable}, sites, cb);
     };
 
     /**

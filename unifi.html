@@ -97,8 +97,8 @@
             <li><code>authorizeGuest</code> : Authorize Client { command: "authorizeGuest", mac: "client MAC address", minutes: "minutes until authorization expires" }</li>
             <li><code>unauthorizeGuest</code> : Unauthorize Client { command: "unauthorizeGuest", mac: "client MAC address" }</li>
             <li><code>restartAP</code> : Reboot an Access point { command: "restartAP", mac: "device MAC address" }</li>
-            <li><code>enableAP</code> : Enable an Access point { command: "enableAP", mac: "device MAC address" }</li>
-            <li><code>disableAP</code> : Disable an Access point { command: "disableAP", mac: "device MAC address" }</li>
+            <li><code>enableAP</code> : Enable an Access point { command: "enableAP", device_id: "24 char device id" }</li>
+            <li><code>disableAP</code> : Disable an Access point { command: "disableAP", device_id: "24 char device id" }</li>
             <li><code>setAPLed</code> : Set LED for Access point { command: "setapled", device_id: "24 char device id", mode: "off/on/default" }</li>
             <li><code>site</code> : Connect to site name { site: "site name"}</li>
             <li><code>getFirewallGroups</code> : Get list of firewall groups { command: "getFirewallGroups" }</li>
@@ -108,5 +108,5 @@
             <li><code>forceProvision</code> : Force provision { command: "forceProvision", mac: "device MAC address" }</li>
 	<p>Returns all data in JSON parsable strings/objects</p>
     <p>For more information see the <a href="https://github.com/Isaksson/node-red-contrib-unifi" target="_blank">GitHub</a> site.</p>
-    <p>Version 0.1.10</p>
+    <p>Version 0.1.11</p>
 </script>

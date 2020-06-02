@@ -111,10 +111,10 @@ module.exports = function (RED) {
                         controller.rebootAccessPoint(site, msg.payload.mac, handleDataCallback);
                         break;
                     case 'enableap':
-                        controller.disableAccessPoint(site, msg.payload.mac, false, handleDataCallback);
+                        controller.disableAccessPoint(site, msg.payload.device_id, false, handleDataCallback);
                         break;
                     case 'disableap':
-                        controller.disableAccessPoint(site, msg.payload.mac, true, handleDataCallback);
+                        controller.disableAccessPoint(site, msg.payload.device_id, true, handleDataCallback);
                         break;
                     case 'setapled':
                         controller.setLEDOverride(site, msg.payload.device_id, msg.payload.mode, handleDataCallback);
