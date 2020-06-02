@@ -21,7 +21,7 @@ module.exports = function (RED) {
         this.on('input', function (msg) {
 
             if (msg.payload.command != null) {
-                command = msg.payload.command.toString().toLowerCase();
+                command = msg.payload.command;
             }
 
             if (msg.payload.site != null) {
@@ -40,7 +40,7 @@ module.exports = function (RED) {
                     return;
                 }
 
-                switch(command.toLowerCase()){
+                switch(command.toString().toLowerCase()){
                     case '1':
                     case 'sitestats':
                         controller.getSitesStats(handleDataCallback);
