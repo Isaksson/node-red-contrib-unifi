@@ -89,6 +89,10 @@ module.exports = function (RED) {
                     case 'wlansettings':
                         controller.getWLanSettings(site, handleDataCallback);
                         break;
+                    case '120':
+                    case 'listportprofiles':
+                        controller.getPortConfig(site, handleDataCallback);
+                         break;    
                     case 'disablewlan':
                         controller.disableWLan(site, msg.payload.wlan_id, msg.payload.disable, handleDataCallback);
                         break;
@@ -133,7 +137,10 @@ module.exports = function (RED) {
                         break;
                     case 'forceprovision':
                         controller.forceProvision(site, msg.payload.mac, handleDataCallback);
-                        break;    
+                        break;
+                    case 'setportprofile':
+                        controller.setPortProfile(site, msg.payload.device_id, msg.payload.profile_id, msg.payload.port_id, handleDataCallback);
+                        break;
                     default:
                         controller.logout();
                         node.status({

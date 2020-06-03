@@ -67,6 +67,7 @@
 		   <option value="90">Events</option>
            <option value="100">Alarms</option>
            <option value="110">WLanSettings</option>
+           <option value="120">ListPortProfiles</option>
     </div>
 
 </script>
@@ -88,6 +89,7 @@
             <li><code>Events</code> : Events</li>
             <li><code>Alarms</code> : Alarms</li>
             <li><code>WLanSettings</code> : WLan Settings</li>
+            <li><code>ListPortProfiles</code> : List Port Profiles</li>
     </ul>
     <p>Special Commands: (No GUI)</p>
             <li><code>DisableWLan</code> : Disable/Enable WLan { command: "disableWLan", wlan_id: "use _id from command WLanSettings", disable: true }</li>
@@ -106,7 +108,8 @@
             <li><code>editFirewallGroup</code> : Edit firewall group { command: "editFirewallGroup", group_id: "group id", group_name: "group-name", group_type: "address-group|ipv6-address-group|port-group", group_members: ["CIDRs", "IPs"] }</li>
             <li><code>deleteFirewallGroup</code> : Delete firewall group { command: "deleteFirewallGroup", group_id: "group id" }</li>
             <li><code>forceProvision</code> : Force provision { command: "forceProvision", mac: "device MAC address" }</li>
+            <li><code>setPortProfile</code> : Set Port Profile { command: "setPortProfile", device_id: "24 char device id", profile_id: "Profile id", port_id: "Port number" }</li>
 	<p>Returns all data in JSON parsable strings/objects</p>
     <p>For more information see the <a href="https://github.com/Isaksson/node-red-contrib-unifi" target="_blank">GitHub</a> site.</p>
-    <p>Version 0.1.11</p>
+    <p>Version 0.1.12</p>
 </script>

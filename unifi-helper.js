@@ -1437,6 +1437,24 @@ var Controller = function (hostname, port, unifios) {
         _self._request('/api/s/<SITE>/cmd/devmgr', json, sites, cb);
     };
 
+    /**
+     * Set switch port profile
+     * ------------------------------
+     *
+     * required parameter <device_id>  = 24 char string; value of _id for the device which can be obtained from the device list
+     * required parameter <profile_id> = _id for the port profile which can be obtained from the ListPortProfiles command
+     * required parameter <port_id>    = switch port id
+     */
+    _self.setPortProfile = function (sites, device_id, profile_id, port_id, cb) {
+        var json = {
+            port_overrides: [{ 
+                port_idx: port_id, 
+                portconf_id: profile_id 
+            }]
+        };
+        _self._request('/api/s/<SITE>/rest/device/' + device_id.trim(), json, sites, cb, 'PUT');
+    };
+
     /** PRIVATE FUNCTIONS **/
 
     /**
@@ -1532,94 +1550,3 @@ var Controller = function (hostname, port, unifios) {
 };
 
 exports.Controller = Controller;
-
-/*
- ********************
- * TEST
- ********************
-*/
-/*
-var controller = new Controller("192.168.5.66", 8443);
-
-//////////////////////////////
-// LOGIN
-controller.login("admin", "XXXXXXXX", function(err) {
-
-  if(err)
-  {
-    console.log.info('ERROR: ' + err);
-    return;
-  }
-
-  //////////////////////////////
-  // GET SITE STATS
-  controller.getSitesStats(function(err, site_data) {
-    var sites = site_data.map(function(s) { return s.name; });
-
-    console.log('getSitesStats: ' + sites + ' : ' + sites.length);
-    console.log(JSON.stringify(site_data));
-
-    //////////////////////////////
-    // GET SITE SYSINFO
-    controller.getSiteSysinfo(sites, function(err, sysinfo) {
-      console.log('getSiteSysinfo: ' + sysinfo.length);
-      console.log(JSON.stringify(sysinfo));
-
-      //////////////////////////////
-      // GET CLIENT DEVICES
-      controller.getClientDevices(sites, function(err, client_data) {
-        console.log('getClientDevices: ' + client_data[0].length);
-        console.log(JSON.stringify(client_data));
-
-        //////////////////////////////
-        // GET ALL USERS EVER CONNECTED
-        controller.getAllUsers(sites, function(err, users_data) {
-          console.log('getAllUsers: ' + users_data[0].length);
-          console.log(JSON.stringify(users_data));
-
-          //////////////////////////////
-          // GET ALL ACCESS DEVICES
-          controller.getAccessDevices(sites, function(err, access_data) {
-            console.log('getAccessDevices: ' + access_data[0].length);
-            console.log(JSON.stringify(access_data));
-
-            //////////////////////////////
-            // GET ALL SESSIONS
-            controller.getSessions(sites, function(err, session_data) {
-              console.log('getSessions: ' + session_data[0].length);
-              console.log(JSON.stringify(session_data));
-
-              //////////////////////////////
-              // GET ALL AUTHORIZATIONS
-              controller.getAllAuthorizations(sites, function(err, auth_data) {
-                console.log('getAllAuthorizations: ' + auth_data[0].length);
-                console.log(JSON.stringify(auth_data));
-
-                //////////////////////////////
-                // GET USERS
-                controller.getUsers(sites, function(err, user_data) {
-                  console.log('getUsers: ' + user_data[0].length);
-                  console.log(JSON.stringify(user_data));
-
-                  //////////////////////////////
-                  // GET SELF
-                  controller.getSelf(sites, function(err, self_data) {
-                    console.log('getSelf: ' + self_data[0].length);
-                    console.log(JSON.stringify(self_data));
-
-                    //////////////////////////////
-                    // FINALIZE
-
-                    // finalize, logout and finish
-                    controller.logout();
-                  });
-                });
-              });
-            });
-          });
-        });
-      });
-    });
-  });
-});
-*/
