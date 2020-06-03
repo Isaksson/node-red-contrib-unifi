@@ -977,7 +977,7 @@ var Controller = function (hostname, port, unifios) {
      * Disable/enable an access point - disable_ap()
      * ------------------------------
      *
-     * required parameter <ap_id>   = 24 char string; value of _id for the access point which can be obtained from the device list
+     * required parameter <device_id>   = 24 char string; value of _id for the access point which can be obtained from the device list
      * required parameter <disable> = boolean; TRUE will disable the device, FALSE will enable the device
      *
      * NOTES:
@@ -985,8 +985,8 @@ var Controller = function (hostname, port, unifios) {
      * - appears to only be supported for access points
      * - available since controller versions 5.2.X
      */
-    _self.disableAccessPoint = function (sites, ap_id, disable, cb) {
-        _self._request('/api/s/<SITE>/rest/device/' + ap_id.trim(), {disabled: disable}, sites, cb);
+    _self.disableAccessPoint = function (sites, device_id, disable, cb) {
+        _self._request('/api/s/<SITE>/rest/device/' + device_id.trim(), {disabled: disable}, sites, cb, 'PUT');
     };
 
     /**
