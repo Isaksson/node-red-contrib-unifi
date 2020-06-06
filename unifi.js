@@ -19,13 +19,17 @@ module.exports = function (RED) {
         const controller = new unifi.Controller(ip, port, unifios);
 
         this.on('input', function (msg) {
-
+                       
             if (msg.payload.command != null) {
                 command = msg.payload.command;
+            } else {
+                command = config.command;
             }
 
             if (msg.payload.site != null) {
                 site = msg.payload.site;
+            } else {
+                site = config.site;
             }
 
             controller.login(username, password, (err) => {
