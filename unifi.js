@@ -145,6 +145,12 @@ module.exports = function (RED) {
                     case 'setportprofile':
                         controller.setPortProfile(site, msg.payload.device_id, msg.payload.profile_id, msg.payload.port_id, handleDataCallback);
                         break;
+                    case 'setLocate':
+                        controller.setLocate(site, msg.payload.mac, handleDataCallback);
+                        break;
+                    case 'unsetLocate':
+                        controller.unsetLocate(site, msg.payload.mac, handleDataCallback);
+                        break;
                     default:
                         controller.logout();
                         node.status({
