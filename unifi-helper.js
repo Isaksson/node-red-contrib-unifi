@@ -1476,7 +1476,7 @@ var Controller = function (hostname, port, unifios) {
      *
      * required parameter <mac> = MAC address of the device to be un-located
      */
-    _self.setLocate = function (sites, mac, cb) {
+    _self.unsetLocate = function (sites, mac, cb) {
         var json = {
             mac: mac.toLowerCase(),
             cmd: 'unset-locate',
