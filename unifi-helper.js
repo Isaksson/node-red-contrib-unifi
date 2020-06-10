@@ -1455,6 +1455,36 @@ var Controller = function (hostname, port, unifios) {
         _self._request('/api/s/<SITE>/rest/device/' + device_id.trim(), json, sites, cb, 'PUT');
     };
 
+    /** 
+     * Set locate device
+     * -----------------
+     *
+     * required parameter <mac> = MAC address of the device to be located
+     */
+    _self.setLocate = function (sites, mac, cb) {
+        var json = {
+            mac: mac.toLowerCase(),
+            cmd: 'set-locate',
+        };
+        
+        _self._request('/api/s/<SITE>/cmd/devmgr', json, sites, cb);
+    };
+    
+    /** 
+     * Un-set locate device
+     * -----------------
+     *
+     * required parameter <mac> = MAC address of the device to be un-located
+     */
+    _self.setLocate = function (sites, mac, cb) {
+        var json = {
+            mac: mac.toLowerCase(),
+            cmd: 'unset-locate',
+        };
+        
+        _self._request('/api/s/<SITE>/cmd/devmgr', json, sites, cb);
+    };
+    
     /** PRIVATE FUNCTIONS **/
 
     /**
