@@ -19,7 +19,7 @@ module.exports = function (RED) {
         const controller = new unifi.Controller(ip, port, unifios);
 
         this.on('input', function (msg) {
-                       
+
             if (msg.payload.command != null) {
                 command = msg.payload.command;
             } else {
@@ -145,6 +145,12 @@ module.exports = function (RED) {
                     case 'setportprofile':
                         controller.setPortProfile(site, msg.payload.device_id, msg.payload.profile_id, msg.payload.port_id, handleDataCallback);
                         break;
+                    case 'setlocate':
+                        controller.setLocateAccessPoint(site, msg.payload.mac, true, handleDataCallback);
+                        break;
+                    case 'unsetlocate':
+                        controller.setLocateAccessPoint(site, msg.payload.mac, false, handleDataCallback);
+                        break;           
                     default:
                         controller.logout();
                         node.status({
