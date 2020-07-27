@@ -1438,24 +1438,6 @@ var Controller = function (hostname, port, unifios) {
     };
 
     /**
-     * Set switch port profile
-     * ------------------------------
-     *
-     * required parameter <device_id>  = 24 char string; value of _id for the device which can be obtained from the device list
-     * required parameter <profile_id> = _id for the port profile which can be obtained from the ListPortProfiles command
-     * required parameter <port_id>    = switch port id
-     */
-    _self.setPortProfile = function (sites, device_id, profile_id, port_id, cb) {
-        var json = {
-            port_overrides: [{ 
-                port_idx: port_id, 
-                portconf_id: profile_id 
-            }]
-        };
-        _self._request('/api/s/<SITE>/rest/device/' + device_id.trim(), json, sites, cb, 'PUT');
-    };
-
-    /**
      * Set switch port profiles for multiple ports on the same device
      * ------------------------------
      *

@@ -142,9 +142,6 @@ module.exports = function (RED) {
                     case 'forceprovision':
                         controller.forceProvision(site, msg.payload.mac, handleDataCallback);
                         break;
-                    case 'setportprofile':
-                        controller.setPortProfile(site, msg.payload.device_id, msg.payload.profile_id, msg.payload.port_id, handleDataCallback);
-                        break;
                     case 'setportprofiles':
                         controller.setPortProfiles(site, msg.payload.device_id, msg.payload.port_overrides, handleDataCallback);
                         break;
