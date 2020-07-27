@@ -145,6 +145,9 @@ module.exports = function (RED) {
                     case 'setportprofile':
                         controller.setPortProfile(site, msg.payload.device_id, msg.payload.profile_id, msg.payload.port_id, handleDataCallback);
                         break;
+                    case 'setportprofiles':
+                        controller.setPortProfiles(site, msg.payload.device_id, msg.payload.port_overrides, handleDataCallback);
+                        break;
                     case 'setlocate':
                         controller.setLocateAccessPoint(site, msg.payload.mac, true, handleDataCallback);
                         break;

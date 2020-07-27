@@ -109,6 +109,7 @@
             <li><code>deleteFirewallGroup</code> : Delete firewall group { command: "deleteFirewallGroup", group_id: "group id" }</li>
             <li><code>forceProvision</code> : Force provision { command: "forceProvision", mac: "device MAC address" }</li>
             <li><code>setPortProfile</code> : !! Will remove manual set Profiles !! Set Port Profile { command: "setPortProfile", device_id: "24 char device id", profile_id: "Profile id", port_id: "Port number" }</li>
+            <li><code>setPortProfiles</code> : setPortProfiles: Set overrides for multiple ports of a device { command: "setPortProfiles", device_id: "24 char device id", port_overrides: [ {"port_idx": 1, "portconf_id": "id of the port profile", "name": "friendly name of the port", "poe_mode": "off|auto" }, ... ] }</li>
             <li><code>setLocate</code> : Enable flash device LED (or other indication based on device) { command: "setLocate", mac: "device MAC address" }</li>
             <li><code>unsetLocate</code> : Disable flash device LED (or other indication based on device) { command: "unsetLocate", mac: "device MAC address" }</li>
 	<p>Returns all data in JSON parsable strings/objects</p>
