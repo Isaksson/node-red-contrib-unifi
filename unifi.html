@@ -102,6 +102,7 @@
             <li><code>enableAP</code> : Enable an Access point { command: "enableAP", device_id: "24 char device id" }</li>
             <li><code>disableAP</code> : Disable an Access point { command: "disableAP", device_id: "24 char device id" }</li>
             <li><code>setAPLed</code> : Set LED for Access point { command: "setapled", device_id: "24 char device id", mode: "off/on/default" }</li>
+            <li><code>setSiteLed</code> : Set LED for Site { command: "setsiteled", mode: true/false }</li>
             <li><code>site</code> : Connect to site name { site: "site name"}</li>
             <li><code>getFirewallGroups</code> : Get list of firewall groups { command: "getFirewallGroups" }</li>
             <li><code>addFirewallGroup</code> : Add firewall group { command: "addFirewallGroup", group_name: "group-name", group_type: "address-group|ipv6-address-group|port-group", group_members: ["CIDRs", "IPs"] }</li>
@@ -113,5 +114,5 @@
             <li><code>unsetLocate</code> : Disable flash device LED (or other indication based on device) { command: "unsetLocate", mac: "device MAC address" }</li>
 	<p>Returns all data in JSON parsable strings/objects</p>
     <p>For more information see the <a href="https://github.com/Isaksson/node-red-contrib-unifi" target="_blank">GitHub</a> site.</p>
-    <p>Version 0.1.14</p>
+    <p>Version 0.1.16</p>
 </script>

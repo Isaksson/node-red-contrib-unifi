@@ -127,6 +127,9 @@ module.exports = function (RED) {
                     case 'setapled':
                         controller.setLEDOverride(site, msg.payload.device_id, msg.payload.mode, handleDataCallback);
                         break;
+                    case 'setsiteled':
+                        controller.setSiteLEDs(site, msg.payload.mode, handleDataCallback);
+                        break;    
                     case 'getfirewallgroups':
                         controller.getFirewallGroups(site, handleDataCallback);
                         break;
