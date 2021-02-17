@@ -1188,6 +1188,21 @@ var Controller = function (hostname, port, unifios) {
 
         _self._request('/api/s/<SITE>/rest/wlanconf/' + wlan_id.trim(), json, sites, cb, 'PUT');
     };
+	
+
+    /**
+     * Disable/Enable portforwarding - disable_portforward()
+     * -------------------
+     *
+     * required parameter <portforward_id>
+     * required parameter <disable> = boolean; true disables the portforward, false enables it
+     *
+     */
+    _self.disablePortForward = function (sites, portforward_id, disable, cb) {
+        var json = {enabled: disable == true ? false : true};
+
+        _self._request('/api/s/<SITE>/rest/portforward/' + portforward_id.trim(), json, sites, cb, 'PUT');
+    };
 
     /**
      * List events - list_events()
@@ -1230,6 +1245,16 @@ var Controller = function (hostname, port, unifios) {
      */
     _self.getWLanSettings = function (sites, cb) {
         _self._request('/api/s/<SITE>/list/wlanconf', null, sites, cb);
+    };
+	
+	/**
+     * List portforward settings - list_portforward()
+     * ----------------------
+     *
+     * required paramater <sites>   = name or array of site names
+     */
+    _self.getPortForwardSettings = function (sites, cb) {
+        _self._request('/api/s/<SITE>/list/portforward', null, sites, cb);
     };
 
     /**
