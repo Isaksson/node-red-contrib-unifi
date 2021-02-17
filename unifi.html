@@ -68,6 +68,7 @@
            <option value="100">Alarms</option>
            <option value="110">WLanSettings</option>
            <option value="120">ListPortProfiles</option>
+           <option value="130">PortForwardSettings</option>
     </div>
 
 </script>
@@ -93,6 +94,7 @@
     </ul>
     <p>Special Commands: (No GUI)</p>
             <li><code>DisableWLan</code> : Disable/Enable WLan { command: "disableWLan", wlan_id: "use _id from command WLanSettings", disable: true }</li>
+            <li><code>DisablePortForward</code> : Disable/Enable PortForward { command: "disablePortForward", portforward_id: "use _id from command PortForwardSettings", disable: true }</li>
             <li><code>blockClient</code> : Block Client { command: "blockClient", mac: "client MAC address" }</li>
             <li><code>unblockClient</code> : Unblock Client { command: "unblockClient", mac: "client MAC address" }</li>
             <li><code>reconnectClient</code> : Reconnect Client { command: "reconnectClient", mac: "client MAC address" }</li>

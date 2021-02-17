@@ -97,8 +97,15 @@ module.exports = function (RED) {
                     case 'listportprofiles':
                         controller.getPortConfig(site, handleDataCallback);
                          break;    
+                    case '130':
+                    case 'portforwardsettings':
+                        controller.getPortForwardSettings(site, handleDataCallback);
+                        break;
                     case 'disablewlan':
                         controller.disableWLan(site, msg.payload.wlan_id, msg.payload.disable, handleDataCallback);
+                        break;    
+                    case 'disableportforward':
+                        controller.disablePortForward(site, msg.payload.portforward_id, msg.payload.disable, handleDataCallback);
                         break;
                     case 'blockclient':
                         controller.blockClient(site, msg.payload.mac, handleDataCallback);
