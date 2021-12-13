@@ -61,6 +61,10 @@ module.exports = function (RED) {
                     case 'allusers':
                         controller.getAllUsers(site, handleDataCallback);
                         break;
+                    case '35':
+                    case 'allblockedusers':
+                        controller.getBlockedUsers(site, handleDataCallback);
+                        break;    
                     case '40':
                     case 'usergroups':
                         controller.getUserGroups(site, handleDataCallback);
