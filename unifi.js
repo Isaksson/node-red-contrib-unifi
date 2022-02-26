@@ -180,6 +180,8 @@ module.exports = function (RED) {
             function handleDataCallback(err, data) {
                 if (err) {
                     console.log('ERROR: ' + err.message);
+                    msg.error = err.message;
+                    node.send(msg);
                     node.status({
                         fill: "red",
                         shape: "dot",
