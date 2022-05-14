@@ -153,6 +153,18 @@ module.exports = function (RED) {
                     case 'deletefirewallgroup':
                         controller.deleteFirewallGroup(site, msg.payload.group_id, handleDataCallback);
                         break;
+                    case 'getfirewallrules':
+                        controller.getFirewallRules(site, handleDataCallback);
+                        break;
+                    case 'getfirewallrule':
+                        controller.getFirewallRule(site, msg.payload.rule_id, handleDataCallback);
+                        break;
+                    case 'enablefirewallrule':
+                        controller.disableFirewallRule(site, msg.payload.rule_id, true, handleDataCallback);
+                        break;
+                    case 'disablefirewallrule':
+                        controller.disableFirewallRule(site, msg.payload.rule_id, false, handleDataCallback);
+                        break;
                     case 'forceprovision':
                         controller.forceProvision(site, msg.payload.mac, handleDataCallback);
                         break;
