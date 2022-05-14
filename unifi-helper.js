@@ -1448,6 +1448,44 @@ var Controller = function (hostname, port, unifios) {
     };
 
     /**
+     * List firewall rules
+     * ----------------
+     *
+     * required paramater <sites>   = name or array of site names
+     */
+    _self.getFirewallRules = function (sites, cb) {
+        _self._request('/api/s/<SITE>/rest/firewallrule', null, sites, cb);
+    };
+
+    /**
+     * Get firewall rule
+     * ----------------
+     *
+     * required parameter <rule_id>  = 24 char string; value of _id for the device which can be obtained from the firewall rule list
+     */
+     _self.getFirewallRule = function (sites, rule_id, cb) {
+
+        if (rule_id) {
+            _self._request('/api/s/<SITE>/rest/firewallrule/' + rule_id.trim(), null, sites, cb);
+        } else
+            cb({message: `Parameter rule_id is missing`});
+    };
+
+    /**
+     * Enable / disable firewall rules
+     * ------------------------------
+     *
+     * required parameter <rule_id>  = 24 char string; value of _id for the device which can be obtained from the firewall rule list
+     * required parameter <enable> = boolean; true will enable firewall rule, false will disable
+     */
+    _self.disableFirewallRule = function (sites, rule_id, rule_enable, cb) {
+        if (rule_id) {
+            _self._request('/api/s/<SITE>/rest/firewallrule/' + rule_id.trim(), { enabled: rule_enable }, sites, cb, 'PUT');
+        } else
+            cb({message: `Parameter rule_id is missing`});
+    };
+
+    /**
      * Force Provision of a device
      * -----------------
      * returns true on success
