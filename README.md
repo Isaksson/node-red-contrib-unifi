@@ -32,6 +32,10 @@ node-red-contrib-unifi is a Node-RED module that allows to query/control [UniFi 
 * addFirewallGroup: Add firewall group { command: "addFirewallGroup", group_name: "group-name", group_type: "address-group|ipv6-address-group|port-group", group_members: ["CIDRs", "IPs"] }
 * editFirewallGroup: Edit firewall group { command: "editFirewallGroup", group_id: "group id", group_name: "group-name", group_type: "address-group|ipv6-address-group|port-group", group_members: ["CIDRs", "IPs"] }
 * deleteFirewallGroup: Delete firewall group { command: "deleteFirewallGroup", group_id: "group id" }
+* getFirewallRules: Get a list of firewall rules { command: "getFirewallRules" }
+* getFirewallRule: Get a firewall rule { command: "getFirewallRule, rule_id: "id" }
+* enableFirewallRule: Enable a firewall rule { command: "enableFirewallRule", rule_id: "id" }
+* disableFirewallRule: Disable a firewall rule { command: "disableFirewallRule", rule_id: "id" }
 * forceProvision : Force provision { command: "forceProvision", mac: "device MAC address" }
 * setPortProfiles: Set overrides for multiple ports of a device { command: "setPortProfiles", device_id: "24 char device id", port_overrides: [ {"port_idx": 1, "portconf_id": "id of the port profile", "name": "friendly name of the port", "poe_mode": "off|auto" }, ... ] }
 * setLocate : Enable flash device LED (or other indication based on device) { command: "setLocate", mac: "device MAC address" }
