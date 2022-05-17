@@ -159,6 +159,9 @@ module.exports = function (RED) {
                     case 'getfirewallrule':
                         controller.getFirewallRule(site, msg.payload.rule_id, handleDataCallback);
                         break;
+                    case 'getfirewallrulebyname':
+                        controller.getFirewallRuleByName(site, msg.payload.rule_name, handleDataCallback);
+                        break;
                     case 'enablefirewallrule':
                         controller.disableFirewallRule(site, msg.payload.rule_id, true, handleDataCallback);
                         break;
