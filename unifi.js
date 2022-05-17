@@ -168,6 +168,15 @@ module.exports = function (RED) {
                     case 'disablefirewallrule':
                         controller.disableFirewallRule(site, msg.payload.rule_id, false, handleDataCallback);
                         break;
+                    case 'getpoeportstate':
+                        controller.getPoePortState(site, msg.payload.device_id, msg.payload.port, handleDataCallback);
+                        break;
+                    case 'enablepoeport':
+                        controller.disablePoePort(site, msg.payload.device_id, msg.payload.port, msg.payload.poe_mode, handleDataCallback);
+                        break;
+                    case 'disablepoeport':
+                        controller.disablePoePort(site, msg.payload.device_id, msg.payload.port, 'off', handleDataCallback);
+                        break;
                     case 'forceprovision':
                         controller.forceProvision(site, msg.payload.mac, handleDataCallback);
                         break;

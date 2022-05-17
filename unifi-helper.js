@@ -1513,6 +1513,98 @@ var Controller = function (hostname, port, unifios) {
     };
 
     /**
+     * Get PoE state of a port - getPoePortState()
+     * ------------------------------
+     *
+     * required parameter <device_id>  = 24 char string; value of _id for the device which can be obtained from the firewall rule list
+     * required parameter <port> = integer; number of the port
+     */
+     _self.getPoePortState = function (sites, device_id, poe_port, cb) {
+        try {
+
+            if (device_id) {
+
+                _self._request('/api/s/<SITE>/stat/device/', null, sites, function (err, result) {
+                    if (!err && result && result.length > 0) {
+                        result[0].forEach(device => {
+                            if (device._id == device_id) {
+                                if (poe_port) {
+                                    device.port_table.forEach(port => {
+                                        if (port.port_idx == poe_port) {
+                                            cb(false, port);
+                                        }
+                                    });
+                                } else {
+                                    cb(false, device.port_table);
+                                }
+                            }
+                        });
+                    }
+                });
+
+            } else {
+                cb({message: `A mandatory parameter is missing`});
+            }
+
+
+        } catch (e) {
+            cb({message: e});
+        }
+    };
+
+    /**
+     * Enable / disable PoE
+     * ------------------------------
+     *
+     * required parameter <device_id>  = 24 char string; value of _id for the device which can be obtained from the firewall rule list
+     * required parameter <poe_port> = integer; number of the port
+     * required parameter <poe_mode> = 'auto' or 'pasv24' will enable poe on the specified port, 'off' will disable poe on the specified port
+     */
+     _self.disablePoePort = function (sites, device_id, poe_port, poe_mode, cb) {
+        try {
+
+            const poe_modes = ['off', 'auto', 'pasv24'];
+
+            if (!poe_modes.includes(poe_mode)) {
+                cb({message: `Wrong PoE mode (off/auto/pasv24)`});
+                return;
+            }
+
+            if (device_id && poe_port) {
+                _self._request('/api/s/<SITE>/stat/device/', null, sites, function (err, result) {
+                    if (!err && result && result.length > 0) {
+                        result[0].forEach(device => {
+                            if (device._id == device_id) {
+
+                                var changed = false;
+                                var port_overrides = [];
+
+                                device.port_overrides.forEach(port => {
+                                    if (port.port_idx == poe_port && port.poe_mode != poe_mode) {
+                                        changed = true;
+                                        port.poe_mode = poe_mode;
+                                    }
+                                    port_overrides.push(port)
+                                });
+                                if (changed) {
+                                    _self.setPortProfiles(sites, device_id, port_overrides, cb)
+                                }
+                            }
+                        });
+                    }
+                });
+
+            } else {
+                cb({message: `A mandatory parameter is missing`});
+            }
+
+
+        } catch (e) {
+            cb({message: e});
+        }
+    };
+
+    /**
      * Force Provision of a device
      * -----------------
      * returns true on success
