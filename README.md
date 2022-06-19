@@ -32,14 +32,14 @@ node-red-contrib-unifi is a Node-RED module that allows to query/control [UniFi 
 * addFirewallGroup: Add firewall group { command: "addFirewallGroup", group_name: "group-name", group_type: "address-group|ipv6-address-group|port-group", group_members: ["CIDRs", "IPs"] }
 * editFirewallGroup: Edit firewall group { command: "editFirewallGroup", group_id: "group id", group_name: "group-name", group_type: "address-group|ipv6-address-group|port-group", group_members: ["CIDRs", "IPs"] }
 * deleteFirewallGroup: Delete firewall group { command: "deleteFirewallGroup", group_id: "group id" }
-*getFirewallRules: Get a list of firewall rules { command: "getFirewallRules" }
-*getFirewallRule: Get a firewall rule { command: "getFirewallRule, rule_id: "id" }
-*getFirewallRuleByName: Get a firewall rule by its name{ command: "getFirewallRuleByName, rule_name: "name" }
-*enableFirewallRule: Enable a firewall rule { command: "enableFirewallRule", rule_id: "id" }
-*disableFirewallRule: Disable a firewall rule { command: "disableFirewallRule", rule_id: "id" }
-*getPoePortState: Get the PoE state of port x { command: "getPoePortState", device_id: "id", port: "port number" }
-*enablePoePort: Enable POE on port x { command: "enablePoePort", device_id: "id", port: "port number", poe_mode: "off|auto|pasv24" }
-*disablePoePort: Disable POE on port x { command: "disablePoePort", device_id: "id", port: "port number"  }
+* getFirewallRules: Get a list of firewall rules { command: "getFirewallRules" }
+* getFirewallRule: Get a firewall rule { command: "getFirewallRule, rule_id: "id" }
+* getFirewallRuleByName: Get a firewall rule by its name{ command: "getFirewallRuleByName, rule_name: "name" }
+* enableFirewallRule: Enable a firewall rule { command: "enableFirewallRule", rule_id: "id" }
+* disableFirewallRule: Disable a firewall rule { command: "disableFirewallRule", rule_id: "id" }
+* getPoePortState: Get the PoE state of port x { command: "getPoePortState", device_id: "id", port: "port number" }
+* enablePoePort: Enable POE on port x { command: "enablePoePort", device_id: "id", port: "port number", poe_mode: "off|auto|pasv24" }
+* disablePoePort: Disable POE on port x { command: "disablePoePort", device_id: "id", port: "port number"  }
 * forceProvision : Force provision { command: "forceProvision", mac: "device MAC address" }
 * setPortProfiles: Set overrides for multiple ports of a device { command: "setPortProfiles", device_id: "24 char device id", port_overrides: [ {"port_idx": 1, "portconf_id": "id of the port profile", "name": "friendly name of the port", "poe_mode": "off|auto" }, ... ] }
 * setLocate : Enable flash device LED (or other indication based on device) { command: "setLocate", mac: "device MAC address" }
@@ -67,7 +67,7 @@ user-directory (default $HOME/.node-red) and prefixed with sudo.
 ## License
 MIT License
 
-Copyright (c) 2017 Kristoffer Isaksson
+Copyright (c) 2022 Kristoffer Isaksson
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
