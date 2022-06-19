@@ -153,6 +153,30 @@ module.exports = function (RED) {
                     case 'deletefirewallgroup':
                         controller.deleteFirewallGroup(site, msg.payload.group_id, handleDataCallback);
                         break;
+                    case 'getfirewallrules':
+                        controller.getFirewallRules(site, handleDataCallback);
+                        break;
+                    case 'getfirewallrule':
+                        controller.getFirewallRule(site, msg.payload.rule_id, handleDataCallback);
+                        break;
+                    case 'getfirewallrulebyname':
+                        controller.getFirewallRuleByName(site, msg.payload.rule_name, handleDataCallback);
+                        break;
+                    case 'enablefirewallrule':
+                        controller.disableFirewallRule(site, msg.payload.rule_id, true, handleDataCallback);
+                        break;
+                    case 'disablefirewallrule':
+                        controller.disableFirewallRule(site, msg.payload.rule_id, false, handleDataCallback);
+                        break;
+                    case 'getpoeportstate':
+                        controller.getPoePortState(site, msg.payload.device_id, msg.payload.port, handleDataCallback);
+                        break;
+                    case 'enablepoeport':
+                        controller.disablePoePort(site, msg.payload.device_id, msg.payload.port, msg.payload.poe_mode, handleDataCallback);
+                        break;
+                    case 'disablepoeport':
+                        controller.disablePoePort(site, msg.payload.device_id, msg.payload.port, 'off', handleDataCallback);
+                        break;
                     case 'forceprovision':
                         controller.forceProvision(site, msg.payload.mac, handleDataCallback);
                         break;
