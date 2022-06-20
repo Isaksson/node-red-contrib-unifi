@@ -18,7 +18,44 @@
         outputs:1,
         icon: "bridge.png",
         label: function() {
-            return this.name||"Unifi";
+            if(this.name)
+            {
+                return this.name;
+            }
+            switch(this.command.toString()){
+                case '1':
+                    return 'Unifi: getSitesStats';
+                case '10':
+                    return 'Unifi: getSiteSysinfo';
+                case '20':
+                    return 'Unifi: getClientDevices';
+                case '30':
+                    return 'Unifi: getAllUsers';
+                case '35':
+                    return 'Unifi: getBlockedUsers';
+                case '40':
+                    return 'Unifi: getUserGroups';
+                case '50':
+                    return 'Unifi: getHealth';
+                case '60':
+                    return 'Unifi: getDashboard';
+                case '70':
+                    return 'Unifi: getAccessDevices';
+                case '80':
+                    return 'Unifi: getRogueAccessPoints';
+                case '90':
+                    return 'Unifi: getEvents';
+                case '100':
+                    return 'Unifi: getAlarms';
+                case '110':
+                    return 'Unifi: getWLanSettings';
+                case '120':
+                    return 'Unifi: getPortConfig';
+                case '130':
+                    return 'Unifi: getPortForwardSettings';
+                default:
+                    return 'Unifi';
+            }
         }
     });
 </script>
