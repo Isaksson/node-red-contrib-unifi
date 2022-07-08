@@ -13,8 +13,15 @@ module.exports = function (RED) {
     function UnifiNode(config) {
         RED.nodes.createNode(this, config);
         const node = this;
-        const {username, password} = node.credentials;
-        let {site, ip, port, command, unifios} = config;
+
+        var server =  RED.nodes.getNode(config.server);
+        if(!server) {
+            this.error(RED._('missing client config'));
+            return;
+        }
+
+        let {username, password, site, ip, port, unifios} = server;
+        let {command} = config;
 
         const controller = new unifi.Controller(ip, port, unifios);
 
@@ -29,7 +36,7 @@ module.exports = function (RED) {
             if (msg.payload.site != null) {
                 site = msg.payload.site;
             } else {
-                site = config.site;
+                site = server.site;
             }
 
             controller.login(username, password, (err) => {
@@ -222,10 +229,24 @@ module.exports = function (RED) {
         });
     }
 
-    RED.nodes.registerType("Unifi", UnifiNode, {
+    function unifiConfigNode(n) {
+        RED.nodes.createNode(this,n);
+
+        this.name = n.name;
+        this.ip = n.ip;
+        this.port = n.port;
+        this.site = n.site;
+        this.unifios = n.unifios;
+        this.username = this.credentials.username;
+        this.password = this.credentials.password;
+    }
+    
+    RED.nodes.registerType("unificonfig", unifiConfigNode,{
         credentials: {
-            username: {type: "text"},
-            password: {type: "password"}
+            username: {type:"text"},
+            password: {type:"password"}
         }
     });
+
+    RED.nodes.registerType("Unifi", UnifiNode);
 };

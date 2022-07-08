@@ -1,19 +1,66 @@
 <script type="text/javascript">
+    RED.nodes.registerType('unificonfig',{
+        category: 'config',
+        defaults: {
+            name: {value:""},
+            ip: {value:"", required: true},
+            port: {value:8443, validate:RED.validators.number()},
+            site: {value:"default"},
+            unifios: {value:false},
+        },
+        credentials: {
+            username: {type:"text"},
+            password: {type:"password"}
+        },
+        label: function() {
+            return this.name || "Unifi Server";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="unificonfig">
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-config-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-ip"><i class="fa fa-globe"></i> Server</label>
+        <input class="input-append-left" type="text" id="node-config-input-ip" placeholder="IP Address" style="width: 40%;" >
+        <label for="node-config-input-port" style="margin-left: 10px; width: 35px; "> Port</label>
+        <input type="text" id="node-config-input-port" placeholder="Port" style="width:45px">
+    </div>
+    <div class="form-row">
+            <label>&nbsp;</label>
+            <input type="checkbox" id="node-config-input-unifios" placeholder="Unifi OS" style="display: inline-block; width: auto; vertical-align: top;">
+            <label for="node-config-input-unifios" style="width: 70%;">Unifi OS</label>
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-site"><i class="fa fa-list"></i> Site</label>
+        <input type="text" id="node-config-input-site" placeholder="Site Name">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-username"><i class="fa fa-user"></i> Username</label>
+        <input type="text" id="node-config-input-username" placeholder="Username">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-password"><i class="fa fa-lock"></i> Password</label>
+        <input type="password" id="node-config-input-password" placeholder="Password">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="unificonfig">
+    <p>Shared config for the unifi controlers</p>
+</script>
+
+<script type="text/javascript">
     RED.nodes.registerType('Unifi',{
         category: 'output',
         color: '#C0DEED',
         defaults: {
             name: {value:""},
-			ip: {value:""},
-			port: {value:8443, validate:RED.validators.number()},
-			site: {value:"default"},
+            server: {type:"unificonfig", required: true },
             command: {value:1, required: true },
-            unifios: {value:false},
         },
-		credentials: {
-		username: {type:"text"},
-		password: {type:"password"}
-		},
         inputs:1,
         outputs:1,
         icon: "bridge.png",
@@ -28,29 +75,11 @@
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
+
 	<div class="form-row">
-        <label for="node-input-ip"><i class="fa fa-globe"></i> Server</label>
-        <input class="input-append-left" type="text" id="node-input-ip" placeholder="IP Address" style="width: 40%;" >
-        <label for="node-input-port" style="margin-left: 10px; width: 35px; "> Port</label>
-        <input type="text" id="node-input-port" placeholder="Port" style="width:45px">
+        <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
+        <input type="text" id="node-input-server" placeholder="">
     </div>
-    <div class="form-row">
-            <label>&nbsp;</label>
-            <input type="checkbox" id="node-input-unifios" placeholder="Unifi OS" style="display: inline-block; width: auto; vertical-align: top;">
-            <label for="node-input-unifios" style="width: 70%;">Unifi OS</label>
-    </div>
-	<div class="form-row">
-        <label for="node-input-site"><i class="fa fa-list"></i> Site</label>
-        <input type="text" id="node-input-site" placeholder="Site Name">
-    </div>
-	<div class="form-row">
-		<label for="node-input-username"><i class="fa fa-user"></i> Username</label>
-		<input type="text" id="node-input-username" placeholder="Username">
-	</div>
-	<div class="form-row">
-		<label for="node-input-password"><i class="fa fa-lock"></i> Password</label>
-		<input type="password" id="node-input-password" placeholder="Password">
-	</div>
 
 	<div class="form-row">
         <label for="node-input-command"><i class="fa fa-dot-circle-o"></i> Command</label>
@@ -58,37 +87,36 @@
            <option value="1">SitesStats</option>
            <option value="10">SiteSysinfo</option>
            <option value="20">ClientDevices</option>
-		   <option value="30">AllUsers</option>
+           <option value="30">AllUsers</option>
            <option value="35">AllBlockedUsers</option>
-		   <option value="40">UserGroups</option>
-		   <option value="50">Health</option>
-		   <option value="60">Dashboard</option>
-		   <option value="70">AccessDevices</option>
-		   <option value="80">RogueAccessPoints</option>
-		   <option value="90">Events</option>
+           <option value="40">UserGroups</option>
+           <option value="50">Health</option>
+           <option value="60">Dashboard</option>
+           <option value="70">AccessDevices</option>
+           <option value="80">RogueAccessPoints</option>
+           <option value="90">Events</option>
            <option value="100">Alarms</option>
            <option value="110">WLanSettings</option>
            <option value="120">ListPortProfiles</option>
            <option value="130">PortForwardSettings</option>
     </div>
-
 </script>
 
 <script type="text/x-red" data-help-name="Unifi">
-	<p>Connects to a Unifi Controller and query/control UniFi devices.</p>
+    <p>Connects to a Unifi Controller and query/control UniFi devices.</p>
     <p><code>msg.payload.command</code> is used to override the command selected in the node.<br> Example how to send a command from a function Node<br> <code>msg.payload = { command: "ClientDevices"};</code></p>
     <p>Available Commands:</p>
-	<ul>
+    <ul>
             <li><code>SitesStats</code> : Site stats</li>
             <li><code>SiteSysinfo</code> : Site sysinfo</li>
-			<li><code>ClientDevices</code> : Online client device(s)</li>
+            <li><code>ClientDevices</code> : Online client device(s)</li>
             <li><code>AllUsers</code> : All client devices ever connected to the site</li>
             <li><code>AllBlockedUsers</code> : All blocked client devices ever connected to the site</li>
-			<li><code>UserGroups</code> : User groups</li>
+            <li><code>UserGroups</code> : User groups</li>
             <li><code>Health</code> : Health metrics</li>
-			<li><code>Dashboard</code> : Dashboard metrics</li>
+            <li><code>Dashboard</code> : Dashboard metrics</li>
             <li><code>AccessDevices</code> : Access points</li>
-			<li><code>RogueAccessPoints</code> : Rogue access points</li>
+            <li><code>RogueAccessPoints</code> : Rogue access points</li>
             <li><code>Events</code> : Events</li>
             <li><code>Alarms</code> : Alarms</li>
             <li><code>WLanSettings</code> : WLan Settings</li>
