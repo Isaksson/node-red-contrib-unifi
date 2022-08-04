@@ -16,3 +16,6 @@ jspm_packages/
 
 # Idea
 .idea
+
+# Folder
+.github/
