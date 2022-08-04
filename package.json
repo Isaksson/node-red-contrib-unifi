@@ -9,9 +9,13 @@
     "http-cookie-agent": "^4.0.1"
   },
   "node-red": {
+    "version": ">=2.0.0",
     "nodes": {
       "unifi": "unifi.js"
     }
+  },
+  "engines": {
+    "node": ">=12.0.0"
   },
   "scripts": {
   },
