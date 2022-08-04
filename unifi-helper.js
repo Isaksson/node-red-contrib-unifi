@@ -17,9 +17,9 @@ var Controller = function (hostname, port, unifios) {
      */
     _self.login = function (username, password, cb) {
         if (_self._unifios)
-            _self._request('/api/auth/login', { username: username, password: password }, null, cb);
+            _self._request('/api/auth/login', { username: username, password: password }, null, cb, 'POST');
         else
-            _self._request('/api/login', { username: username, password: password }, null, cb);
+            _self._request('/api/login', { username: username, password: password }, null, cb, 'POST');
     };
 
     /**
@@ -27,9 +27,9 @@ var Controller = function (hostname, port, unifios) {
      */
     _self.logout = function (cb) {
         if (_self._unifios)
-            _self._request('/api/auth/logout', {}, null, cb);
+            _self._request('/api/auth/logout', {}, null, cb, 'POST');
         else
-            _self._request('/api/logout', {}, null, cb);
+            _self._request('/api/logout', {}, null, cb, 'POST');
     };
 
     //#region
@@ -1624,26 +1624,16 @@ var Controller = function (hostname, port, unifios) {
         }
         reqjson.CookieJar = _self._cookieJar;
 
-        // identify which request method we are using (GET, POST, DELETE) based
-        // on the json data supplied and the overriding method
+        // identify which request method we are using (GET, POST, DELETE and PUT) 
+
+        if (typeof (method) === 'undefined') {
+            reqjson.method = "GET";
+        } else {
+            reqjson.method = method;
+        }
         if (json !== null) {
-            if (method === 'PUT')
-                reqjson.method = "PUT";
-            else if (method === 'GET')
-                reqjson.method = "GET";
-            else
-                reqjson.method = "POST";
             reqjson.data = json;
-        } else if (typeof (method) === 'undefined')
-            reqjson.method = "GET";
-        else if (method === 'DELETE')
-            reqjson.method = "DELETE";
-        else if (method === 'POST')
-            reqjson.method = "POST";
-        else if (method === 'PUT')
-            reqjson.method = "PUT";
-        else
-            reqjson.method = "GET";
+        }
 
         if (_self._unifios && (json !== null || url == '/api/auth/logout' || method === 'DELETE')) {
             var token = _self._extract_csrf_token_from_cookie();
@@ -1660,7 +1650,7 @@ var Controller = function (hostname, port, unifios) {
         axiosinstance(reqjson)
             .then(function (response) {
                 // handle success
-                console.log(response.status);
+                //console.log(response.status);
                 if (typeof (cb) === 'function') {
                     cb(false, response.data.data);
                 }
