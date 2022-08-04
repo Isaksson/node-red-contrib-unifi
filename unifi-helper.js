@@ -1,54 +1,25 @@
-/**
- *
- * UniFi controller class (NodeJS)
- *
- * This nodejs class provides functionality to query a UniFi controller (www.ubnt.com) through
- * its Web-API. The functionality implemented here had been gathered through different
- * souces, namely:
- *
- *   UniFi-API-browser class: https://github.com/malle-pietje/UniFi-API-browser/blob/master/phpapi/class.unifi.php
- *   UniFi-API sh client: https://www.ubnt.com/downloads/unifi/5.4.16/unifi_sh_api
- *
- * The majority of the functions in here are actually based on the PHP UniFi-API-browser class
- * version 1.1.8 which defines compatibility to UniFi-Controller versions v4+
- *
- * Copyright (c) 2017 Jens Maus <mail@jens-maus.de>
- *
- * The source code is distributed under the MIT license
- *
- */
-var request = require('request');
-var async = require('async');
-
-// make sure we setup request correctly for our
-// processing
-request = request.defaults({
-    json: true,
-    strictSSL: false
-});
+const axios = require('axios');
+const { CookieJar } = require('tough-cookie');
+const { HttpCookieAgent, HttpsCookieAgent } = require('http-cookie-agent/http');
 
 var Controller = function (hostname, port, unifios) {
     var _self = this;
-    _self._jar = request.jar();
+    _self._cookieJar = new CookieJar();
     _self._unifios = unifios;
-    /** INIT CODE **/
 
     _self._baseurl = 'https://127.0.0.1:8443';
 
-    // format a new baseurl based on the arguments
     if (typeof (hostname) !== 'undefined' && typeof (port) !== 'undefined')
         _self._baseurl = 'https://' + hostname + ':' + port;
-
-    /** PUBLIC FUNCTIONS **/
 
     /**
      * Login to UniFi Controller - login()
      */
     _self.login = function (username, password, cb) {
         if (_self._unifios)
-            _self._request('/api/auth/login', {username: username, password: password}, null, cb);
+            _self._request('/api/auth/login', { username: username, password: password }, null, cb);
         else
-            _self._request('/api/login', {username: username, password: password}, null, cb);
+            _self._request('/api/login', { username: username, password: password }, null, cb);
     };
 
     /**
@@ -60,6 +31,8 @@ var Controller = function (hostname, port, unifios) {
         else
             _self._request('/api/logout', {}, null, cb);
     };
+
+    //#region
 
     /**
      * Authorize a client device - authorize_guest()
@@ -75,7 +48,7 @@ var Controller = function (hostname, port, unifios) {
      * optional parameter <ap_mac>  = AP MAC address to which client is connected, should result in faster authorization
      */
     _self.authorizeGuest = function (sites, mac, minutes, cb, up, down, mbytes, ap_mac) {
-        var json = {cmd: 'authorize-guest', mac: mac.toLowerCase()};
+        var json = { cmd: 'authorize-guest', mac: mac.toLowerCase() };
         if (typeof (minutes) !== 'undefined') json.minutes = minutes;
         if (typeof (up) !== 'undefined') json.up = up;
         if (typeof (down) !== 'undefined') json.down = down;
@@ -93,7 +66,7 @@ var Controller = function (hostname, port, unifios) {
      * required parameter <mac>     = client MAC address
      */
     _self.unauthorizeGuest = function (sites, mac, cb) {
-        var json = {cmd: 'unauthorize-guest', mac: mac.toLowerCase()};
+        var json = { cmd: 'unauthorize-guest', mac: mac.toLowerCase() };
 
         _self._request('/api/s/<SITE>/cmd/stamgr', json, sites, cb);
     };
@@ -106,7 +79,7 @@ var Controller = function (hostname, port, unifios) {
      * required parameter <mac>     = client MAC address
      */
     _self.reconnectClient = function (sites, mac, cb) {
-        var json = {cmd: 'kick-sta', mac: mac.toLowerCase()};
+        var json = { cmd: 'kick-sta', mac: mac.toLowerCase() };
 
         _self._request('/api/s/<SITE>/cmd/stamgr', json, sites, cb);
     };
@@ -119,7 +92,7 @@ var Controller = function (hostname, port, unifios) {
      * required parameter <mac>     = client MAC address
      */
     _self.blockClient = function (sites, mac, cb) {
-        var json = {cmd: 'block-sta', mac: mac.toLowerCase()};
+        var json = { cmd: 'block-sta', mac: mac.toLowerCase() };
 
         _self._request('/api/s/<SITE>/cmd/stamgr', json, sites, cb);
     };
@@ -132,7 +105,7 @@ var Controller = function (hostname, port, unifios) {
      * required parameter <mac>     = client MAC address
      */
     _self.unblockClient = function (sites, mac, cb) {
-        var json = {cmd: 'unblock-sta', mac: mac.toLowerCase()};
+        var json = { cmd: 'unblock-sta', mac: mac.toLowerCase() };
 
         _self._request('/api/s/<SITE>/cmd/stamgr', json, sites, cb);
     };
@@ -155,7 +128,7 @@ var Controller = function (hostname, port, unifios) {
             noted = 0;
         }
 
-        _self._request('/api/s/<SITE>/upd/user/' + user_id.trim(), {note: note, noted: noted}, sites, cb);
+        _self._request('/api/s/<SITE>/upd/user/' + user_id.trim(), { note: note, noted: noted }, sites, cb);
     };
 
     /**
@@ -173,7 +146,7 @@ var Controller = function (hostname, port, unifios) {
         if (typeof (name) === 'undefined')
             name = '';
 
-        _self._request('/api/s/<SITE>/upd/user/' + user_id.trim(), {name: name}, sites, cb);
+        _self._request('/api/s/<SITE>/upd/user/' + user_id.trim(), { name: name }, sites, cb);
     };
 
     /**
@@ -376,7 +349,7 @@ var Controller = function (hostname, port, unifios) {
         if (typeof (start) === 'undefined')
             start = end - (7 * 24 * 3600);
 
-        _self._request('/api/s/<SITE>/stat/authorization', {start: start, end: end}, sites, cb);
+        _self._request('/api/s/<SITE>/stat/authorization', { start: start, end: end }, sites, cb);
     };
 
     /**
@@ -399,7 +372,7 @@ var Controller = function (hostname, port, unifios) {
             within: within
         };
 
-        _self._request('/api/s/<SITE>/stat/alluser', json, sites, cb, 'GET');    
+        _self._request('/api/s/<SITE>/stat/alluser', json, sites, cb, 'GET');
     };
 
     /**
@@ -436,7 +409,7 @@ var Controller = function (hostname, port, unifios) {
         if (typeof (within) === 'undefined')
             within = 8760;
 
-        _self._request('/api/s/<SITE>/stat/guest', {within: within}, sites, cb);
+        _self._request('/api/s/<SITE>/stat/guest', { within: within }, sites, cb);
     };
 
     /**
@@ -488,7 +461,7 @@ var Controller = function (hostname, port, unifios) {
      *
      */
     _self.setUserGroup = function (sites, user_id, group_id, cb) {
-        _self._request('/api/s/<SITE>/upd/user/' + user_id.trim(), {usergroup_id: group_id}, sites, cb);
+        _self._request('/api/s/<SITE>/upd/user/' + user_id.trim(), { usergroup_id: group_id }, sites, cb);
     };
 
     /**
@@ -505,7 +478,7 @@ var Controller = function (hostname, port, unifios) {
      *
      */
     _self.editUserGroup = function (sites, group_id, site_id, group_name, cb,
-                                    group_dn, group_up) {
+        group_dn, group_up) {
         var json = {
             _id: group_id,
             site_id: site_id,
@@ -529,7 +502,7 @@ var Controller = function (hostname, port, unifios) {
      *
      */
     _self.addUserGroup = function (sites, group_name, cb,
-                                   group_dn, group_up) {
+        group_dn, group_up) {
         var json = {
             name: group_name,
             qos_rate_max_down: typeof (group_dn) !== 'undefined' ? group_dn : -1,
@@ -620,7 +593,7 @@ var Controller = function (hostname, port, unifios) {
         if (typeof (within) === 'undefined')
             within = 24;
 
-        _self._request('/api/s/<SITE>/stat/rogueap', {within: within}, sites, cb);
+        _self._request('/api/s/<SITE>/stat/rogueap', { within: within }, sites, cb);
     };
 
     /**
@@ -697,7 +670,7 @@ var Controller = function (hostname, port, unifios) {
      *
      */
     _self.listAdmins = function (sites, cb) {
-        _self._request('/api/s/<SITE>/cmd/sitemgr', {cmd: 'get-admins'}, sites, cb);
+        _self._request('/api/s/<SITE>/cmd/sitemgr', { cmd: 'get-admins' }, sites, cb);
     };
 
     /**
@@ -747,7 +720,7 @@ var Controller = function (hostname, port, unifios) {
     _self.getVouchers = function (sites, cb, create_time) {
         var json = {};
         if (typeof (create_time) !== 'undefined')
-            json = {create_time: create_time};
+            json = { create_time: create_time };
 
         _self._request('/api/s/<SITE>/stat/voucher', json, sites, cb);
     };
@@ -986,7 +959,7 @@ var Controller = function (hostname, port, unifios) {
      * - available since controller versions 5.2.X
      */
     _self.disableAccessPoint = function (sites, device_id, disable, cb) {
-        _self._request('/api/s/<SITE>/rest/device/' + device_id.trim(), {disabled: disable}, sites, cb, 'PUT');
+        _self._request('/api/s/<SITE>/rest/device/' + device_id.trim(), { disabled: disable }, sites, cb, 'PUT');
     };
 
     /**
@@ -999,7 +972,7 @@ var Controller = function (hostname, port, unifios) {
      *                                      "default" will apply the site-wide setting for device LEDs
      */
     _self.setLEDOverride = function (sites, device_id, override_mode, cb,) {
-        _self._request('/api/s/<SITE>/rest/device/' + device_id.trim(), {led_override: override_mode}, sites, cb, 'PUT');
+        _self._request('/api/s/<SITE>/rest/device/' + device_id.trim(), { led_override: override_mode }, sites, cb, 'PUT');
     };
 
     /**
@@ -1025,7 +998,7 @@ var Controller = function (hostname, port, unifios) {
      * required parameter <enable> = boolean; true will switch LEDs of all the access points ON, false will switch them OFF
      */
     _self.setSiteLEDs = function (sites, enable, cb) {
-        _self._request('/api/s/<SITE>/set/setting/mgmt', {led_enabled: enable}, sites, cb);
+        _self._request('/api/s/<SITE>/set/setting/mgmt', { led_enabled: enable }, sites, cb);
     };
 
     /**
@@ -1095,7 +1068,7 @@ var Controller = function (hostname, port, unifios) {
      *
      */
     _self.renameAccessPoint = function (sites, ap_id, apname, cb) {
-        _self._request('/api/s/<SITE>/upd/device/' + ap_id.trim(), {name: apname}, sites, cb);
+        _self._request('/api/s/<SITE>/upd/device/' + ap_id.trim(), { name: apname }, sites, cb);
     };
 
     /**
@@ -1119,7 +1092,7 @@ var Controller = function (hostname, port, unifios) {
      * optional parameter <schedule>         = string; schedule rules
      */
     _self.createWLan = function (sites, name, x_passphrase, usergroup_id, wlangroup_id, cb,
-                                 enabled, hide_ssid, is_guest, security, wpa_mode, wpa_enc, vlan_enabled, vlan, uapsd_enabled, schedule_enabled, schedule) {
+        enabled, hide_ssid, is_guest, security, wpa_mode, wpa_enc, vlan_enabled, vlan, uapsd_enabled, schedule_enabled, schedule) {
         var json = {
             name: name,
             x_passphrase: x_passphrase,
@@ -1184,11 +1157,11 @@ var Controller = function (hostname, port, unifios) {
      *
      */
     _self.disableWLan = function (sites, wlan_id, disable, cb) {
-        var json = {enabled: disable == true ? false : true};
+        var json = { enabled: disable == true ? false : true };
 
         _self._request('/api/s/<SITE>/rest/wlanconf/' + wlan_id.trim(), json, sites, cb, 'PUT');
     };
-	
+
 
     /**
      * Disable/Enable portforwarding - disable_portforward()
@@ -1199,7 +1172,7 @@ var Controller = function (hostname, port, unifios) {
      *
      */
     _self.disablePortForward = function (sites, portforward_id, disable, cb) {
-        var json = {enabled: disable == true ? false : true};
+        var json = { enabled: disable == true ? false : true };
 
         _self._request('/api/s/<SITE>/rest/portforward/' + portforward_id.trim(), json, sites, cb, 'PUT');
     };
@@ -1246,8 +1219,8 @@ var Controller = function (hostname, port, unifios) {
     _self.getWLanSettings = function (sites, cb) {
         _self._request('/api/s/<SITE>/list/wlanconf', null, sites, cb);
     };
-	
-	/**
+
+    /**
      * List portforward settings - list_portforward()
      * ----------------------
      *
@@ -1288,7 +1261,7 @@ var Controller = function (hostname, port, unifios) {
      * - updates the device to the latest firmware known to the controller
      */
     _self.upgradeDevice = function (sites, device_mac, cb) {
-        _self._request('/api/s/<SITE>/cmd/devmgr/upgrade', {mac: device_mac.toLowerCase()}, sites, cb);
+        _self._request('/api/s/<SITE>/cmd/devmgr/upgrade', { mac: device_mac.toLowerCase() }, sites, cb);
     };
 
     /**
@@ -1316,7 +1289,7 @@ var Controller = function (hostname, port, unifios) {
      * required parameter <ap_mac> = MAC address of the AP
      */
     _self.runSpectrumScan = function (sites, ap_mac, cb) {
-        _self._request('/api/s/<SITE>/cmd/devmgr', {cmd: 'spectrum-scan', mac: ap_mac.toLowerCase()}, sites, cb);
+        _self._request('/api/s/<SITE>/cmd/devmgr', { cmd: 'spectrum-scan', mac: ap_mac.toLowerCase() }, sites, cb);
     };
 
     /**
@@ -1349,7 +1322,7 @@ var Controller = function (hostname, port, unifios) {
      *
      */
     _self.createBackup = function (sites, cb) {
-        _self._request('/api/s/<SITE>/cmd/backup', {cmd: 'backup'}, sites, cb);
+        _self._request('/api/s/<SITE>/cmd/backup', { cmd: 'backup' }, sites, cb);
     };
 
     /**
@@ -1394,7 +1367,7 @@ var Controller = function (hostname, port, unifios) {
      *
      */
     _self.editFirewallGroup = function (sites, group_id, site_id, group_name, group_type, cb,
-                                    group_members) {
+        group_members) {
         if (['address-group', 'ipv6-address-group', 'port-group'].includes(group_type)) {
             var json = {
                 _id: group_id,
@@ -1406,7 +1379,7 @@ var Controller = function (hostname, port, unifios) {
 
             _self._request('/api/s/<SITE>/rest/firewallgroup/' + group_id.trim(), json, sites, cb, 'PUT');
         } else
-            cb({message: `Invalid group_type: ${group_type}`});
+            cb({ message: `Invalid group_type: ${group_type}` });
     };
 
     /**
@@ -1421,7 +1394,7 @@ var Controller = function (hostname, port, unifios) {
      *
      */
     _self.addFirewallGroup = function (sites, group_name, group_type, cb,
-                                  group_members) {
+        group_members) {
         if (['address-group', 'ipv6-address-group', 'port-group'].includes(group_type)) {
             var json = {
                 name: group_name,
@@ -1431,7 +1404,7 @@ var Controller = function (hostname, port, unifios) {
 
             _self._request('/api/s/<SITE>/rest/firewallgroup', json, sites, cb);
         } else
-            cb({message: `Invalid group_type: ${group_type}`});
+            cb({ message: `Invalid group_type: ${group_type}` });
     };
 
     /**
@@ -1454,7 +1427,7 @@ var Controller = function (hostname, port, unifios) {
      * required paramater <sites>   = name or array of site names
      */
     _self.getFirewallRules = function (sites, cb) {
-            _self._request('/api/s/<SITE>/rest/firewallrule', null, sites, cb);
+        _self._request('/api/s/<SITE>/rest/firewallrule', null, sites, cb);
     };
 
     /**
@@ -1463,12 +1436,12 @@ var Controller = function (hostname, port, unifios) {
      *
      * required parameter <rule_id>  = 24 char string; value of _id for the device which can be obtained from the firewall rule list
      */
-     _self.getFirewallRule = function (sites, rule_id, cb) {
+    _self.getFirewallRule = function (sites, rule_id, cb) {
 
         if (rule_id) {
             _self._request('/api/s/<SITE>/rest/firewallrule/' + rule_id.trim(), null, sites, cb);
         } else
-            cb({message: `Parameter rule_id is missing`});
+            cb({ message: `Parameter rule_id is missing` });
     };
 
     /**
@@ -1477,24 +1450,24 @@ var Controller = function (hostname, port, unifios) {
      *
      * required parameter <rule_name>  = name of the firewall rule
      */
-     _self.getFirewallRuleByName = function (sites, rule_name, cb) {
+    _self.getFirewallRuleByName = function (sites, rule_name, cb) {
         try {
             if (rule_name) {
                 _self.getFirewallRules(sites, function (err, result) {
                     if (!err && result && result.length > 0) {
                         var found = result[0].filter(rule => rule.name.toLowerCase() == rule_name.toLowerCase())
                         if (found.length > 1) {
-                            cb({message: `Found multiple rules. Please refine the rule name`});
+                            cb({ message: `Found multiple rules. Please refine the rule name` });
                         } else if (found.length) {
                             cb(false, found[0]);
                         }
                     }
                 })
             } else
-                cb({message: `Parameter rule_name is missing`});
+                cb({ message: `Parameter rule_name is missing` });
         }
         catch (e) {
-            cb({message: e});
+            cb({ message: e });
         }
     };
 
@@ -1509,7 +1482,7 @@ var Controller = function (hostname, port, unifios) {
         if (rule_id) {
             _self._request('/api/s/<SITE>/rest/firewallrule/' + rule_id.trim(), { enabled: rule_enable }, sites, cb, 'PUT');
         } else
-            cb({message: `Parameter rule_id is missing`});
+            cb({ message: `Parameter rule_id is missing` });
     };
 
     /**
@@ -1519,7 +1492,7 @@ var Controller = function (hostname, port, unifios) {
      * required parameter <device_id>  = 24 char string; value of _id for the device which can be obtained from the firewall rule list
      * required parameter <port> = integer; number of the port
      */
-     _self.getPoePortState = function (sites, device_id, poe_port, cb) {
+    _self.getPoePortState = function (sites, device_id, poe_port, cb) {
         try {
 
             if (device_id) {
@@ -1543,12 +1516,12 @@ var Controller = function (hostname, port, unifios) {
                 });
 
             } else {
-                cb({message: `A mandatory parameter is missing`});
+                cb({ message: `A mandatory parameter is missing` });
             }
 
 
         } catch (e) {
-            cb({message: e});
+            cb({ message: e });
         }
     };
 
@@ -1560,13 +1533,13 @@ var Controller = function (hostname, port, unifios) {
      * required parameter <poe_port> = integer; number of the port
      * required parameter <poe_mode> = 'auto' or 'pasv24' will enable poe on the specified port, 'off' will disable poe on the specified port
      */
-     _self.disablePoePort = function (sites, device_id, poe_port, poe_mode, cb) {
+    _self.disablePoePort = function (sites, device_id, poe_port, poe_mode, cb) {
         try {
 
             const poe_modes = ['off', 'auto', 'pasv24'];
 
             if (!poe_modes.includes(poe_mode)) {
-                cb({message: `Wrong PoE mode (off/auto/pasv24)`});
+                cb({ message: `Wrong PoE mode (off/auto/pasv24)` });
                 return;
             }
 
@@ -1595,12 +1568,12 @@ var Controller = function (hostname, port, unifios) {
                 });
 
             } else {
-                cb({message: `A mandatory parameter is missing`});
+                cb({ message: `A mandatory parameter is missing` });
             }
 
 
         } catch (e) {
-            cb({message: e});
+            cb({ message: e });
         }
     };
 
@@ -1631,97 +1604,77 @@ var Controller = function (hostname, port, unifios) {
         _self._request('/api/s/<SITE>/rest/device/' + device_id.trim(), json, sites, cb, 'PUT');
     }
 
-    /** PRIVATE FUNCTIONS **/
+    //#endregion
 
     /**
      * Private function to extract the CSRF token from our cookies
      */
-    _self._extract_csrf_token_from_cookie = function() {
-        var cookie = _self._jar.getCookies(_self._baseurl).find(cookie => cookie.key == 'TOKEN');
+    _self._extract_csrf_token_from_cookie = function () {
+        var cookie = _self._cookieJar.getCookies(_self._baseurl).find(cookie => cookie.key == 'TOKEN');
         return cookie != undefined ? JSON.parse(Buffer.from(cookie.value.split('.')[1], 'base64')).csrfToken : undefined;
     };
 
-    /**
-     * Private function to send out a generic URL request to a UniFi-Controller
-     * for multiple sites (if wanted) and returning data via the callback function
-     */
     _self._request = function (url, json, sites, cb, method) {
-        var proc_sites;
 
-        if (sites === null)
-            proc_sites = [{}];
-        else if (Array.isArray(sites) === false)
-            proc_sites = [sites];
+        if (_self._unifios && url !== '/api/auth/login' && url !== '/api/login') {
+            var reqjson = { url: _self._baseurl + '/proxy/network' + url.replace('<SITE>', sites) };
+        }
+        else {
+            var reqjson = { url: _self._baseurl + url.replace('<SITE>', sites) };
+        }
+        reqjson.CookieJar = _self._cookieJar;
+
+        // identify which request method we are using (GET, POST, DELETE) based
+        // on the json data supplied and the overriding method
+        if (json !== null) {
+            if (method === 'PUT')
+                reqjson.method = "PUT";
+            else if (method === 'GET')
+                reqjson.method = "GET";
+            else
+                reqjson.method = "POST";
+            reqjson.data = json;
+        } else if (typeof (method) === 'undefined')
+            reqjson.method = "GET";
+        else if (method === 'DELETE')
+            reqjson.method = "DELETE";
+        else if (method === 'POST')
+            reqjson.method = "POST";
+        else if (method === 'PUT')
+            reqjson.method = "PUT";
         else
-            proc_sites = sites;
+            reqjson.method = "GET";
 
-        var count = 0;
-        var results = [];
-        async.whilst(
-            function (cb) {
-                cb(null, count < proc_sites.length);
-            },
-            function (callback) {
-                var reqfunc;
-                if (_self._unifios && url !== '/api/auth/login' && url !== '/api/login')
-                    var reqjson = {url: _self._baseurl + '/proxy/network' + url.replace('<SITE>', proc_sites[count])};
-                else
-                    var reqjson = {url: _self._baseurl + url.replace('<SITE>', proc_sites[count])};
-                var req;
-                reqjson.jar = _self._jar;
+        if (_self._unifios && (json !== null || url == '/api/auth/logout' || method === 'DELETE')) {
+            var token = _self._extract_csrf_token_from_cookie();
+            console.log(token);
+            if (token !== undefined)
+                reqjson.headers = { 'x-csrf-token': token };
+        }
+        const jar = _self._cookieJar;
+        const axiosinstance = axios.create({
+            httpAgent: new HttpCookieAgent({ cookies: { jar } }),
+            httpsAgent: new HttpsCookieAgent({ cookies: { jar }, rejectUnauthorized: false, requestCert: false })
+        });
 
-                // identify which request method we are using (GET, POST, DELETE) based
-                // on the json data supplied and the overriding method
-                if (json !== null) {
-                    if (method === 'PUT')
-                        reqfunc = request.put;
-                    else if (method === 'GET')
-                        reqfunc = request.get;   
-                    else
-                        reqfunc = request.post;
-                    reqjson.json = json;
-                } else if (typeof (method) === 'undefined')
-                    reqfunc = request.get;
-                else if (method === 'DELETE')
-                    reqfunc = request.del;
-                else if (method === 'POST')
-                    reqfunc = request.post;
-                else if (method === 'PUT')
-                    reqfunc = request.put;
-                else
-                    reqfunc = request.get;
-                
-                if (_self._unifios && (json !== null || url == '/api/auth/logout' || method === 'DELETE')) {
-                    var token = _self._extract_csrf_token_from_cookie();
-                    if (token !== undefined)
-                        reqjson.headers = {'x-csrf-token': token};
-                }
-
-                req = reqfunc(reqjson, function (error, response, body) {
-                    if (!error && body && response.statusCode >= 200 && response.statusCode < 400 &&
-                        (typeof (body) !== 'undefined' && typeof (body.meta) !== 'undefined' && body.meta.rc === "ok")) {
-                        results.push(body.data);
-                        callback(null);
-                    } else if (typeof (body) !== 'undefined' && typeof (body.meta) !== 'undefined' && body.meta.rc === 'error')
-                        callback(body.meta.msg);
-                    else
-                        callback(error);
-                });
-
-                count++;
-            },
-            function (err) {
+        axiosinstance(reqjson)
+            .then(function (response) {
+                // handle success
+                console.log(response.status);
                 if (typeof (cb) === 'function') {
-                    if (sites === null)
-                        results = results[0];
-
-                    if (!err)
-                        cb(false, results);
-                    else
-                        cb(err, results);
+                    cb(false, response.data.data);
                 }
-            }
-        );
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+                if (typeof (cb) === 'function') {
+                    cb(true, "error test");
+                }
+            })
+            .then(function () {
+                // always executed
+            });
     };
 };
 
