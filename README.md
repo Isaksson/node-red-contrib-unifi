@@ -52,7 +52,7 @@ node-red-contrib-unifi is a Node-RED module that allows to query/control [UniFi 
 * Use the command ListPortProfile to get Profile ID
 
 ## Requirements
-* Installed [UniFi-Controller](https://www.ubnt.com/download/unifi) version v4, v5 or v6
+* Installed [UniFi-Controller](https://www.ubnt.com/download/unifi) version v4, v5, v6 or v7
 * Unifi controller user must have at least 'administrator' rights (not read-only)
 
 ## Installation recommended
