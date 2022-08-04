@@ -1,11 +1,12 @@
 {
   "name": "node-red-contrib-unifi",
-  "version": "0.1.18",
+  "version": "0.2.0",
   "description": "Node for Node-RED to connect to a UniFi Controller ",
   "main": "unifi.js",
   "dependencies": {
-    "request": "^2.69.0",
-    "async": "^3.0.1"
+    "tough-cookie": "^4.0.0",
+    "axios": "^0.27.2",
+    "http-cookie-agent": "^4.0.1"
   },
   "node-red": {
     "nodes": {
@@ -13,7 +14,6 @@
     }
   },
   "scripts": {
-
   },
   "repository": {
     "type": "git",
@@ -27,8 +27,13 @@
   ],
   "author": "Isaksson Consulting",
   "license": "MIT",
-  "homepage": "http://www.isakssonconsulting.se",
+  "homepage": "https://github.com/Isaksson/",
   "bugs": {
     "url": "https://github.com/Isaksson/node-red-contrib-unifi/issues"
-  }
+  },
+  "funding":
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/Isaksson/"
+    }
 }
