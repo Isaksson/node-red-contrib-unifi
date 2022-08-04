@@ -20,10 +20,10 @@ module.exports = function (RED) {
             return;
         }
 
-        let {username, password, site, ip, port, unifios} = server;
+        let {username, password, site, ip, port, unifios, ssl} = server;
         let {command} = config;
 
-        const controller = new unifi.Controller(ip, port, unifios);
+        const controller = new unifi.Controller(ip, port, unifios, ssl);
 
         this.on('input', function (msg) {
 
@@ -237,6 +237,7 @@ module.exports = function (RED) {
         this.port = n.port;
         this.site = n.site;
         this.unifios = n.unifios;
+        this.ssl = n.ssl;
         this.username = this.credentials.username;
         this.password = this.credentials.password;
     }

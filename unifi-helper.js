@@ -2,11 +2,11 @@ const axios = require('axios');
 const { CookieJar } = require('tough-cookie');
 const { HttpCookieAgent, HttpsCookieAgent } = require('http-cookie-agent/http');
 
-var Controller = function (hostname, port, unifios) {
+var Controller = function (hostname, port, unifios, ssl) {
     var _self = this;
     _self._cookieJar = new CookieJar();
     _self._unifios = unifios;
-
+    _self._ssl = ssl;
     _self._baseurl = 'https://127.0.0.1:8443';
 
     if (typeof (hostname) !== 'undefined' && typeof (port) !== 'undefined')
@@ -1644,7 +1644,7 @@ var Controller = function (hostname, port, unifios) {
         const jar = _self._cookieJar;
         const axiosinstance = axios.create({
             httpAgent: new HttpCookieAgent({ cookies: { jar } }),
-            httpsAgent: new HttpsCookieAgent({ cookies: { jar }, rejectUnauthorized: false, requestCert: false })
+            httpsAgent: new HttpsCookieAgent({ cookies: { jar }, rejectUnauthorized: _self._ssl, requestCert: true })
         });
 
         axiosinstance(reqjson)
