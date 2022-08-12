@@ -1606,15 +1606,6 @@ var Controller = function (hostname, port, unifios, ssl) {
 
     //#endregion
 
-    /**
-     * Private function to extract the CSRF token from our cookies
-     */
-/*    
-    _self._extract_csrf_token_from_cookie = function () {
-        var cookie = _self._cookieJar.getCookies(_self._baseurl).find(cookie => cookie.key == 'TOKEN');
-        return cookie != undefined ? JSON.parse(Buffer.from(cookie.value.split('.')[1], 'base64')).csrfToken : undefined;
-    };
-*/
     _self._request = function (url, json, sites, cb, method) {
 
         if (_self._unifios && url !== '/api/auth/login' && url !== '/api/login') {

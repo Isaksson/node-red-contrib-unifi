@@ -1,5 +1,9 @@
 node-red-contrib-unifi is a Node-RED module that allows to query/control [UniFi devices](http://www.ubnt.com/) via the official UniFi-Controller API. Based on npm package node-unifi
 
+## Breaking Change
+When updating from version 0.1.x to 0.2.x
+* Configuration Node is added, you need to create a new Unifi Server and then update the existing nodes to use the new configuration.
+
 ## Supports the following Commands
 * SitesStats : Site stats
 * SiteSysinfo : Site sysinfo
