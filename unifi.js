@@ -39,17 +39,20 @@ module.exports = function (RED) {
                 site = server.site;
             }
 
-            controller.login(username, password, (err) => {
+            
+            controller.login(username, password, (err, data) => {
 
                 if (err) {
-                    console.log('ERROR: ' + err);
+                    console.log('ERROR: ' + data);
                     node.status({
                         fill: "red",
                         shape: "dot",
-                        text: err
+                        text: data
                     });
                     return;
                 }
+
+                
 
                 switch(command.toString().toLowerCase()){
                     case '1':

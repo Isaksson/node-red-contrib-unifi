@@ -1609,11 +1609,12 @@ var Controller = function (hostname, port, unifios, ssl) {
     /**
      * Private function to extract the CSRF token from our cookies
      */
+/*    
     _self._extract_csrf_token_from_cookie = function () {
         var cookie = _self._cookieJar.getCookies(_self._baseurl).find(cookie => cookie.key == 'TOKEN');
         return cookie != undefined ? JSON.parse(Buffer.from(cookie.value.split('.')[1], 'base64')).csrfToken : undefined;
     };
-
+*/
     _self._request = function (url, json, sites, cb, method) {
 
         if (_self._unifios && url !== '/api/auth/login' && url !== '/api/login') {
@@ -1634,32 +1635,38 @@ var Controller = function (hostname, port, unifios, ssl) {
         if (json !== null) {
             reqjson.data = json;
         }
-
+/*
         if (_self._unifios && (json !== null || url == '/api/auth/logout' || method === 'DELETE')) {
             var token = _self._extract_csrf_token_from_cookie();
             console.log(token);
             if (token !== undefined)
                 reqjson.headers = { 'x-csrf-token': token };
         }
+*/        
         const jar = _self._cookieJar;
         const axiosinstance = axios.create({
             httpAgent: new HttpCookieAgent({ cookies: { jar } }),
             httpsAgent: new HttpsCookieAgent({ cookies: { jar }, rejectUnauthorized: _self._ssl, requestCert: true })
         });
 
+
+
         axiosinstance(reqjson)
             .then(function (response) {
                 // handle success
                 //console.log(response.status);
+                if (response.headers['x-csrf-token']) {
+                    axiosinstance.defaults.headers.common['x-csrf-token'] = response.headers['x-csrf-token'];
+                  }
                 if (typeof (cb) === 'function') {
                     cb(false, response.data.data);
                 }
             })
             .catch(function (error) {
                 // handle error
-                console.log(error);
+                //console.log(error.response.data.meta);
                 if (typeof (cb) === 'function') {
-                    cb(true, "error test");
+                    cb(true, error.code);
                 }
             })
             .then(function () {
