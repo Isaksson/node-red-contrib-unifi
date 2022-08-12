@@ -1,0 +1,101 @@
+[
+    {
+        "id": "20eb3b2d9e70ab73",
+        "type": "Unifi",
+        "z": "43cb15693bf2cc2c",
+        "name": "getFirewallGroups",
+        "server": "6951ec5b4ba06a9c",
+        "command": "1",
+        "x": 590,
+        "y": 80,
+        "wires": [
+            [
+                "4e764ae02c425ed6"
+            ]
+        ]
+    },
+    {
+        "id": "65ed6ac182a47a32",
+        "type": "inject",
+        "z": "43cb15693bf2cc2c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 100,
+        "y": 80,
+        "wires": [
+            [
+                "8b1127a5155fa6a6"
+            ]
+        ]
+    },
+    {
+        "id": "99df14b4d18f2dd0",
+        "type": "comment",
+        "z": "43cb15693bf2cc2c",
+        "name": "",
+        "info": "Custom command - getFirewallGroups",
+        "x": 80,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "4e764ae02c425ed6",
+        "type": "debug",
+        "z": "43cb15693bf2cc2c",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 760,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "8b1127a5155fa6a6",
+        "type": "function",
+        "z": "43cb15693bf2cc2c",
+        "name": "Custom command - getFirewallGroups",
+        "func": "msg.payload = { command: \"getFirewallGroups\" }\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 80,
+        "wires": [
+            [
+                "20eb3b2d9e70ab73"
+            ]
+        ]
+    },
+    {
+        "id": "6951ec5b4ba06a9c",
+        "type": "unificonfig",
+        "name": "Unifi Config",
+        "ip": "10.0.0.6",
+        "port": "8443",
+        "site": "default",
+        "unifios": false,
+        "ssl": false
+    }
+]
