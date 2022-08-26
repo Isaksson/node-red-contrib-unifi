@@ -1604,6 +1604,65 @@ var Controller = function (hostname, port, unifios, ssl) {
         _self._request('/api/s/<SITE>/rest/device/' + device_id.trim(), json, sites, cb, 'PUT');
     }
 
+    /**
+     * Set Outlet Port State
+     * ------------------------------
+     *
+     * required parameter <mac>  = client mac address.
+     * required parameter <port_index> = integer; number of the port, starting with 1
+     * optional parameter <relay_state>          = boolean; enable/disable relay
+     * optional parameter <cycle_enabled>        = boolean; enable/disable cycle
+     */
+    _self.setOutletPortState = function (sites, mac, port_index, relay_state, cycle_state, cb) {
+        try {
+            if (mac && port_index) {
+                _self._request('/api/s/<SITE>/stat/device/', null, sites, function (err, result) {
+                    if (!err && result && result.length > 0) {
+                        var matchedDevices = 0;
+                        console.log(matchedDevices);
+                        result.forEach(device => {
+                            if (device.mac == mac.toLowerCase()) {
+                                matchedDevices ++;
+                                console.log(matchedDevices);
+                                var changed = false;
+                                var outlet_overrides = [];
+
+                                device.outlet_overrides.forEach(port => {
+                                    if (port.index == port_index) {
+                                        changed = true;
+                                        if (typeof (relay_state) !== 'undefined') {
+                                            port.relay_state = relay_state;
+                                        }
+                                        if (typeof (cycle_state) !== 'undefined') {
+                                            port.cycle_state = cycle_state;
+                                        }
+                                    }
+                                    outlet_overrides.push(port)
+                                });
+                                if (changed) {
+                                    var json = { outlet_overrides: outlet_overrides };
+                                    _self._request('/api/s/<SITE>/rest/device/' + device._id, json, sites, cb, 'PUT');
+                                }
+                            }
+                        });
+                        if (matchedDevices == 0){
+                            cb({ message: 'No device matched MAC Address' });
+                        } else {
+                            console.log("test");
+                        }
+                    } else {
+                        cb({ message: 'Error reading device status' });
+                    }
+                });
+
+            } else {
+                cb({ message: 'A mandatory parameter is missing' });
+            }
+
+        } catch (e) {
+            cb({ message: e });
+        }
+    };
     //#endregion
 
     _self._request = function (url, json, sites, cb, method) {
@@ -1625,7 +1684,7 @@ var Controller = function (hostname, port, unifios, ssl) {
         if (json !== null) {
             reqjson.data = json;
         }
-       
+
         const jar = _self._cookieJar;
         const axiosinstance = axios.create({
             httpAgent: new HttpCookieAgent({ cookies: { jar } }),
@@ -1637,7 +1696,7 @@ var Controller = function (hostname, port, unifios, ssl) {
                 // handle success
                 if (response.headers['x-csrf-token']) {
                     axiosinstance.defaults.headers.common['x-csrf-token'] = response.headers['x-csrf-token'];
-                  }
+                }
                 if (typeof (cb) === 'function') {
                     cb(false, response.data.data);
                 }
@@ -1645,7 +1704,7 @@ var Controller = function (hostname, port, unifios, ssl) {
             .catch(function (error) {
                 // handle error
                 if (typeof (cb) === 'function') {
-                    cb(true, error.code);
+                    cb({ message: error.code });
                 }
             })
             .then(function () {

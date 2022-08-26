@@ -48,6 +48,7 @@ When updating from version 0.1.x to 0.2.x
 * setPortProfiles: Set overrides for multiple ports of a device { command: "setPortProfiles", device_id: "24 char device id", port_overrides: [ {"port_idx": 1, "portconf_id": "id of the port profile", "name": "friendly name of the port", "poe_mode": "off|auto" }, ... ] }
 * setLocate : Enable flash device LED (or other indication based on device) { command: "setLocate", mac: "device MAC address" }
 * unsetLocate : Disable flash device LED (or other indication based on device) { command: "unsetLocate", mac: "device MAC address" }
+* setOutletPortState : Set power outlet state for a specific port { command: "setOutletPortState", mac: "device MAC address", index: "port index", relay_state: "true|false", cycled_enabled: "true|false" }
 
 ## Tips
 * Use the command SiteStats to get your Unifi Site Name	

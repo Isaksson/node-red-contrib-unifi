@@ -14,14 +14,14 @@ module.exports = function (RED) {
         RED.nodes.createNode(this, config);
         const node = this;
 
-        var server =  RED.nodes.getNode(config.server);
-        if(!server) {
+        var server = RED.nodes.getNode(config.server);
+        if (!server) {
             this.error(RED._('missing client config'));
             return;
         }
 
-        let {username, password, site, ip, port, unifios, ssl} = server;
-        let {command} = config;
+        let { username, password, site, ip, port, unifios, ssl } = server;
+        let { command } = config;
 
         const controller = new unifi.Controller(ip, port, unifios, ssl);
 
@@ -39,7 +39,7 @@ module.exports = function (RED) {
                 site = server.site;
             }
 
-            
+
             controller.login(username, password, (err, data) => {
 
                 if (err) {
@@ -52,9 +52,9 @@ module.exports = function (RED) {
                     return;
                 }
 
-                
 
-                switch(command.toString().toLowerCase()){
+
+                switch (command.toString().toLowerCase()) {
                     case '1':
                     case 'sitestats':
                         controller.getSitesStats(handleDataCallback);
@@ -74,7 +74,7 @@ module.exports = function (RED) {
                     case '35':
                     case 'allblockedusers':
                         controller.getBlockedUsers(site, handleDataCallback);
-                        break;    
+                        break;
                     case '40':
                     case 'usergroups':
                         controller.getUserGroups(site, handleDataCallback);
@@ -110,14 +110,14 @@ module.exports = function (RED) {
                     case '120':
                     case 'listportprofiles':
                         controller.getPortConfig(site, handleDataCallback);
-                         break;    
+                        break;
                     case '130':
                     case 'portforwardsettings':
                         controller.getPortForwardSettings(site, handleDataCallback);
                         break;
                     case 'disablewlan':
                         controller.disableWLan(site, msg.payload.wlan_id, msg.payload.disable, handleDataCallback);
-                        break;    
+                        break;
                     case 'disableportforward':
                         controller.disablePortForward(site, msg.payload.portforward_id, msg.payload.disable, handleDataCallback);
                         break;
@@ -150,7 +150,7 @@ module.exports = function (RED) {
                         break;
                     case 'setsiteled':
                         controller.setSiteLEDs(site, msg.payload.mode, handleDataCallback);
-                        break;    
+                        break;
                     case 'getfirewallgroups':
                         controller.getFirewallGroups(site, handleDataCallback);
                         break;
@@ -198,7 +198,10 @@ module.exports = function (RED) {
                         break;
                     case 'unsetlocate':
                         controller.setLocateAccessPoint(site, msg.payload.mac, false, handleDataCallback);
-                        break;           
+                        break;
+                    case 'setoutletportstate':
+                        controller.setOutletPortState(site, msg.payload.mac, msg.payload.index, msg.payload.relay_state, msg.payload.cycle_enabled, handleDataCallback);
+                        break;
                     default:
                         controller.logout();
                         node.status({
@@ -221,7 +224,7 @@ module.exports = function (RED) {
                         shape: "dot",
                         text: err.message
                     });
-    
+
                 } else {
                     controller.logout();
                     msg.payload = data;
@@ -233,7 +236,7 @@ module.exports = function (RED) {
     }
 
     function unifiConfigNode(n) {
-        RED.nodes.createNode(this,n);
+        RED.nodes.createNode(this, n);
 
         this.name = n.name;
         this.ip = n.ip;
@@ -244,11 +247,11 @@ module.exports = function (RED) {
         this.username = this.credentials.username;
         this.password = this.credentials.password;
     }
-    
-    RED.nodes.registerType("unificonfig", unifiConfigNode,{
+
+    RED.nodes.registerType("unificonfig", unifiConfigNode, {
         credentials: {
-            username: {type:"text"},
-            password: {type:"password"}
+            username: { type: "text" },
+            password: { type: "password" }
         }
     });
 
