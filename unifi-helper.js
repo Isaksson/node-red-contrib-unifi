@@ -1619,11 +1619,9 @@ var Controller = function (hostname, port, unifios, ssl) {
                 _self._request('/api/s/<SITE>/stat/device/', null, sites, function (err, result) {
                     if (!err && result && result.length > 0) {
                         var matchedDevices = 0;
-                        console.log(matchedDevices);
                         result.forEach(device => {
                             if (device.mac == mac.toLowerCase()) {
                                 matchedDevices ++;
-                                console.log(matchedDevices);
                                 var changed = false;
                                 var outlet_overrides = [];
 
@@ -1647,9 +1645,7 @@ var Controller = function (hostname, port, unifios, ssl) {
                         });
                         if (matchedDevices == 0){
                             cb({ message: 'No device matched MAC Address' });
-                        } else {
-                            console.log("test");
-                        }
+                        } 
                     } else {
                         cb({ message: 'Error reading device status' });
                     }
