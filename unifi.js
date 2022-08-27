@@ -43,11 +43,11 @@ module.exports = function (RED) {
             controller.login(username, password, (err, data) => {
 
                 if (err) {
-                    console.log('ERROR: ' + data);
+                    console.log('ERROR: ' + err.message);
                     node.status({
                         fill: "red",
                         shape: "dot",
-                        text: data
+                        text: err.message
                     });
                     return;
                 }
