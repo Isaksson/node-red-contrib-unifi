@@ -2,6 +2,7 @@ node-red-contrib-unifi is a Node-RED module that allows to query/control [UniFi 
 
 ## Breaking Change
 When updating from version 0.1.x to 0.2.x
+* Use Node-Red Version 3.x.x
 * Configuration Node is added, you need to create a new Unifi Server and then update the existing nodes to use the new configuration.
 
 ## Supports the following Commands
