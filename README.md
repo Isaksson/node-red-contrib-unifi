@@ -71,8 +71,8 @@ then the installation command for node-red-contrib-unifi has to be done from ins
 user-directory (default $HOME/.node-red) and prefixed with sudo.
 
 ## Contributors
-Thanks to all contributors.
-And a special thanks to Nokomis
+* Thanks to all contributors.
+* And a special thanks to Nokomis
 
 ## License
 MIT License
