@@ -43,7 +43,7 @@ module.exports = function (RED) {
             controller.login(username, password, (err, data) => {
 
                 if (err) {
-                    console.log('ERROR: ' + err.message);
+                    //console.log('ERROR: ' + err.message);
                     node.status({
                         fill: "red",
                         shape: "dot",
@@ -216,7 +216,7 @@ module.exports = function (RED) {
 
             function handleDataCallback(err, data) {
                 if (err) {
-                    console.log('ERROR: ' + err.message);
+                    //console.log('ERROR: ' + err.message);
                     msg.error = err.message;
                     node.send(msg);
                     node.status({
