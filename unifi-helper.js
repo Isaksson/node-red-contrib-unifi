@@ -3,14 +3,23 @@ const { CookieJar } = require('tough-cookie');
 const { HttpCookieAgent, HttpsCookieAgent } = require('http-cookie-agent/http');
 
 var Controller = function (hostname, port, unifios, ssl) {
+
     var _self = this;
     _self._cookieJar = new CookieJar();
     _self._unifios = unifios;
     _self._ssl = ssl;
     _self._baseurl = 'https://127.0.0.1:8443';
 
-    if (typeof (hostname) !== 'undefined' && typeof (port) !== 'undefined')
+    if (typeof (hostname) !== 'undefined' && typeof (port) !== 'undefined') {
         _self._baseurl = 'https://' + hostname + ':' + port;
+    }
+
+    const jar = _self._cookieJar;
+    const axiosinstance = axios.create({
+        httpAgent: new HttpCookieAgent({ cookies: { jar } }),
+        httpsAgent: new HttpsCookieAgent({ cookies: { jar }, rejectUnauthorized: _self._ssl, requestCert: true })
+    });
+
 
     /**
      * Login to UniFi Controller - login()
@@ -1236,7 +1245,7 @@ var Controller = function (hostname, port, unifios, ssl) {
      *
      * required paramater <sites>   = name or array of site names
      */
-    _self.getAlarms = function (sites, cb) {
+    _self.getAlarm = function (sites, cb) {
         _self._request('/api/s/<SITE>/list/alarm', null, sites, cb);
     };
 
@@ -1621,7 +1630,7 @@ var Controller = function (hostname, port, unifios, ssl) {
                         var matchedDevices = 0;
                         result.forEach(device => {
                             if (device.mac == mac.toLowerCase()) {
-                                matchedDevices ++;
+                                matchedDevices++;
                                 var changed = false;
                                 var outlet_overrides = [];
 
@@ -1643,9 +1652,9 @@ var Controller = function (hostname, port, unifios, ssl) {
                                 }
                             }
                         });
-                        if (matchedDevices == 0){
+                        if (matchedDevices == 0) {
                             cb({ message: 'No device matched MAC Address' });
-                        } 
+                        }
                     } else {
                         cb({ message: 'Error reading device status' });
                     }
@@ -1662,8 +1671,7 @@ var Controller = function (hostname, port, unifios, ssl) {
     //#endregion
 
     _self._request = function (url, json, sites, cb, method) {
-
-        if (_self._unifios && url !== '/api/auth/login' && url !== '/api/login') {
+        if (_self._unifios && url !== '/api/auth/login' && url !== '/api/login' && url !== '/api/auth/logout') {
             var reqjson = { url: _self._baseurl + '/proxy/network' + url.replace('<SITE>', sites) };
         }
         else {
@@ -1680,12 +1688,6 @@ var Controller = function (hostname, port, unifios, ssl) {
         if (json !== null) {
             reqjson.data = json;
         }
-
-        const jar = _self._cookieJar;
-        const axiosinstance = axios.create({
-            httpAgent: new HttpCookieAgent({ cookies: { jar } }),
-            httpsAgent: new HttpsCookieAgent({ cookies: { jar }, rejectUnauthorized: _self._ssl, requestCert: true })
-        });
 
         axiosinstance(reqjson)
             .then(function (response) {

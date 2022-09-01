@@ -101,7 +101,7 @@ module.exports = function (RED) {
                         break;
                     case '100':
                     case 'alarms':
-                        controller.getAlarms(site, handleDataCallback);
+                        controller.getAlarm(site, handleDataCallback);
                         break;
                     case '110':
                     case 'wlansettings':
