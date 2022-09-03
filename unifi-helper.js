@@ -1555,19 +1555,33 @@ var Controller = function (hostname, port, unifios, ssl) {
             if (device_id && poe_port) {
                 _self._request('/api/s/<SITE>/stat/device/', null, sites, function (err, result) {
                     if (!err && result && result.length > 0) {
-                        result[0].forEach(device => {
+                        result.forEach(device => {
                             if (device._id == device_id) {
-
                                 var changed = false;
+                                var newPort = true;
                                 var port_overrides = [];
 
+                                //get all current overrides
                                 device.port_overrides.forEach(port => {
-                                    if (port.port_idx == poe_port && port.poe_mode != poe_mode) {
-                                        changed = true;
-                                        port.poe_mode = poe_mode;
+                                    if (port.port_idx == poe_port) {
+                                        if (port.poe_mode != poe_mode) {
+                                            changed = true;
+                                            port.poe_mode = poe_mode;
+                                        }
+                                        newPort = false;
                                     }
                                     port_overrides.push(port)
                                 });
+
+                                if (newPort) {
+                                    //Get information from the new port to create override
+                                    device.port_table.forEach(port => {
+                                        if (port.port_idx == poe_port) {
+                                            port_overrides.push({ "port_idx": port.port_idx, "poe_mode": poe_mode, "portconf_id": port.portconf_id, port_security_mac_address: [], stp_port_mode: true, autoneg: true, port_security_enabled: false })
+                                        }
+                                    });
+                                    changed = true;
+                                }
                                 if (changed) {
                                     _self.setPortProfiles(sites, device_id, port_overrides, cb)
                                 }
@@ -1681,11 +1695,11 @@ var Controller = function (hostname, port, unifios, ssl) {
 
         // identify which request method we are using (GET, POST, DELETE and PUT) 
         if (typeof (method) === 'undefined') {
-            if (json !== null){
+            if (json !== null) {
                 reqjson.method = "POST";
             } else {
                 reqjson.method = "GET";
-            }         
+            }
         } else {
             reqjson.method = method;
         }
