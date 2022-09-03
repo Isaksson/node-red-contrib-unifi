@@ -1681,7 +1681,11 @@ var Controller = function (hostname, port, unifios, ssl) {
 
         // identify which request method we are using (GET, POST, DELETE and PUT) 
         if (typeof (method) === 'undefined') {
-            reqjson.method = "GET";
+            if (json !== null){
+                reqjson.method = "POST";
+            } else {
+                reqjson.method = "GET";
+            }         
         } else {
             reqjson.method = method;
         }

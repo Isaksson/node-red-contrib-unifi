@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-unifi",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Node for Node-RED to connect to a UniFi Controller ",
   "main": "unifi.js",
   "dependencies": {
