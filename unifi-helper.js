@@ -1508,7 +1508,7 @@ var Controller = function (hostname, port, unifios, ssl) {
 
                 _self._request('/api/s/<SITE>/stat/device/', null, sites, function (err, result) {
                     if (!err && result && result.length > 0) {
-                        result[0].forEach(device => {
+                        result.forEach(device => {
                             if (device._id == device_id) {
                                 if (poe_port) {
                                     device.port_table.forEach(port => {
