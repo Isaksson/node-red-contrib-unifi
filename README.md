@@ -50,12 +50,14 @@ When updating from version 0.1.x to 0.2.x
 * setLocate : Enable flash device LED (or other indication based on device) { command: "setLocate", mac: "device MAC address" }
 * unsetLocate : Disable flash device LED (or other indication based on device) { command: "unsetLocate", mac: "device MAC address" }
 * setOutletPortState : Set power outlet state for a specific port { command: "setOutletPortState", mac: "device MAC address", index: "port index", relay_state: "true|false", cycled_enabled: "true|false" }
+* setWLanPassword : Change WLan password { command: "setWLanPassword", wlan_id: "SSID ID", x_passphrase: "New password" }
 
 ## Tips
 * Use the command SiteStats to get your Unifi Site Name	
 * Use msg.payload = { site: "site name"}; to add the site name dynamically
 * Use the command AccessDevices to get an Access Points Device ID
 * Use the command ListPortProfile to get Profile ID
+* Use the command GetWLanSettings to get SSID ID
 
 ## Requirements
 * Installed [UniFi-Controller](https://www.ubnt.com/download/unifi) version v4, v5, v6 or v7

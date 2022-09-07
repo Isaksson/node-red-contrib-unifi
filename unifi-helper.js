@@ -1158,6 +1158,28 @@ var Controller = function (hostname, port, unifios, ssl) {
     };
 
     /**
+     * Set wlan password
+     * -----------------
+     *
+     * required parameter <wlan_id>
+     * required parameter <x_passphrase> = new pre-shared key, minimal length is 8 characters, maximum length is 63.
+     */
+    _self.setWLanPassword = function (sites, wlan_id, x_passphrase, cb) {
+        var json = {};
+
+        if (typeof (x_passphrase) !== 'undefined') {
+            if (typeof (wlan_id) == 'undefined') {
+                cb({ message: 'Parameter wlan_id is missing' });
+            } else {
+                json.x_passphrase = x_passphrase.trim();
+                _self._request('/api/s/<SITE>/upd/wlanconf/' + wlan_id.trim(), json, sites, cb);
+            }
+        } else {
+            cb({ message: 'Parameter x_passphrase is missing' });
+        }
+    };
+
+    /**
      * Disable/Enable wlan - disable_wlan()
      * -------------------
      *

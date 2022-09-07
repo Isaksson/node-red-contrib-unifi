@@ -195,7 +195,8 @@
             <li><code>setPortProfiles</code> : setPortProfiles: Set overrides for multiple ports of a device { command: "setPortProfiles", device_id: "24 char device id", port_overrides: [ {"port_idx": 1, "portconf_id": "id of the port profile", "name": "friendly name of the port", "poe_mode": "off|auto" }, ... ] }</li>
             <li><code>setLocate</code> : Enable flash device LED (or other indication based on device) { command: "setLocate", mac: "device MAC address" }</li>
             <li><code>unsetLocate</code> : Disable flash device LED (or other indication based on device) { command: "unsetLocate", mac: "device MAC address" }</li>
+            <li><code>setWLanPassword</code> : Change WLan password { command: "setWLanPassword", wlan_id: "SSID ID", x_passphrase: "New password" }</li>
 	<p>Returns all data in JSON parsable strings/objects</p>
     <p>For more information see the <a href="https://github.com/Isaksson/node-red-contrib-unifi" target="_blank">GitHub</a> site.</p>
-    <p>Version 0.2.8</p>
+    <p>Version 0.2.9</p>
 </script>

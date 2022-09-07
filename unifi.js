@@ -202,6 +202,9 @@ module.exports = function (RED) {
                     case 'setoutletportstate':
                         controller.setOutletPortState(site, msg.payload.mac, msg.payload.index, msg.payload.relay_state, msg.payload.cycle_enabled, handleDataCallback);
                         break;
+                    case 'setwlanpassword':
+                        controller.setWLanPassword(site, msg.payload.wlan_id, msg.payload.x_passphrase, handleDataCallback);
+                        break;
                     default:
                         controller.logout();
                         node.status({
