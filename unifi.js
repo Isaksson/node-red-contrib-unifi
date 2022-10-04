@@ -205,6 +205,12 @@ module.exports = function (RED) {
                     case 'setwlanpassword':
                         controller.setWLanPassword(site, msg.payload.wlan_id, msg.payload.x_passphrase, handleDataCallback);
                         break;
+                    case 'getvouchers':
+                        controller.getVouchers(site, handleDataCallback)
+                        break;
+                    case 'createvoucher':
+                        controller.createVouchers(site, msg.payload.minutes, handleDataCallback, msg.payload.count, msg.payload.quota, msg.payload.note, msg.payload.up, msg.payload.down, msg.payload.mbytes)
+                        break;
                     default:
                         controller.logout();
                         node.status({
