@@ -51,9 +51,12 @@ When updating from version 0.1.x to 0.2.x
 * unsetLocate : Disable flash device LED (or other indication based on device) { command: "unsetLocate", mac: "device MAC address" }
 * setOutletPortState : Set power outlet state for a specific port { command: "setOutletPortState", mac: "device MAC address", index: "port index", relay_state: "true|false", cycled_enabled: "true|false" }
 * setWLanPassword : Change WLan password { command: "setWLanPassword", wlan_id: "SSID ID", x_passphrase: "New password" }
+* getVouchers : Get available Vouchers from Guest Portal { command: "getVouchers" }
+* createVouchers: Create new Vouchers for Guest Usage { command: "createVouchers", minutes: "expiration time in minutes", count: "number of vouchers", quota: "'0' is for multi-use, '1' is for single-use", note: "note added to voucher", up: "upload speed limit in kbps (remove if not used)", down: "download speed limit in kbps (remove if not used)", mbytes: "data transfer limit in MB (remove if not used)"}
+* revokeVouchers: Revoke voucher { command: "revokeVouchers", voucher_id : "24 char _id of the voucher" }
 
 ## Tips
-* Use the command SiteStats to get your Unifi Site Name	
+* Use the command SiteStats to get your Unifi Site Name
 * Use msg.payload = { site: "site name"}; to add the site name dynamically
 * Use the command AccessDevices to get an Access Points Device ID
 * Use the command ListPortProfile to get Profile ID
