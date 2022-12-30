@@ -381,7 +381,7 @@ var Controller = function (hostname, port, unifios, ssl) {
             within: within
         };
 
-        _self._request('/api/s/<SITE>/stat/alluser', json, sites, cb, 'GET');
+        _self._request('/api/s/<SITE>/stat/alluser', json, sites, cb, 'POST');
     };
 
     /**
@@ -404,7 +404,7 @@ var Controller = function (hostname, port, unifios, ssl) {
             within: within
         };
 
-        _self._request('/api/s/<SITE>/stat/alluser', json, sites, cb, 'GET');
+        _self._request('/api/s/<SITE>/stat/alluser', json, sites, cb, 'POST');
     };
 
     /**
