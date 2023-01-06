@@ -199,7 +199,7 @@
             <li><code>getVouchers</code> : Get available Vouchers from Guest Portal { command: "getVouchers" }</li>
             <li><code>createVouchers</code> : Create new Vouchers for Guest Usage { command: "createVouchers", minutes: "expiration time in minutes", count: "number of vouchers", quota: "'0' is for multi-use, '1' is for single-use", note: "note added to voucher", up: "upload speed limit in kbps (remove if not used)", down: "download speed limit in kbps (remove if not used)", mbytes: "data transfer limit in MB (remove if not used)"}</li>
             <li><code>revokeVouchers</code> : Revoke voucher { command: "revokeVouchers", voucher_id : "24 char _id of the voucher" }</li>
-            <li><code>clientDevices</code> : Returns a single client device { command: "clientDevices", mac; "device MAC address" }</li>
+            <li><code>clientDevices</code> : Returns a single client device { command: "clientDevices", mac: "device MAC address" }</li>
             <p>Returns all data in JSON parsable strings/objects</p>
     <p>For more information see the <a href="https://github.com/Isaksson/node-red-contrib-unifi" target="_blank">GitHub</a> site.</p>
     <p>Version 0.2.12</p>
