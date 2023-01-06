@@ -65,7 +65,7 @@ module.exports = function (RED) {
                         break;
                     case '20':
                     case 'clientdevices':
-                        controller.getClientDevices(site, handleDataCallback);
+                        controller.getClientDevices(site, handleDataCallback, msg.payload.mac);
                         break;
                     case '30':
                     case 'allusers':
