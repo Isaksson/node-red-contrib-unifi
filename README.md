@@ -62,6 +62,7 @@ When updating from version 0.1.x to 0.2.x
 * Use the command AccessDevices to get an Access Points Device ID
 * Use the command ListPortProfile to get Profile ID
 * Use the command GetWLanSettings to get SSID ID
+* See working examples in the examples folder
 
 ## Requirements
 * Installed [UniFi-Controller](https://www.ubnt.com/download/unifi) version v4, v5, v6 or v7
