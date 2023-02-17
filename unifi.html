@@ -112,6 +112,26 @@
     });
 </script>
 
+<script type="text/javascript">
+    RED.nodes.registerType('UnifiWS',{
+        category: 'output',
+        color: '#C0DEED',
+        defaults: {
+            name: {value:""},
+            server: {type:"unificonfig", required: true },
+        },
+        inputs:0,
+        outputs:1,
+        icon: "bridge.png",
+        label: function() {
+            if(this.name)
+            {
+                return this.name;
+            }      
+        }
+    });
+</script>
+
 <script type="text/x-red" data-template-name="Unifi">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
@@ -141,6 +161,22 @@
            <option value="110">WLanSettings</option>
            <option value="120">ListPortProfiles</option>
            <option value="130">PortForwardSettings</option>
+    </div>
+</script>
+
+<script type="text/x-red" data-template-name="UnifiWS">
+    <div class="form-row">
+        Alpha version: At this point anything could change or not work.
+    </div>
+        
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+
+	<div class="form-row">
+        <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
+        <input type="text" id="node-input-server" placeholder="">
     </div>
 </script>
 
@@ -201,6 +237,13 @@
             <li><code>revokeVouchers</code> : Revoke voucher { command: "revokeVouchers", voucher_id : "24 char _id of the voucher" }</li>
             <li><code>clientDevices</code> : Returns a single client device { command: "clientDevices", mac: "device MAC address" }</li>
             <p>Returns all data in JSON parsable strings/objects</p>
+    <p>For more information see the <a href="https://github.com/Isaksson/node-red-contrib-unifi" target="_blank">GitHub</a> site.</p>
+    <p>Version 0.2.12</p>
+</script>
+
+<script type="text/x-red" data-help-name="UnifiWS">
+    <p>Connects to a Unifi Controller</p>
+	<p>Returns all data in JSON parsable strings/objects</p>
     <p>For more information see the <a href="https://github.com/Isaksson/node-red-contrib-unifi" target="_blank">GitHub</a> site.</p>
     <p>Version 0.2.12</p>
 </script>
