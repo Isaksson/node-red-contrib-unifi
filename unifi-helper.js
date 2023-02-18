@@ -1704,20 +1704,6 @@ var Controller = function (hostname, port, unifios, ssl) {
             cb({ message: e });
         }
     };
-
-    /**
-     * Enable / disable Traffic Management rules - disableTrafficManagementRule()
-     * ------------------------------
-     *
-     * required parameter <rule_id>  = 24 char string; value of _id for the device which can be obtained from the firewall rule list
-     * required parameter <enable> = boolean; true will enable firewall rule, false will disable
-     */
-    _self.disableTrafficManagementRule = function (sites, rule_id, rule_enable, cb) {
-        if (rule_id) {
-            _self._request('/v2/api/site/<SITE>/trafficrules/' + rule_id.trim(), { enabled: rule_enable, action: "ALLOW" }, sites, cb, 'PUT');
-        } else
-            cb({ message: `Parameter rule_id is missing` });
-    };
     //#endregion
 
     _self._request = function (url, json, sites, cb, method) {
@@ -1755,7 +1741,6 @@ var Controller = function (hostname, port, unifios, ssl) {
             })
             .catch(function (error) {
                 // handle error
-                console.log(error);
                 if (typeof (cb) === 'function') {
                     cb({ message: error.code });
                 }

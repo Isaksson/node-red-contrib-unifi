@@ -6,8 +6,7 @@
   "dependencies": {
     "tough-cookie": "^4.0.0",
     "axios": "^0.27.2",
-    "http-cookie-agent": "^4.0.1",
-    "ws": "^8.7.0"
+    "http-cookie-agent": "^4.0.1"
   },
   "node-red": {
     "version": ">=3.0.0",
