@@ -1704,6 +1704,39 @@ var Controller = function (hostname, port, unifios, ssl) {
             cb({ message: e });
         }
     };
+
+    /**
+     * Enable / disable Traffic Management rules - disableTrafficManagementRule()
+     * ------------------------------
+     *
+     * required parameter <rule_id>  = 24 char string; value of _id for the device which can be obtained from the firewall rule list
+     * required parameter <enable> = boolean; true will enable firewall rule, false will disable
+     */
+    _self.disableTrafficManagementRule = function (sites, rule_id, rule_enable, cb) {
+        try {
+            if (rule_id) {
+                _self._request('/v2/api/site/<SITE>/trafficrules/', null, sites, function (err, result) {
+                    if (!err && result && result.length > 0) {
+                        result.forEach(data => {
+                            if (data._id == rule_id.toLowerCase()) {
+                                if (data.enabled !== rule_enable) {
+                                    data.enabled = rule_enable;
+                                    _self._request('/v2/api/site/<SITE>/trafficrules/' + rule_id.trim(), data, sites, cb, 'PUT');
+                                }
+                            }
+                        });
+                    } else {
+                        cb({ message: 'Error reading Traffic Management Rules' });
+                    }
+                });
+            } else {
+                cb({ message: `Parameter rule_id is missing` });
+            }
+        } catch (e) {
+            cb({ message: e });
+        }
+    };
+
     //#endregion
 
     _self._request = function (url, json, sites, cb, method) {
@@ -1736,7 +1769,11 @@ var Controller = function (hostname, port, unifios, ssl) {
                     axiosinstance.defaults.headers.common['x-csrf-token'] = response.headers['x-csrf-token'];
                 }
                 if (typeof (cb) === 'function') {
-                    cb(false, response.data.data);
+                    if (response.data.data) {
+                        cb(false, response.data.data);
+                    } else {
+                        cb(false, response.data);
+                    }
                 }
             })
             .catch(function (error) {

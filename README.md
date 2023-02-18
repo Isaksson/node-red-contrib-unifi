@@ -55,6 +55,8 @@ When updating from version 0.1.x to 0.2.x
 * createVouchers: Create new Vouchers for Guest Usage { command: "createVouchers", minutes: "expiration time in minutes", count: "number of vouchers", quota: "'0' is for multi-use, '1' is for single-use", note: "note added to voucher", up: "upload speed limit in kbps (remove if not used)", down: "download speed limit in kbps (remove if not used)", mbytes: "data transfer limit in MB (remove if not used)"}
 * revokeVouchers: Revoke voucher { command: "revokeVouchers", voucher_id : "24 char _id of the voucher" }
 * clientDevices: Returns a single client device { command: "clientDevices", mac: "device MAC address" }
+* enableTrafficManagementRule: Enable a traffic management rule { command: "enableTrafficManagementRule", rule_id: "id" }
+* disableTrafficManagementRule: Disable a traffic management rule { command: "disableTrafficManagementRule", rule_id: "id" }
 
 ## Tips
 * Use the command SiteStats to get your Unifi Site Name

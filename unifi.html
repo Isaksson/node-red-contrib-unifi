@@ -1,19 +1,19 @@
 <script type="text/javascript">
-    RED.nodes.registerType('unificonfig',{
+    RED.nodes.registerType('unificonfig', {
         category: 'config',
         defaults: {
-            name: {value:""},
-            ip: {value:"", required: true},
-            port: {value:8443, validate:RED.validators.number()},
-            site: {value:"default"},
-            unifios: {value:false},
-            ssl: {value:false},
+            name: { value: "" },
+            ip: { value: "", required: true },
+            port: { value: 8443, validate: RED.validators.number() },
+            site: { value: "default" },
+            unifios: { value: false },
+            ssl: { value: false },
         },
         credentials: {
-            username: {type:"text"},
-            password: {type:"password"}
+            username: { type: "text" },
+            password: { type: "password" }
         },
-        label: function() {
+        label: function () {
             return this.name || "Unifi Server";
         }
     });
@@ -58,23 +58,22 @@
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType('Unifi',{
+    RED.nodes.registerType('Unifi', {
         category: 'output',
         color: '#C0DEED',
         defaults: {
-            name: {value:""},
-            server: {type:"unificonfig", required: true },
-            command: {value:1, required: true },
+            name: { value: "" },
+            server: { type: "unificonfig", required: true },
+            command: { value: 1, required: true },
         },
-        inputs:1,
-        outputs:1,
+        inputs: 1,
+        outputs: 1,
         icon: "bridge.png",
-        label: function() {
-            if(this.name)
-            {
+        label: function () {
+            if (this.name) {
                 return this.name;
             }
-            switch(this.command.toString()){
+            switch (this.command.toString()) {
                 case '1':
                     return 'Unifi: getSitesStats';
                 case '10':
@@ -200,7 +199,9 @@
             <li><code>createVouchers</code> : Create new Vouchers for Guest Usage { command: "createVouchers", minutes: "expiration time in minutes", count: "number of vouchers", quota: "'0' is for multi-use, '1' is for single-use", note: "note added to voucher", up: "upload speed limit in kbps (remove if not used)", down: "download speed limit in kbps (remove if not used)", mbytes: "data transfer limit in MB (remove if not used)"}</li>
             <li><code>revokeVouchers</code> : Revoke voucher { command: "revokeVouchers", voucher_id : "24 char _id of the voucher" }</li>
             <li><code>clientDevices</code> : Returns a single client device { command: "clientDevices", mac: "device MAC address" }</li>
+            <li><code>enableTrafficManagementRule</code> : Enable a traffic management rule { command: "enableTrafficManagementRule", rule_id: "id" }</li>
+            <li><code>disableTrafficManagementRule</code> : Disable a traffic management rule { command: "disableTrafficManagementRule", rule_id: "id" }</li>
             <p>Returns all data in JSON parsable strings/objects</p>
     <p>For more information see the <a href="https://github.com/Isaksson/node-red-contrib-unifi" target="_blank">GitHub</a> site.</p>
-    <p>Version 0.2.12</p>
+    <p>Version 0.2.13</p>
 </script>

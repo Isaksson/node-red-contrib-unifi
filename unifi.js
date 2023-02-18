@@ -212,8 +212,14 @@ module.exports = function (RED) {
                         controller.createVouchers(site, msg.payload.minutes, handleDataCallback, msg.payload.count, msg.payload.quota, msg.payload.note, msg.payload.up, msg.payload.down, msg.payload.mbytes)
                         break;
                     case 'revokevouchers':
-                            controller.revokeVoucher(site, msg.payload.voucher_id, handleDataCallback)
-                            break;        
+                        controller.revokeVoucher(site, msg.payload.voucher_id, handleDataCallback)
+                        break;
+                    case 'enabletrafficmanagementrule':
+                        controller.disableTrafficManagementRule(site, msg.payload.rule_id, true, handleDataCallback);
+                        break;
+                    case 'disabletrafficmanagementrule':
+                        controller.disableTrafficManagementRule(site, msg.payload.rule_id, false, handleDataCallback);
+                        break;
                     default:
                         controller.logout();
                         node.status({
