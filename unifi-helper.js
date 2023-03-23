@@ -1737,6 +1737,42 @@ var Controller = function (hostname, port, unifios, ssl) {
         }
     };
 
+    /**
+     * Get Traffic Management rules - getTrafficManagementRule()
+     * ------------------------------
+     *
+     * optional parameter <rule_id>  = 24 char string; value of _id for the device which can be obtained from the firewall rule list
+     */
+    _self.getTrafficManagementRule = function (sites, rule_id, cb) {
+        try {
+            _self._request('/v2/api/site/<SITE>/trafficrules/', null, sites, function (err, result) {
+                if (!err && result && result.length > 0) {
+                    if (rule_id) {
+                        var matched = false;
+                        result.forEach(data => {
+                            if (data._id == rule_id.toLowerCase()) {
+                                matched = true;
+                                cb(false, data);
+                            }
+                        });
+                        if (!matched) {
+                            cb({ message: 'Cant find Traffic Management Rule' });
+                        }
+
+                    } else {
+                        cb(false, result);
+                    }
+                }
+                else {
+                    cb({ message: 'Error reading Traffic Management Rules' });
+                }
+            });
+
+        } catch (e) {
+            cb({ message: e });
+        }
+    };
+
     //#endregion
 
     _self._request = function (url, json, sites, cb, method) {

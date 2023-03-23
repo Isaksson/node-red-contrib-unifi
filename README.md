@@ -57,6 +57,7 @@ When updating from version 0.1.x to 0.2.x
 * clientDevices: Returns a single client device { command: "clientDevices", mac: "device MAC address" }
 * enableTrafficManagementRule: Enable a traffic management rule { command: "enableTrafficManagementRule", rule_id: "id" }
 * disableTrafficManagementRule: Disable a traffic management rule { command: "disableTrafficManagementRule", rule_id: "id" }
+* getTrafficManagementRule : Get traffic management rules, optional add rule_id { command: "getTrafficManagementRule", rule_id: "id" }
 
 ## Tips
 * Use the command SiteStats to get your Unifi Site Name

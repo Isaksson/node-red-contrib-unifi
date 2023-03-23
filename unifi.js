@@ -220,6 +220,9 @@ module.exports = function (RED) {
                     case 'disabletrafficmanagementrule':
                         controller.disableTrafficManagementRule(site, msg.payload.rule_id, false, handleDataCallback);
                         break;
+                    case 'gettrafficmanagementrule':
+                        controller.getTrafficManagementRule(site, msg.payload.rule_id, handleDataCallback);
+                        break;    
                     default:
                         controller.logout();
                         node.status({
