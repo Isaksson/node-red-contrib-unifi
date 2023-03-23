@@ -1562,12 +1562,12 @@ var Controller = function (hostname, port, unifios, ssl) {
      *
      * required parameter <device_id>  = 24 char string; value of _id for the device which can be obtained from the firewall rule list
      * required parameter <poe_port> = integer; number of the port
-     * required parameter <poe_mode> = 'auto' or 'pasv24' will enable poe on the specified port, 'off' will disable poe on the specified port
+     * required parameter <poe_mode> = 'auto', 'pasv24' or 'passthrough' will enable poe on the specified port, 'off' will disable poe on the specified port
      */
     _self.disablePoePort = function (sites, device_id, poe_port, poe_mode, cb) {
         try {
 
-            const poe_modes = ['off', 'auto', 'pasv24'];
+            const poe_modes = ['off', 'auto', 'pasv24', 'passthrough'];
 
             if (!poe_modes.includes(poe_mode)) {
                 cb({ message: `Wrong PoE mode (off/auto/pasv24)` });

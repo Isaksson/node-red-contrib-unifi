@@ -43,7 +43,7 @@ When updating from version 0.1.x to 0.2.x
 * enableFirewallRule: Enable a firewall rule { command: "enableFirewallRule", rule_id: "id" }
 * disableFirewallRule: Disable a firewall rule { command: "disableFirewallRule", rule_id: "id" }
 * getPoePortState: Get the PoE state of port x { command: "getPoePortState", device_id: "id", port: "port number" }
-* enablePoePort: Enable POE on port x { command: "enablePoePort", device_id: "id", port: "port number", poe_mode: "off|auto|pasv24" }
+* enablePoePort: Enable POE on port x { command: "enablePoePort", device_id: "id", port: "port number", poe_mode: "off|auto|pasv24|passthrough" }
 * disablePoePort: Disable POE on port x { command: "disablePoePort", device_id: "id", port: "port number"  }
 * forceProvision : Force provision { command: "forceProvision", mac: "device MAC address" }
 * setPortProfiles: Set overrides for multiple ports of a device { command: "setPortProfiles", device_id: "24 char device id", port_overrides: [ {"port_idx": 1, "portconf_id": "id of the port profile", "name": "friendly name of the port", "poe_mode": "off|auto" }, ... ] }
