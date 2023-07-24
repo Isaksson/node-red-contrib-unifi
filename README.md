@@ -87,7 +87,7 @@ user-directory (default $HOME/.node-red) and prefixed with sudo.
 ## License
 MIT License
 
-Copyright (c) 2022 Kristoffer Isaksson
+Copyright (c) 2023 Kristoffer Isaksson
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
