@@ -1,0 +1,43 @@
+[
+    {
+        "id": "6c64f0d756b77713",
+        "type": "UnifiWS",
+        "z": "43cb15693bf2cc2c",
+        "name": "",
+        "server": "2495218e4195e754",
+        "x": 260,
+        "y": 1520,
+        "wires": [
+            [
+                "5b3eb22fa5c816f8"
+            ]
+        ]
+    },
+    {
+        "id": "5b3eb22fa5c816f8",
+        "type": "function",
+        "z": "43cb15693bf2cc2c",
+        "name": "Device Connected",
+        "func": "if (msg.payload.data[0].user == '62:c2:f0:23:8e:84'){\n    //information about tracked device\n    if (msg.payload.data[0].key == 'EVT_WU_Connected'){\n        //tracked device connected\n        msg.payload = \"Device Connected\";\n    } else if (msg.payload.data[0].key == 'EVT_WU_Disconnected'){\n        //tracked device disconnected\n        msg.payload = \"Device Disconnected\"\n    }\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 1520,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2495218e4195e754",
+        "type": "unificonfig",
+        "name": "Dream Router",
+        "ip": "10.0.0.1",
+        "port": "443",
+        "site": "default",
+        "unifios": true,
+        "ssl": false
+    }
+]
