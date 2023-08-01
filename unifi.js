@@ -8,7 +8,26 @@ module.exports = function (RED) {
         text: "OK"
     };
 
+    const STATUS_CONNECTED = {
+        fill: "green",
+        shape: "dot",
+        text: "Connected"
+    };
+
+    const STATUS_DISCONNECTED = {
+        fill: "red",
+        shape: "dot",
+        text: "Disconnected"
+    };
+
+    const STATUS_CONNECTING = {
+        fill: "yellow",
+        shape: "dot",
+        text: "Connecting..."
+    };
+
     const unifi = require('./unifi-helper');
+    const unifiWS = require('./unifiws-helper')
 
     function UnifiNode(config) {
         RED.nodes.createNode(this, config);
@@ -264,6 +283,61 @@ module.exports = function (RED) {
         });
     }
 
+    function UnifiWSNode(config) {
+        RED.nodes.createNode(this, config);
+        const node = this;
+        const msg = {};
+
+        var server = RED.nodes.getNode(config.server);
+        if (!server) {
+            this.error(RED._('missing client config'));
+            return;
+        }
+
+        let { username, password, site, ip, port, unifios, ssl } = server;
+        let { command } = config;
+
+        const controllerWS = new unifiWS.ControllerWS(ip, port, unifios, ssl, username, password, site);
+
+        //controllerWS.loginws(handleDataCallback);
+
+        wslogin();
+
+        function wslogin() {
+        node.tout = null;
+        controllerWS.loginws(handleDataCallback);       
+        }
+
+        function handleDataCallback(err, data) {
+            if (err) {
+                //console.log('ERROR: ' + err.message);
+                msg.error = err.message;
+                node.send(msg);
+                node.status({
+                    fill: "red",
+                    shape: "dot",
+                    text: err.message
+                });
+
+            } else {
+                if (data == 'STATUS_CONNECTED') {
+                    node.status(STATUS_CONNECTED);
+                } else if (data == 'STATUS_DISCONNECTED') {
+                    node.status(STATUS_DISCONNECTED);
+                    clearTimeout(node.tout);
+                    node.tout = setTimeout(function() { 
+                        node.status(STATUS_CONNECTING);
+                        wslogin(); 
+                    }, 5000);
+                } else {
+                    msg.payload = data;
+                    node.send(msg);
+                    node.status(STATUS_OK);
+                }
+            }
+        }
+    }
+
     function unifiConfigNode(n) {
         RED.nodes.createNode(this, n);
 
@@ -285,4 +359,5 @@ module.exports = function (RED) {
     });
 
     RED.nodes.registerType("Unifi", UnifiNode);
+    RED.nodes.registerType("UnifiWS", UnifiWSNode);
 };
