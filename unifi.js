@@ -39,21 +39,28 @@ module.exports = function (RED) {
                 site = server.site;
             }
 
+            login()
 
-            controller.login(username, password, (err, data) => {
+            function login() {
+                controller.login(username, password, (err, data) => {
+                    if (err) {
+                        node.status({
+                            fill: "red",
+                            shape: "dot",
+                            text: err.message
+                        });
+                    } else {
+                        node.status({
+                            fill: "green",
+                            shape: "dot",
+                            text: 'Logged in'
+                        });
+                        sendCommand();
+                    }
+                });
+            }
 
-                if (err) {
-                    //console.log('ERROR: ' + err.message);
-                    node.status({
-                        fill: "red",
-                        shape: "dot",
-                        text: err.message
-                    });
-                    return;
-                }
-
-
-
+            function sendCommand() {
                 switch (command.toString().toLowerCase()) {
                     case '1':
                     case 'sitestats':
@@ -222,9 +229,9 @@ module.exports = function (RED) {
                         break;
                     case 'gettrafficmanagementrule':
                         controller.getTrafficManagementRule(site, msg.payload.rule_id, handleDataCallback);
-                        break;    
+                        break;
                     default:
-                        controller.logout();
+                        //controller.logout();
                         node.status({
                             fill: "red",
                             shape: "dot",
@@ -232,22 +239,23 @@ module.exports = function (RED) {
                         });
                         break;
                 }
-
-            });
+            }
 
             function handleDataCallback(err, data) {
                 if (err) {
-                    //console.log('ERROR: ' + err.message);
-                    msg.error = err.message;
-                    node.send(msg);
-                    node.status({
-                        fill: "red",
-                        shape: "dot",
-                        text: err.message
-                    });
+                    if (err.message == 'Unauthorized') {
+                        login();
+                    } else {
+                        msg.error = err.message;
+                        node.send(msg);
+                        node.status({
+                            fill: "red",
+                            shape: "dot",
+                            text: err.message
+                        });
+                    }
 
                 } else {
-                    controller.logout();
                     msg.payload = data;
                     node.send(msg);
                     node.status(STATUS_OK);

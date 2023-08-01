@@ -9,6 +9,7 @@ var Controller = function (hostname, port, unifios, ssl) {
     _self._unifios = unifios;
     _self._ssl = ssl;
     _self._baseurl = 'https://127.0.0.1:8443';
+    _self._loggedIn = false;
 
     if (typeof (hostname) !== 'undefined' && typeof (port) !== 'undefined') {
         _self._baseurl = 'https://' + hostname + ':' + port;
@@ -20,25 +21,32 @@ var Controller = function (hostname, port, unifios, ssl) {
         httpsAgent: new HttpsCookieAgent({ cookies: { jar }, rejectUnauthorized: _self._ssl, requestCert: true })
     });
 
-
     /**
      * Login to UniFi Controller - login()
      */
     _self.login = function (username, password, cb) {
-        if (_self._unifios)
-            _self._request('/api/auth/login', { username: username, password: password }, null, cb, 'POST');
-        else
-            _self._request('/api/login', { username: username, password: password }, null, cb, 'POST');
+        if (_self._loggedIn) {
+            cb(false, "");
+        } else {
+            if (_self._unifios)
+                _self._request('/api/auth/login', { username: username, password: password }, null, cb, 'POST');
+            else
+                _self._request('/api/login', { username: username, password: password }, null, cb, 'POST');
+
+            _self._loggedIn = true;
+        }
     };
 
     /**
      * Logout from UniFi Controller - logout()
      */
     _self.logout = function (cb) {
-        if (_self._unifios)
-            _self._request('/api/auth/logout', {}, null, cb, 'POST');
-        else
-            _self._request('/api/logout', {}, null, cb, 'POST');
+        if (_self._unifios) {
+            //_self._request('/api/auth/logout', {}, null, cb, 'POST');
+        }
+        else {
+            //_self._request('/api/logout', {}, null, cb, 'POST');
+        }
     };
 
     //#region
@@ -1815,7 +1823,17 @@ var Controller = function (hostname, port, unifios, ssl) {
             .catch(function (error) {
                 // handle error
                 if (typeof (cb) === 'function') {
-                    cb({ message: error.code });
+                    if (error.response.data.code == 'AUTHENTICATION_FAILED_INVALID_CREDENTIALS') {
+                        cb({ message: error.response.data.message });
+                    } else if (error.response.data == 'Unauthorized') {
+                        cb({ message: error.response.data });
+                    } else if (error.response.data.code == 'AUTHENTICATION_FAILED_LIMIT_REACHED') {
+                        cb({ message: error.response.data.message });
+                    }
+                    else {
+                        cb({ message: error.code });
+                    }
+                    _self._loggedIn = false;
                 }
             })
             .then(function () {
