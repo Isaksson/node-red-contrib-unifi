@@ -46,8 +46,6 @@ var ControllerWS = function (hostname, port, unifios, ssl, username, password, s
             .then(function () {
 
                 jar.getCookieString(_self._baseurl).then(cookies => {
-                    console.log(cookies);
-
                     const baseurl = _self._baseurl.replace('https://', 'wss://')
                     var eventsUrl = baseurl + '/wss/s/<SITE>/events'.replace('<SITE>', _self._site);
                     if (_self._unifios)

@@ -1823,17 +1823,21 @@ var Controller = function (hostname, port, unifios, ssl) {
             .catch(function (error) {
                 // handle error
                 if (typeof (cb) === 'function') {
-                    if (error.response.data.code == 'AUTHENTICATION_FAILED_INVALID_CREDENTIALS') {
-                        cb({ message: error.response.data.message });
-                    } else if (error.response.data == 'Unauthorized') {
-                        cb({ message: error.response.data });
-                    } else if (error.response.data.code == 'AUTHENTICATION_FAILED_LIMIT_REACHED') {
-                        cb({ message: error.response.data.message });
-                    }
-                    else {
-                        cb({ message: error.code });
-                    }
                     _self._loggedIn = false;
+                    try {
+                        if (error.response.data.code == 'AUTHENTICATION_FAILED_INVALID_CREDENTIALS') {
+                            cb({ message: error.response.data.message });
+                        } else if (error.response.data == 'Unauthorized') {
+                            cb({ message: error.response.data });
+                        } else if (error.response.data.code == 'AUTHENTICATION_FAILED_LIMIT_REACHED') {
+                            cb({ message: error.response.data.message });
+                        }
+                        else {
+                            cb({ message: error.code });
+                        }
+                    } catch {
+                        cb({ message: 'Unknown error' });
+                    }
                 }
             })
             .then(function () {
