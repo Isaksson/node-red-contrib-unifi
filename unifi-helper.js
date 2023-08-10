@@ -1825,7 +1825,9 @@ var Controller = function (hostname, port, unifios, ssl) {
                 if (typeof (cb) === 'function') {
                     _self._loggedIn = false;
                     try {
-                        if (error.response.data.code == 'AUTHENTICATION_FAILED_INVALID_CREDENTIALS') {
+                        if (error.code == 'DEPTH_ZERO_SELF_SIGNED_CERT') {
+                            cb({ message: 'Certificate error' });
+                        } else if (error.response.data.code == 'AUTHENTICATION_FAILED_INVALID_CREDENTIALS') {
                             cb({ message: error.response.data.message });
                         } else if (error.response.data == 'Unauthorized') {
                             cb({ message: error.response.data });
