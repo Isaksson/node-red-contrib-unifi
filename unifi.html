@@ -238,9 +238,11 @@
             <li><code>enableTrafficManagementRule</code> : Enable a traffic management rule { command: "enableTrafficManagementRule", rule_id: "id" }</li>
             <li><code>disableTrafficManagementRule</code> : Disable a traffic management rule { command: "disableTrafficManagementRule", rule_id: "id" }</li>
             <li><code>getTrafficManagementRule</code> : Get traffic management rules, optional add rule_id { command: "getTrafficManagementRule", rule_id: "id" }</li>
+            <li><code>getWLanSetting</code> : Get WLan setting for selected WLan { command: "getWLanSetting", wlan_id: "id" }</li>
+            <li><code>setWLanFilter</code> : Set Device Access Filtering { command: "setWLanFilter", wlan_id: "id", policy: "allow|deny", mac: ['MAC Address'] }</li>
             <p>Returns all data in JSON parsable strings/objects</p>
     <p>For more information see the <a href="https://github.com/Isaksson/node-red-contrib-unifi" target="_blank">GitHub</a> site.</p>
-    <p>Version 0.3.2</p>
+    <p>Version 0.3.5</p>
 </script>
 
 <script type="text/x-red" data-help-name="UnifiWS">
@@ -248,5 +250,5 @@
     <p>Connects to a Unifi Controller</p>
 	<p>Returns all data in JSON parsable strings/objects</p>
     <p>For more information see the <a href="https://github.com/Isaksson/node-red-contrib-unifi" target="_blank">GitHub</a> site.</p>
-    <p>Version 0.3.4</p>
+    <p>Version 0.3.5</p>
 </script>

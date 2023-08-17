@@ -249,6 +249,12 @@ module.exports = function (RED) {
                     case 'gettrafficmanagementrule':
                         controller.getTrafficManagementRule(site, msg.payload.rule_id, handleDataCallback);
                         break;
+                    case 'getwlansetting':
+                        controller.getWLanSetting(site, msg.payload.wlan_id, handleDataCallback);   
+                        break;
+                    case 'setwlanfilter':
+                        controller.setWLanFilter(site, msg.payload.wlan_id, msg.payload.policy, msg.payload.mac, handleDataCallback);
+                        break;    
                     default:
                         //controller.logout();
                         node.status({
@@ -304,8 +310,8 @@ module.exports = function (RED) {
         wslogin();
 
         function wslogin() {
-        node.tout = null;
-        controllerWS.loginws(handleDataCallback);       
+            node.tout = null;
+            controllerWS.loginws(handleDataCallback);
         }
 
         function handleDataCallback(err, data) {
@@ -325,9 +331,9 @@ module.exports = function (RED) {
                 } else if (data == 'STATUS_DISCONNECTED') {
                     node.status(STATUS_DISCONNECTED);
                     clearTimeout(node.tout);
-                    node.tout = setTimeout(function() { 
+                    node.tout = setTimeout(function () {
                         node.status(STATUS_CONNECTING);
-                        wslogin(); 
+                        wslogin();
                     }, 5000);
                 } else {
                     msg.payload = data;

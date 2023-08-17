@@ -57,6 +57,8 @@ When updating from version 0.2.x to 0.3.x
 * enableTrafficManagementRule: Enable a traffic management rule { command: "enableTrafficManagementRule", rule_id: "id" }
 * disableTrafficManagementRule: Disable a traffic management rule { command: "disableTrafficManagementRule", rule_id: "id" }
 * getTrafficManagementRule : Get traffic management rules, optional add rule_id { command: "getTrafficManagementRule", rule_id: "id" }
+* getWLanSetting : Get WLan setting for selected WLan { command: "getWLanSetting", wlan_id: "id" }
+* setWLanFilter : Set Device Access Filtering { command: "setWLanFilter", wlan_id: "id", policy: "allow|deny", mac: ['MAC Address'] }
 
 ## Tips
 * Use the command SiteStats to get your Unifi Site Name

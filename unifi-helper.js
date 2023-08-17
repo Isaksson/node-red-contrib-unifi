@@ -1260,6 +1260,17 @@ var Controller = function (hostname, port, unifios, ssl) {
     };
 
     /**
+     * List wireless setting - getWLanSetting()
+     * ----------------------
+     *
+     * required paramater <sites>   = name or array of site names
+     * required parameter <wlan_id>
+     */
+    _self.getWLanSetting = function (sites, wlan_id, cb) {
+        _self._request('/api/s/<SITE>/rest/wlanconf/' + wlan_id.trim(), null, sites, cb);
+    };
+
+    /**
      * List portforward settings - list_portforward()
      * ----------------------
      *
@@ -1781,6 +1792,29 @@ var Controller = function (hostname, port, unifios, ssl) {
         }
     };
 
+    /**
+     * Set WLan MAC Filter and Policy - setWLanFilter()
+     * ------------------------------
+     *
+     * required parameter <wlan_id> = 24 char string; _id of the wlan that can be found with the list_wlanconf() function
+     * required parameter <policy> = allow | deny
+     * required parameter <mac> = [] Array of MAC addresses to create filter list
+     */
+    _self.setWLanFilter = function (sites, wlan_id, policy, mac, cb) {
+        var json = {};
+
+        if (typeof (policy) == 'undefined') {
+            cb({ message: 'Parameter policy is missing' });
+        } else if (typeof (wlan_id) == 'undefined') {
+            cb({ message: 'Parameter wlan_id is missing' });
+        } else if (typeof (mac) == 'undefined') {
+            cb({ message: 'Parameter mac is missing' });
+        } else {
+            json.mac_filter_policy = policy.trim();
+            json.mac_filter_list = mac;
+            _self._request('/api/s/<SITE>/rest/wlanconf/' + wlan_id.trim(), json, sites, cb, 'PUT');
+        }
+    }
     //#endregion
 
     _self._request = function (url, json, sites, cb, method) {
