@@ -240,9 +240,11 @@
             <li><code>getTrafficManagementRule</code> : Get traffic management rules, optional add rule_id { command: "getTrafficManagementRule", rule_id: "id" }</li>
             <li><code>getWLanSetting</code> : Get WLan setting for selected WLan { command: "getWLanSetting", wlan_id: "id" }</li>
             <li><code>setWLanFilter</code> : Set Device Access Filtering { command: "setWLanFilter", wlan_id: "id", policy: "allow|deny", mac: ['MAC Address'] }</li>
+            <li><code>setDNSServer</code> : Set DHCP DNS Server 1 and 2 { command: "setDNSServer", network_id: "id", dns1: "x.x.x.x", dns2: "x.x.x.x" }</li>
+            <li><code>getNetworkConf</code> : Get network configuration { command: "getNetworkConf" }</li>
             <p>Returns all data in JSON parsable strings/objects</p>
     <p>For more information see the <a href="https://github.com/Isaksson/node-red-contrib-unifi" target="_blank">GitHub</a> site.</p>
-    <p>Version 0.3.5</p>
+    <p>Version 0.3.6</p>
 </script>
 
 <script type="text/x-red" data-help-name="UnifiWS">
@@ -250,5 +252,5 @@
     <p>Connects to a Unifi Controller</p>
 	<p>Returns all data in JSON parsable strings/objects</p>
     <p>For more information see the <a href="https://github.com/Isaksson/node-red-contrib-unifi" target="_blank">GitHub</a> site.</p>
-    <p>Version 0.3.5</p>
+    <p>Version 0.3.6</p>
 </script>

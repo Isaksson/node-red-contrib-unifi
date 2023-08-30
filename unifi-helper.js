@@ -1815,6 +1815,34 @@ var Controller = function (hostname, port, unifios, ssl) {
             _self._request('/api/s/<SITE>/rest/wlanconf/' + wlan_id.trim(), json, sites, cb, 'PUT');
         }
     }
+
+    /**
+     * Set DHCP DNS Servers - setDNSServer()
+     * ------------------------------
+     *
+     * required parameter <network_id> = 24 char string; _id of the network that could be found with the command getnetworkconf() function
+     * optional parameter <dns1> = DNS Server IP
+     * optional parameter <dns2> = DNS Server IP
+     */
+    _self.setDNSServer = function (sites, network_id, dns1, dns2, cb) {
+        var json = {};
+
+        if (typeof (network_id) == 'undefined') {
+            cb({ message: 'Parameter network_id is missing' });
+        } else if (typeof (dns1) == 'undefined' && typeof (dns2) == 'undefined') {
+            cb({ message: 'Parameter dns is missing' });
+        } else {
+
+            if (typeof (dns1) !== 'undefined') {
+                json.dhcpd_dns_1 = dns1;
+            }
+            if (typeof (dns2) !== 'undefined') {
+                json.dhcpd_dns_2 = dns2;
+            }
+
+            _self._request('/api/s/<SITE>/rest/networkconf/' + network_id.trim(), json, sites, cb, 'PUT');
+        }
+    }
     //#endregion
 
     _self._request = function (url, json, sites, cb, method) {
@@ -1843,6 +1871,7 @@ var Controller = function (hostname, port, unifios, ssl) {
         axiosinstance(reqjson)
             .then(function (response) {
                 // handle success
+                console.log(response);
                 if (response.headers['x-csrf-token']) {
                     axiosinstance.defaults.headers.common['x-csrf-token'] = response.headers['x-csrf-token'];
                 }

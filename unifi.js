@@ -254,7 +254,13 @@ module.exports = function (RED) {
                         break;
                     case 'setwlanfilter':
                         controller.setWLanFilter(site, msg.payload.wlan_id, msg.payload.policy, msg.payload.mac, handleDataCallback);
-                        break;    
+                        break;
+                    case 'setdnsserver':
+                        controller.setDNSServer(site, msg.payload.network_id, msg.payload.dns1, msg.payload.dns2, handleDataCallback);
+                        break;
+                    case 'getnetworkconf':
+                        controller.getNetworkConf(site, handleDataCallback);
+                        break;            
                     default:
                         //controller.logout();
                         node.status({

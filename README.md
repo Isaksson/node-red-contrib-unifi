@@ -59,6 +59,8 @@ When updating from version 0.2.x to 0.3.x
 * getTrafficManagementRule : Get traffic management rules, optional add rule_id { command: "getTrafficManagementRule", rule_id: "id" }
 * getWLanSetting : Get WLan setting for selected WLan { command: "getWLanSetting", wlan_id: "id" }
 * setWLanFilter : Set Device Access Filtering { command: "setWLanFilter", wlan_id: "id", policy: "allow|deny", mac: ['MAC Address'] }
+* setDNSServer : Set DHCP DNS Server 1 and 2 { command: "setDNSServer", network_id: "id", dns1: "x.x.x.x", dns2: "x.x.x.x" }
+* getNetworkConf : Get network configuration { command: "getNetworkConf" }
 
 ## Tips
 * Use the command SiteStats to get your Unifi Site Name
@@ -66,6 +68,7 @@ When updating from version 0.2.x to 0.3.x
 * Use the command AccessDevices to get an Access Points Device ID
 * Use the command ListPortProfile to get Profile ID
 * Use the command GetWLanSettings to get SSID ID
+* Use the command getNetworkConf to get network ID
 * See working examples in the examples folder
 
 ## Requirements
