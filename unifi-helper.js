@@ -1871,7 +1871,6 @@ var Controller = function (hostname, port, unifios, ssl) {
         axiosinstance(reqjson)
             .then(function (response) {
                 // handle success
-                console.log(response);
                 if (response.headers['x-csrf-token']) {
                     axiosinstance.defaults.headers.common['x-csrf-token'] = response.headers['x-csrf-token'];
                 }
