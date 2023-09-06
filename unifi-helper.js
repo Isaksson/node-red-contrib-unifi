@@ -2,7 +2,7 @@ const axios = require('axios');
 const { CookieJar } = require('tough-cookie');
 const { HttpCookieAgent, HttpsCookieAgent } = require('http-cookie-agent/http');
 
-var Controller = function (hostname, port, unifios, ssl) {
+var Controller = function (hostname, port, unifios, ssl, debug) {
 
     var _self = this;
     _self._cookieJar = new CookieJar();
@@ -10,6 +10,7 @@ var Controller = function (hostname, port, unifios, ssl) {
     _self._ssl = ssl;
     _self._baseurl = 'https://127.0.0.1:8443';
     _self._loggedIn = false;
+    _self._debug = debug;
 
     if (typeof (hostname) !== 'undefined' && typeof (port) !== 'undefined') {
         _self._baseurl = 'https://' + hostname + ':' + port;
@@ -1843,6 +1844,18 @@ var Controller = function (hostname, port, unifios, ssl) {
             _self._request('/api/s/<SITE>/rest/networkconf/' + network_id.trim(), json, sites, cb, 'PUT');
         }
     }
+
+    /**
+     * Override LED Color a device - setLEDColorOverride()
+     * ------------------------------
+     *
+     * required parameter <device_id>     = 24 char string; value of _id for the device which can be obtained from the device list
+     * required parameter <color> = string, Color Hex code example for red #ff0000
+     */
+    _self.setLEDColorOverride = function (sites, device_id, color, cb,) {
+        _self._request('/api/s/<SITE>/rest/device/' + device_id.trim(), { led_override_color: color }, sites, cb, 'PUT');
+    };
+
     //#endregion
 
     _self._request = function (url, json, sites, cb, method) {
@@ -1884,6 +1897,9 @@ var Controller = function (hostname, port, unifios, ssl) {
             })
             .catch(function (error) {
                 // handle error
+                if (_self._debug)  {
+                    console.log(error);
+                }
                 if (typeof (cb) === 'function') {
                     _self._loggedIn = false;
                     try {

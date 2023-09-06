@@ -61,6 +61,7 @@ When updating from version 0.2.x to 0.3.x
 * setWLanFilter : Set Device Access Filtering { command: "setWLanFilter", wlan_id: "id", policy: "allow|deny", mac: ['MAC Address'] }
 * setDNSServer : Set DHCP DNS Server 1 and 2 { command: "setDNSServer", network_id: "id", dns1: "x.x.x.x", dns2: "x.x.x.x" }
 * getNetworkConf : Get network configuration { command: "getNetworkConf" }
+* setAPLedColor : Set LED color for Access point { command: "setapledcolor", device_id: "24 char device id", color: "Color Hex code" }
 
 ## Tips
 * Use the command SiteStats to get your Unifi Site Name

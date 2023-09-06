@@ -40,9 +40,9 @@ module.exports = function (RED) {
         }
 
         let { username, password, site, ip, port, unifios, ssl } = server;
-        let { command } = config;
+        let { command, debug } = config;
 
-        const controller = new unifi.Controller(ip, port, unifios, ssl);
+        const controller = new unifi.Controller(ip, port, unifios, ssl, debug);
 
         this.on('input', function (msg) {
 
@@ -250,7 +250,7 @@ module.exports = function (RED) {
                         controller.getTrafficManagementRule(site, msg.payload.rule_id, handleDataCallback);
                         break;
                     case 'getwlansetting':
-                        controller.getWLanSetting(site, msg.payload.wlan_id, handleDataCallback);   
+                        controller.getWLanSetting(site, msg.payload.wlan_id, handleDataCallback);
                         break;
                     case 'setwlanfilter':
                         controller.setWLanFilter(site, msg.payload.wlan_id, msg.payload.policy, msg.payload.mac, handleDataCallback);
@@ -260,7 +260,10 @@ module.exports = function (RED) {
                         break;
                     case 'getnetworkconf':
                         controller.getNetworkConf(site, handleDataCallback);
-                        break;            
+                        break;
+                    case 'setapledcolor':
+                        controller.setLEDColorOverride(site, msg.payload.device_id, msg.payload.color, handleDataCallback);
+                        break;
                     default:
                         //controller.logout();
                         node.status({
