@@ -1909,6 +1909,8 @@ var Controller = function (hostname, port, unifios, ssl, debug) {
                             cb({ message: error.response.data.message });
                         } else if (error.response.data == 'Unauthorized') {
                             cb({ message: error.response.data });
+                        } else if (error.response.status == '401') {
+                            cb({ message: 'Unauthorized' });
                         } else if (error.response.data.code == 'AUTHENTICATION_FAILED_LIMIT_REACHED') {
                             cb({ message: error.response.data.message });
                         }
