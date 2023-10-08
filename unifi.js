@@ -264,6 +264,21 @@ module.exports = function (RED) {
                     case 'setapledcolor':
                         controller.setLEDColorOverride(site, msg.payload.device_id, msg.payload.color, handleDataCallback);
                         break;
+                    case 'getradiususers':
+                        controller.listRadiusAccounts(site, handleDataCallback);
+                        break;
+                    case 'getradiusprofiles':
+                        controller.listRadiusProfiles(site, handleDataCallback);
+                        break;
+                    case 'createradiususer':
+                        controller.createRadiusUser(site, msg.payload.name, msg.payload.x_password, msg.payload.tunnel_type, msg.payload.tunnel_medium_type, msg.payload.vlan, handleDataCallback);
+                        break;
+                    case 'updateradiususer':
+                        controller.updateRadiusUser(site, msg.payload.user_id, msg.payload.name, msg.payload.x_password, msg.payload.tunnel_type, msg.payload.tunnel_medium_type, msg.payload.vlan, handleDataCallback);
+                        break;
+                    case 'deleteradiususer':
+                        controller.deleteRadiusUser(site, msg.payload.user_id, handleDataCallback);
+                        break;
                     default:
                         //controller.logout();
                         node.status({

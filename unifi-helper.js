@@ -1366,6 +1366,150 @@ var Controller = function (hostname, port, unifios, ssl, debug) {
     };
 
     /**
+    * List Radius profiles (using REST) - list_radius_profiles()
+    *
+    * returns an array of objects containing all Radius profiles for the current site
+    *
+    * NOTES:
+    * - this function/method is only supported on controller versions 5.5.19 and later
+    */
+    _self.listRadiusProfiles = function (sites, cb) {
+        _self._request('/api/s/<SITE>/rest/radiusprofile', null, sites, cb);
+    };
+
+    /**
+    * Create a Radius user (using REST) - create_radius_account()
+    *
+    * NOTES:
+    * - this function/method is only supported on controller versions 5.5.19 and later
+    *
+    * required parameter <name> = name for the new user
+    * required parameter <x_password> = password for the new user
+    * optional parameter <tunnel_type> =  INT; must be one of the following values:
+    *                                    1      Point-to-Point Tunneling Protocol (PPTP)
+    *                                    2      Layer Two Forwarding (L2F)
+    *                                    3      Layer Two Tunneling Protocol (L2TP)
+    *                                    4      Ascend Tunnel Management Protocol (ATMP)
+    *                                    5      Virtual Tunneling Protocol (VTP)
+    *                                    6      IP Authentication Header in the Tunnel-mode (AH)
+    *                                    7      IP-in-IP Encapsulation (IP-IP)
+    *                                    8      Minimal IP-in-IP Encapsulation (MIN-IP-IP)
+    *                                    9      IP Encapsulating Security Payload in the Tunnel-mode (ESP)
+    *                                    10     Generic Route Encapsulation (GRE)
+    *                                    11     Bay Dial Virtual Services (DVS)
+    *                                    12     IP-in-IP Tunneling
+    *                                    13     Virtual LANs (VLAN)
+    * optional parameter <tunnel_medium_type> = INT; must be one of the following values:
+    *                                           1      IPv4 (IP version 4)
+    *                                           2      IPv6 (IP version 6)
+    *                                           3      NSAP
+    *                                           4      HDLC (8-bit multidrop)
+    *                                           5      BBN 1822
+    *                                           6      802 (includes all 802 media plus Ethernet "canonical format")
+    *                                           7      E.163 (POTS)
+    *                                           8      E.164 (SMDS, Frame Relay, ATM)
+    *                                           9      F.69 (Telex)
+    *                                           10     X.121 (X.25, Frame Relay)
+    *                                           11     IPX
+    *                                           12     Appletalk
+    *                                           13     Decnet IV
+    *                                           14     Banyan Vines
+    *                                           15     E.164 with NSAP format subaddress
+    * optional parameter <vlan> = INT; VLAN to assign to the user
+
+    */
+    _self.createRadiusUser = function (sites, name, x_password, tunnel_type, tunnel_medium_type, vlan, cb) {
+        var json = {
+            name,
+            x_password
+        };
+        if (tunnel_type !== null) {
+            json.tunnel_type = tunnel_type;
+        }
+        if (tunnel_medium_type !== null) {
+            json.tunnel_medium_type = tunnel_medium_type;
+        }
+        if (vlan !== null) {
+            json.vlan = vlan;
+        }
+        _self._request('/api/s/<SITE>/rest/account', json, sites, cb);
+    };
+
+    /**
+    * Update Radius user, base (using REST) - updateRadiusUser()
+    *
+    * required parameter <user_id> =  24 char string; _id of the user which can be found with the listRadiusAccounts() function
+    * optional parameter <name> = name for the new user
+    * optional parameter <x_password> = password for the new user
+    * optional parameter <tunnel_type> =  INT; must be one of the following values:
+    *                                    1      Point-to-Point Tunneling Protocol (PPTP)
+    *                                    2      Layer Two Forwarding (L2F)
+    *                                    3      Layer Two Tunneling Protocol (L2TP)
+    *                                    4      Ascend Tunnel Management Protocol (ATMP)
+    *                                    5      Virtual Tunneling Protocol (VTP)
+    *                                    6      IP Authentication Header in the Tunnel-mode (AH)
+    *                                    7      IP-in-IP Encapsulation (IP-IP)
+    *                                    8      Minimal IP-in-IP Encapsulation (MIN-IP-IP)
+    *                                    9      IP Encapsulating Security Payload in the Tunnel-mode (ESP)
+    *                                    10     Generic Route Encapsulation (GRE)
+    *                                    11     Bay Dial Virtual Services (DVS)
+    *                                    12     IP-in-IP Tunneling
+    *                                    13     Virtual LANs (VLAN)
+    * optional parameter <tunnel_medium_type> = INT; must be one of the following values:
+    *                                           1      IPv4 (IP version 4)
+    *                                           2      IPv6 (IP version 6)
+    *                                           3      NSAP
+    *                                           4      HDLC (8-bit multidrop)
+    *                                           5      BBN 1822
+    *                                           6      802 (includes all 802 media plus Ethernet "canonical format")
+    *                                           7      E.163 (POTS)
+    *                                           8      E.164 (SMDS, Frame Relay, ATM)
+    *                                           9      F.69 (Telex)
+    *                                           10     X.121 (X.25, Frame Relay)
+    *                                           11     IPX
+    *                                           12     Appletalk
+    *                                           13     Decnet IV
+    *                                           14     Banyan Vines
+    *                                           15     E.164 with NSAP format subaddress
+    * optional parameter <vlan> = INT; VLAN to assign to the user
+    * 
+    * NOTES:
+    * - this function/method is only supported on controller versions 5.5.19 and later
+    */
+    _self.updateRadiusUser = function (sites, user_id, name, x_password, tunnel_type, tunnel_medium_type, vlan, cb) {
+        var json = {};
+
+        if (name !== null) {
+            json.name = name;
+        }
+        if (x_password !== null) {
+            json.x_password = x_password;
+        }
+        if (tunnel_type !== null) {
+            json.tunnel_type = tunnel_type;
+        }
+        if (tunnel_medium_type !== null) {
+            json.tunnel_medium_type = tunnel_medium_type;
+        }
+        if (vlan !== null) {
+            json.vlan = vlan;
+        }
+        _self._request('/api/s/<SITE>/rest/account/' + user_id.trim(), json, sites, cb, 'PUT');
+    };
+
+    /**
+    * Delete a Radius user (using REST) - deleteRadiusUser()
+    *
+    * required parameter <user_id> = 24 char string; _id of the user which can be found with the listRadiusAccounts() function
+    *
+    * NOTES:
+    * - this function/method is only supported on controller versions 5.5.19 and later
+    */
+    _self.deleteRadiusUser = function (sites, user_id, cb) {
+        _self._request('/api/s/<SITE>/rest/account/' + user_id.trim(), null, sites, cb, 'DELETE');
+    }
+
+    /**
      * Create backup (5.4.9+)
      * -------------
      *
@@ -1897,7 +2041,7 @@ var Controller = function (hostname, port, unifios, ssl, debug) {
             })
             .catch(function (error) {
                 // handle error
-                if (_self._debug)  {
+                if (_self._debug) {
                     console.log(error);
                 }
                 if (typeof (cb) === 'function') {

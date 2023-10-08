@@ -62,6 +62,11 @@ When updating from version 0.2.x to 0.3.x
 * setDNSServer : Set DHCP DNS Server 1 and 2 { command: "setDNSServer", network_id: "id", dns1: "x.x.x.x", dns2: "x.x.x.x" }
 * getNetworkConf : Get network configuration { command: "getNetworkConf" }
 * setAPLedColor : Set LED color for Access point { command: "setapledcolor", device_id: "24 char device id", color: "Color Hex code" }
+* getRadiusUsers : Get all radius users { command: "getRadiusUsers" }
+* getRadiusProfiles : Get all radius profiles { command: "getRadiusProfiles" }
+* createRadiusUser : Create radius user { command: "createRadiusUser", name: "account name", x_password: "password", tunnel_type: "optional 1-13", tunnel_medium_type: "optional 1-15", vlan: "optional vlan id" }
+* updateRadiusUser : Update radius user { command: "updateRadiusUser", user_id: "24 char string _id of the user", name: "optional account name", x_password: "optional password", tunnel_type: "optional 1-13", tunnel_medium_type: "optional 1-15", vlan: "optional vlan id" }
+* deleteRadiusUser : Delete radius user { command: "deleteRadiusUser", user_id: "24 char string _id of the user" }
 
 ## Tips
 * Use the command SiteStats to get your Unifi Site Name
@@ -70,6 +75,7 @@ When updating from version 0.2.x to 0.3.x
 * Use the command ListPortProfile to get Profile ID
 * Use the command GetWLanSettings to get SSID ID
 * Use the command getNetworkConf to get network ID
+* Use the command getRadiusUsers to get radious user ID
 * See working examples in the examples folder
 
 ## Requirements
