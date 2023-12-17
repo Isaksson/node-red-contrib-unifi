@@ -1941,10 +1941,10 @@ var Controller = function (hostname, port, unifios, ssl, debug) {
      * Enable / disable Traffic Routes - disableTrafficRoute()
      * ------------------------------
      *
-     * required parameter <rule_id>  = 24 char string; value of _id for the device which can be obtained from the firewall rule list
-     * required parameter <enable> = boolean; true will enable firewall rule, false will disable
+     * required parameter <rule_id>  = 24 char string; value of _id for the device which can be obtained from the traffic routes list
+     * required parameter <enable> = boolean; true will enable traffic route rule, false will disable
      */
-    _self.disableTrafficManagementRule = function (sites, rule_id, rule_enable, cb) {
+    _self.disableTrafficRouteRule = function (sites, rule_id, rule_enable, cb) {
         try {
             if (rule_id) {
                 _self._request('/v2/api/site/<SITE>/trafficroute/', null, sites, function (err, result) {
@@ -1973,9 +1973,9 @@ var Controller = function (hostname, port, unifios, ssl, debug) {
      * Get Traffic Routes - getTrafficRoute()
      * ------------------------------
      *
-     * optional parameter <rule_id>  = 24 char string; value of _id for the device which can be obtained from the firewall rule list
+     * optional parameter <rule_id>  = 24 char string; value of _id for the device which can be obtained from the traffic routes list
      */
-    _self.getTrafficManagementRule = function (sites, rule_id, cb) {
+    _self.getTrafficRouteRule = function (sites, rule_id, cb) {
         try {
             _self._request('/v2/api/site/<SITE>/trafficroute/', null, sites, function (err, result) {
                 if (!err && result && result.length > 0) {

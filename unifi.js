@@ -249,6 +249,15 @@ module.exports = function (RED) {
                     case 'gettrafficmanagementrule':
                         controller.getTrafficManagementRule(site, msg.payload.rule_id, handleDataCallback);
                         break;
+                    case 'enabletrafficrouterule':
+                        controller.disableTrafficRouteRule(site, msg.payload.rule_id, true, handleDataCallback);
+                        break;
+                    case 'disabletrafficrouterule':
+                        controller.disableTrafficRouteRule(site, msg.payload.rule_id, false, handleDataCallback);
+                        break;
+                    case 'gettrafficrouterule':
+                        controller.getTrafficRouteRule(site, msg.payload.rule_id, handleDataCallback);
+                        break;
                     case 'getwlansetting':
                         controller.getWLanSetting(site, msg.payload.wlan_id, handleDataCallback);
                         break;
