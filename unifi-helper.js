@@ -1938,6 +1938,74 @@ var Controller = function (hostname, port, unifios, ssl, debug) {
     };
 
     /**
+     * Enable / disable Traffic Routes - disableTrafficRoute()
+     * ------------------------------
+     *
+     * required parameter <rule_id>  = 24 char string; value of _id for the device which can be obtained from the firewall rule list
+     * required parameter <enable> = boolean; true will enable firewall rule, false will disable
+     */
+    _self.disableTrafficManagementRule = function (sites, rule_id, rule_enable, cb) {
+        try {
+            if (rule_id) {
+                _self._request('/v2/api/site/<SITE>/trafficroute/', null, sites, function (err, result) {
+                    if (!err && result && result.length > 0) {
+                        result.forEach(data => {
+                            if (data._id == rule_id.toLowerCase()) {
+                                if (data.enabled !== rule_enable) {
+                                    data.enabled = rule_enable;
+                                    _self._request('/v2/api/site/<SITE>/trafficroute/' + rule_id.trim(), data, sites, cb, 'PUT');
+                                }
+                            }
+                        });
+                    } else {
+                        cb({ message: 'Error reading Traffic Routes' });
+                    }
+                });
+            } else {
+                cb({ message: `Parameter rule_id is missing` });
+            }
+        } catch (e) {
+            cb({ message: e });
+        }
+    };
+
+    /**
+     * Get Traffic Routes - getTrafficRoute()
+     * ------------------------------
+     *
+     * optional parameter <rule_id>  = 24 char string; value of _id for the device which can be obtained from the firewall rule list
+     */
+    _self.getTrafficManagementRule = function (sites, rule_id, cb) {
+        try {
+            _self._request('/v2/api/site/<SITE>/trafficroute/', null, sites, function (err, result) {
+                if (!err && result && result.length > 0) {
+                    if (rule_id) {
+                        var matched = false;
+                        result.forEach(data => {
+                            if (data._id == rule_id.toLowerCase()) {
+                                matched = true;
+                                cb(false, data);
+                            }
+                        });
+                        if (!matched) {
+                            cb({ message: 'Cant find Traffic Routes' });
+                        }
+
+                    } else {
+                        cb(false, result);
+                    }
+                }
+                else {
+                    cb({ message: 'Error reading Traffic Routes' });
+                }
+            });
+
+        } catch (e) {
+            cb({ message: e });
+        }
+    };
+
+    /**
      * Set WLan MAC Filter and Policy - setWLanFilter()
      * ------------------------------
      *
