@@ -1947,13 +1947,13 @@ var Controller = function (hostname, port, unifios, ssl, debug) {
     _self.disableTrafficRouteRule = function (sites, rule_id, rule_enable, cb) {
         try {
             if (rule_id) {
-                _self._request('/v2/api/site/<SITE>/trafficroute/', null, sites, function (err, result) {
+                _self._request('/v2/api/site/<SITE>/trafficroutes/', null, sites, function (err, result) {
                     if (!err && result && result.length > 0) {
                         result.forEach(data => {
                             if (data._id == rule_id.toLowerCase()) {
                                 if (data.enabled !== rule_enable) {
                                     data.enabled = rule_enable;
-                                    _self._request('/v2/api/site/<SITE>/trafficroute/' + rule_id.trim(), data, sites, cb, 'PUT');
+                                    _self._request('/v2/api/site/<SITE>/trafficroutes/' + rule_id.trim(), data, sites, cb, 'PUT');
                                 }
                             }
                         });
@@ -1977,7 +1977,7 @@ var Controller = function (hostname, port, unifios, ssl, debug) {
      */
     _self.getTrafficRouteRule = function (sites, rule_id, cb) {
         try {
-            _self._request('/v2/api/site/<SITE>/trafficroute/', null, sites, function (err, result) {
+            _self._request('/v2/api/site/<SITE>/trafficroutes/', null, sites, function (err, result) {
                 if (!err && result && result.length > 0) {
                     if (rule_id) {
                         var matched = false;
