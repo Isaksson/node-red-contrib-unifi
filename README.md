@@ -57,6 +57,9 @@ When updating from version 0.2.x to 0.3.x
 * enableTrafficManagementRule: Enable a traffic management rule { command: "enableTrafficManagementRule", rule_id: "id" }
 * disableTrafficManagementRule: Disable a traffic management rule { command: "disableTrafficManagementRule", rule_id: "id" }
 * getTrafficManagementRule : Get traffic management rules, optional add rule_id { command: "getTrafficManagementRule", rule_id: "id" }
+* enableTrafficRouteRule: Enable a traffic route rule { command: "enableTrafficRoutetRule", rule_id: "id" }
+* disableTrafficRouteRule: Disable a traffic route rule { command: "disableTrafficRouteRule", rule_id: "id" }
+* getTrafficRouteRule : Get traffic route rules, optional add rule_id { command: "getTrafficRouteRule", rule_id: "id" }
 * getWLanSetting : Get WLan setting for selected WLan { command: "getWLanSetting", wlan_id: "id" }
 * setWLanFilter : Set Device Access Filtering { command: "setWLanFilter", wlan_id: "id", policy: "allow|deny", mac: ['MAC Address'] }
 * setDNSServer : Set DHCP DNS Server 1 and 2 { command: "setDNSServer", network_id: "id", dns1: "x.x.x.x", dns2: "x.x.x.x" }
@@ -79,7 +82,7 @@ When updating from version 0.2.x to 0.3.x
 * See working examples in the examples folder
 
 ## Requirements
-* Installed [UniFi-Controller](https://www.ubnt.com/download/unifi) version v4, v5, v6 or v7
+* Installed [UniFi-Controller](https://www.ubnt.com/download/unifi) version v4, v5, v6, v7 or v8
 * Unifi controller user must have at least 'administrator' rights (not read-only)
 
 ## Installation recommended

@@ -245,6 +245,9 @@
             <li><code>enableTrafficManagementRule</code> : Enable a traffic management rule { command: "enableTrafficManagementRule", rule_id: "id" }</li>
             <li><code>disableTrafficManagementRule</code> : Disable a traffic management rule { command: "disableTrafficManagementRule", rule_id: "id" }</li>
             <li><code>getTrafficManagementRule</code> : Get traffic management rules, optional add rule_id { command: "getTrafficManagementRule", rule_id: "id" }</li>
+            <li><code>enableTrafficRouteRule</code> : Enable a traffic route rule { command: "enableTrafficRouteRule", rule_id: "id" }</li>
+            <li><code>disableTrafficRouteRule</code> : Disable a traffic route rule { command: "disableTrafficRouteRule", rule_id: "id" }</li>
+            <li><code>getTrafficRouteRule</code> : Get traffic route rules, optional add rule_id { command: "getTrafficRouteRule", rule_id: "id" }</li>
             <li><code>getWLanSetting</code> : Get WLan setting for selected WLan { command: "getWLanSetting", wlan_id: "id" }</li>
             <li><code>setWLanFilter</code> : Set Device Access Filtering { command: "setWLanFilter", wlan_id: "id", policy: "allow|deny", mac: ['MAC Address'] }</li>
             <li><code>setDNSServer</code> : Set DHCP DNS Server 1 and 2 { command: "setDNSServer", network_id: "id", dns1: "x.x.x.x", dns2: "x.x.x.x" }</li>
@@ -257,7 +260,7 @@
             <li><code>deleteRadiusUser</code> : Delete radius user { command: "deleteRadiusUser", user_id: "24 char string _id of the user" }</li>
             <p>Returns all data in JSON parsable strings/objects</p>
     <p>For more information see the <a href="https://github.com/Isaksson/node-red-contrib-unifi" target="_blank">GitHub</a> site.</p>
-    <p>Version 0.3.10</p>
+    <p>Version 0.3.11</p>
 </script>
 
 <script type="text/x-red" data-help-name="UnifiWS">
@@ -265,5 +268,5 @@
     <p>Connects to a Unifi Controller</p>
 	<p>Returns all data in JSON parsable strings/objects</p>
     <p>For more information see the <a href="https://github.com/Isaksson/node-red-contrib-unifi" target="_blank">GitHub</a> site.</p>
-    <p>Version 0.3.10</p>
+    <p>Version 0.3.11</p>
 </script>
