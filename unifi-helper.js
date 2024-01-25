@@ -1748,6 +1748,7 @@ var Controller = function (hostname, port, unifios, ssl, debug) {
                                 var port_overrides = [];
 
                                 //get all current overrides
+                                if (device.port_overrides){
                                 device.port_overrides.forEach(port => {
                                     if (port.port_idx == poe_port) {
                                         if (port.poe_mode != poe_mode) {
@@ -1758,6 +1759,7 @@ var Controller = function (hostname, port, unifios, ssl, debug) {
                                     }
                                     port_overrides.push(port)
                                 });
+                                }
 
                                 if (newPort) {
                                     //Get information from the new port to create override
