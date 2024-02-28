@@ -1,6 +1,8 @@
 node-red-contrib-unifi is a Node-RED module that allows to query/control [UniFi devices](http://www.ubnt.com/) via the official UniFi-Controller API. Based on npm package node-unifi
 
 ##  New functions
+Version 0.3.14
+* New command getDPIstats - Get array of DPI stats
 When updating from version 0.2.x to 0.3.x
 * Beta release of new node (UnifiWS) that will use websocket for connection, listen to 'EVT_WU_Connected', 'EVT_WU_Disconnected', 'EVT_WU_Roam', 'EVT_WU_Roam_Radio', 'EVT_WG_Connected', 'EVT_WG_Disconnected', 'EVT_WG_Roam', 'EVT_WG_Roam_Radio', 'EVT_LU_Disconnected', 'EVT_LU_Connected'.
 
@@ -70,6 +72,7 @@ When updating from version 0.2.x to 0.3.x
 * createRadiusUser : Create radius user { command: "createRadiusUser", name: "account name", x_password: "password", tunnel_type: "optional 1-13", tunnel_medium_type: "optional 1-15", vlan: "optional vlan id" }
 * updateRadiusUser : Update radius user { command: "updateRadiusUser", user_id: "24 char string _id of the user", name: "optional account name", x_password: "optional password", tunnel_type: "optional 1-13", tunnel_medium_type: "optional 1-15", vlan: "optional vlan id" }
 * deleteRadiusUser : Delete radius user { command: "deleteRadiusUser", user_id: "24 char string _id of the user" }
+* getDPIstats : Get array of DPI stats { command: "getDPIstats" }
 
 ## Tips
 * Use the command SiteStats to get your Unifi Site Name

@@ -288,6 +288,9 @@ module.exports = function (RED) {
                     case 'deleteradiususer':
                         controller.deleteRadiusUser(site, msg.payload.user_id, handleDataCallback);
                         break;
+                    case 'getdpistats':
+                        controller.getDPIStats(site, handleDataCallback);
+                        break;
                     default:
                         //controller.logout();
                         node.status({
