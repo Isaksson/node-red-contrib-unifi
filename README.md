@@ -3,8 +3,6 @@ node-red-contrib-unifi is a Node-RED module that allows to query/control [UniFi 
 ##  New functions
 Version 0.3.14
 * New command getDPIstats - Get array of DPI stats
-When updating from version 0.2.x to 0.3.x
-* Beta release of new node (UnifiWS) that will use websocket for connection, listen to 'EVT_WU_Connected', 'EVT_WU_Disconnected', 'EVT_WU_Roam', 'EVT_WU_Roam_Radio', 'EVT_WG_Connected', 'EVT_WG_Disconnected', 'EVT_WG_Roam', 'EVT_WG_Roam_Radio', 'EVT_LU_Disconnected', 'EVT_LU_Connected'.
 
 ## Supports the following Commands
 * SitesStats : Site stats
