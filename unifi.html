@@ -4,9 +4,9 @@
         defaults: {
             name: { value: "" },
             ip: { value: "", required: true },
-            port: { value: 8443, validate: RED.validators.number() },
+            port: { value: 443, validate: RED.validators.number() },
             site: { value: "default" },
-            unifios: { value: false },
+            unifios: { value: true },
             ssl: { value: false },
         },
         credentials: {
