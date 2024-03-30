@@ -66,6 +66,7 @@ var ControllerWS = function (hostname, port, unifios, ssl, username, password, s
                     });
 
                     _ws.on('message', function message(data) {
+                        try {
                         var obj = JSON.parse(data);
                         var listenTo = ['EVT_WU_Connected', 'EVT_WU_Disconnected', 'EVT_WU_Roam', 'EVT_WU_Roam_Radio', 'EVT_WG_Connected', 'EVT_WG_Disconnected', 'EVT_WG_Roam', 'EVT_WG_Roam_Radio', 'EVT_LU_Disconnected', 'EVT_LU_Connected']
                         if (obj.meta.message == 'events') {
@@ -79,6 +80,9 @@ var ControllerWS = function (hostname, port, unifios, ssl, username, password, s
                                     cb(false, obj);
                                 }
                             }
+                        }
+                        } catch (error) {
+                            //Ignore this message
                         }
                     });
 
