@@ -1649,19 +1649,19 @@ var Controller = function (hostname, port, unifios, ssl, debug) {
         try {
             if (rule_name) {
                 _self.getFirewallRules(sites, function (err, result) {
-                    if (!err && result && result.length > 0) {
-                        var found = result[0].filter(rule => rule.name.toLowerCase() == rule_name.toLowerCase())
-                        if (found.length > 1) {
-                            cb({ message: `Found multiple rules. Please refine the rule name` });
-                        } else if (found.length) {
-                            cb(false, found[0]);
+                    if (!err && result) {
+                        let firewallrule = result.find((rule) => rule.name.toLowerCase() == rule_name.toLowerCase());
+                        if (firewallrule !== undefined) {
+                            cb(false, firewallrule);
+                        } else {
+                            cb({ message: `No rule found.` });
                         }
+                    } else {
+                        cb({ message: `Can´t get firwall rules.` });
                     }
-                })
-            } else
-                cb({ message: `Parameter rule_name is missing` });
-        }
-        catch (e) {
+                });
+            } else cb({ message: `Parameter rule_name is missing` });
+        } catch (e) {
             cb({ message: e });
         }
     };
