@@ -68,6 +68,8 @@ module.exports = function (RED) {
                             shape: "dot",
                             text: err.message
                         });
+                        msg.payload = err.message;
+                        node.send([null, msg]);
                     } else {
                         node.status({
                             fill: "green",
@@ -298,6 +300,8 @@ module.exports = function (RED) {
                             shape: "dot",
                             text: "No command"
                         });
+                        msg.payload = "No command";
+                        node.send([null, msg]);
                         break;
                 }
             }
@@ -307,8 +311,8 @@ module.exports = function (RED) {
                     if (err.message == 'Unauthorized') {
                         login();
                     } else {
-                        msg.error = err.message;
-                        node.send(msg);
+                        msg.payload = err.message;
+                        node.send([null, msg]);
                         node.status({
                             fill: "red",
                             shape: "dot",
