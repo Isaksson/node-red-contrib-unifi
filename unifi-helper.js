@@ -2065,10 +2065,85 @@ var Controller = function (hostname, port, unifios, ssl, debug) {
      *
      * required parameter <device_id>     = 24 char string; value of _id for the device which can be obtained from the device list
      * required parameter <color> = string, Color Hex code example for red #ff0000
+     * optional parameter <brightness> = 1-100
      */
-    _self.setLEDColorOverride = function (sites, device_id, color, cb,) {
-        _self._request('/api/s/<SITE>/rest/device/' + device_id.trim(), { led_override_color: color }, sites, cb, 'PUT');
+    _self.setLEDColorOverride = function (sites, device_id, color, brightness, cb,) {
+        var json = {};
+
+        if (typeof (device_id) == 'undefined') {
+            cb({ message: 'Parameter device_id is missing' });
+        } else {
+
+            if (typeof (color) !== 'undefined') {
+                json.led_override_color = color;
+            }
+            if (typeof (brightness) !== 'undefined') {
+                json.led_override_color_brightness = brightness;
+            }
+
+            _self._request('/api/s/<SITE>/rest/device/' + device_id.trim(), json, sites, cb, 'PUT');
+        }
     };
+
+    /**
+     * List Custom DNS entries - getCustomDNS()
+     * ------------------------------
+     */
+    _self.getCustomDNS = function (sites, cb) {
+        _self._request('/v2/api/site/<SITE>/static-dns', null, sites, cb);
+    };
+
+    /**
+     * Set Custom DNS entry - setCustomDNS()
+     * ------------------------------
+     *
+     * required parameter <record_type> = A|AAAA|MX|TXT|SRV
+     * required parameter <value> = IP address|Text|Domain name
+     * required parameter <key> = Domain name
+     * required parameter <enabled> = true|false
+     * optional parameter <priority> = 0-65535
+     * optional parameter <weight> = 0-65535
+     * optional parameter <ttl> = 1-86400
+     * optional parameter <port> = 1-65535
+     */
+    _self.setCustomDNS = function (sites, record_type, value, key, enabled, priority, weight, ttl, port, _id, cb) {
+        var json = {};
+
+        if (typeof (record_type) == 'undefined') {
+            cb({ message: 'Parameter record_type is missing' });
+        } else if (typeof (value) == 'undefined') {
+            cb({ message: 'Parameter value is missing' });
+        } else if (typeof (key) == 'undefined') {
+            cb({ message: 'Parameter key is missing' });
+        } else if (typeof (enabled) == 'undefined') {
+            cb({ message: 'Parameter enabled is missing' });
+        } else {
+
+            json.record_type = record_type;
+            json.value = value;
+            json.key = key;
+            json.enabled = enabled;
+
+            if (typeof (priority) !== 'undefined') {
+                json.priority = priority;
+            }
+            if (typeof (weight) !== 'undefined') {
+                json.weight = weight;
+            }
+            if (typeof (ttl) !== 'undefined') {
+                json.ttl = ttl;
+            }
+            if (typeof (port) !== 'undefined') {
+                json.port = port;
+            }
+            if (typeof (_id) !== 'undefined') {
+                json._id = _id;
+                _self._request('/v2/api/site/<SITE>/static-dns/'+ _id.trim(), json, sites, cb, 'PUT');
+            } else {
+                _self._request('/v2/api/site/<SITE>/static-dns', json, sites, cb, 'POST');
+            }
+        }
+    }
 
     //#endregion
 

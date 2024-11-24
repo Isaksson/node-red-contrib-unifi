@@ -273,7 +273,7 @@ module.exports = function (RED) {
                         controller.getNetworkConf(site, handleDataCallback);
                         break;
                     case 'setapledcolor':
-                        controller.setLEDColorOverride(site, msg.payload.device_id, msg.payload.color, handleDataCallback);
+                        controller.setLEDColorOverride(site, msg.payload.device_id, msg.payload.color, msg.payload.brightness, handleDataCallback);
                         break;
                     case 'getradiususers':
                         controller.listRadiusAccounts(site, handleDataCallback);
@@ -293,6 +293,12 @@ module.exports = function (RED) {
                     case 'getdpistats':
                         controller.getDPIStats(site, handleDataCallback);
                         break;
+                    case 'getcustomdns':
+                            controller.getCustomDNS(site, handleDataCallback);
+                            break;
+                    case 'setcustomdns':
+                            controller.setCustomDNS(site, msg.payload.record_type, msg.payload.value, msg.payload.key, msg.payload.enabled, msg.payload.priority, msg.payload.weight, msg.payload.ttl, msg.payload.port, msg.payload._id, handleDataCallback);
+                            break;            
                     default:
                         //controller.logout();
                         node.status({

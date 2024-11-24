@@ -1,9 +1,9 @@
 node-red-contrib-unifi is a Node-RED module that allows to query/control [UniFi devices](http://www.ubnt.com/) via the official UniFi-Controller API. Based on npm package node-unifi
 
 ##  New functions
-Version 0.3.18
-* Node has now two outputs #1 same as before #2 output error message
-* Security Fix
+Version 0.3.19
+* New command getCustomDNS, setCustomDNS
+* Added brightness to command setAPLed
 
 ## Supports the following Commands
 * SitesStats : Site stats
@@ -65,13 +65,15 @@ Version 0.3.18
 * setWLanFilter : Set Device Access Filtering { command: "setWLanFilter", wlan_id: "id", policy: "allow|deny", mac: ['MAC Address'] }
 * setDNSServer : Set DHCP DNS Server 1 and 2 { command: "setDNSServer", network_id: "id", dns1: "x.x.x.x", dns2: "x.x.x.x" }
 * getNetworkConf : Get network configuration { command: "getNetworkConf" }
-* setAPLedColor : Set LED color for Access point { command: "setapledcolor", device_id: "24 char device id", color: "Color Hex code" }
+* setAPLedColor : Set LED color for Access point { command: "setapledcolor", device_id: "24 char device id", color: "Color Hex code", brightness: 1-100 }
 * getRadiusUsers : Get all radius users { command: "getRadiusUsers" }
 * getRadiusProfiles : Get all radius profiles { command: "getRadiusProfiles" }
 * createRadiusUser : Create radius user { command: "createRadiusUser", name: "account name", x_password: "password", tunnel_type: "optional 1-13", tunnel_medium_type: "optional 1-15", vlan: "optional vlan id" }
 * updateRadiusUser : Update radius user { command: "updateRadiusUser", user_id: "24 char string _id of the user", name: "optional account name", x_password: "optional password", tunnel_type: "optional 1-13", tunnel_medium_type: "optional 1-15", vlan: "optional vlan id" }
 * deleteRadiusUser : Delete radius user { command: "deleteRadiusUser", user_id: "24 char string _id of the user" }
 * getDPIstats : Get array of DPI stats { command: "getDPIstats" }
+* getCustomDNS : Get array of Custom DNS entries { command: "getCustomDNS" }
+* setCustomDNS : Create new Custom DNS entry { command: "setCustomDNS", record_type: "A|AAAA|MX|TXT|SRV", value: "IP address|Text|Domain name", key: "Domain name", priority: 0-65535, weight: 0-65535, ttl: 1-86400, port: 1-65535, enabled: true|false, _id: "_id of current Custom DNS entry if you want to update" }
 
 ## Tips
 * Use the command SiteStats to get your Unifi Site Name
