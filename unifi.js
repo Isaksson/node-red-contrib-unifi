@@ -294,11 +294,26 @@ module.exports = function (RED) {
                         controller.getDPIStats(site, handleDataCallback);
                         break;
                     case 'getcustomdns':
-                            controller.getCustomDNS(site, handleDataCallback);
-                            break;
+                        controller.getCustomDNS(site, handleDataCallback);
+                        break;
                     case 'setcustomdns':
-                            controller.setCustomDNS(site, msg.payload.record_type, msg.payload.value, msg.payload.key, msg.payload.enabled, msg.payload.priority, msg.payload.weight, msg.payload.ttl, msg.payload.port, msg.payload._id, handleDataCallback);
-                            break;            
+                        controller.setCustomDNS(site, msg.payload.record_type, msg.payload.value, msg.payload.key, msg.payload.enabled, msg.payload.priority, msg.payload.weight, msg.payload.ttl, msg.payload.port, msg.payload._id, handleDataCallback);
+                        break;
+                    case 'getfirewallzones':
+                        controller.getFirewallZones(site, handleDataCallback);
+                        break;
+                    case 'getnetworks':
+                        controller.getNetworks(site, handleDataCallback);
+                        break;
+                    case 'setfirewallzone':
+                        controller.setFirewallZone(site, msg.payload.name, msg.payload.network_ids, msg.payload._id, msg.payload.remove, handleDataCallback);
+                        break;
+                    case 'getfirewallpolicies':
+                        controller.getFirewallPolicies(site, handleDataCallback);
+                        break;
+                    case 'setfirewallpolicy':
+                        controller.setFirewallPolicy(site, msg.payload.enabled, msg.payload._id, handleDataCallback);
+                        break;
                     default:
                         //controller.logout();
                         node.status({

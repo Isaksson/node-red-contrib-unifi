@@ -2145,6 +2145,97 @@ var Controller = function (hostname, port, unifios, ssl, debug) {
         }
     }
 
+    /**
+     * List firewall zones - getFirewallZones()
+     * ----------------
+     *
+     * required paramater <sites>   = name or array of site names
+     */
+    _self.getFirewallZones = function (sites, cb) {
+        _self._request('/v2/api/site/<SITE>/firewall/zone', null, sites, cb);
+    };
+
+    /**
+     * List networks - getNetworks()
+     * ----------------
+     *
+     * required paramater <sites>   = name or array of site names
+     */
+    _self.getNetworks = function (sites, cb) {
+        _self._request('/v2/api/site/<SITE>/lan/enriched-configuration', null, sites, cb);
+    };
+
+    /**
+     * Set Firewall Zone - setFirewallZone()
+     * ------------------------------
+     *
+     * 
+     */
+    _self.setFirewallZone = function (sites, name, network_ids, _id, remove, cb) {
+        if (remove) {
+            if (typeof (_id) == 'undefined') {
+                cb({ message: '_id is missing' });
+            } else {
+                _self._request('/v2/api/site/<SITE>/firewall/zone/' + _id.trim(), null, sites, cb, 'DELETE');
+            }
+        } else {
+
+            var json = {};
+
+            if (typeof (name) == 'undefined') {
+                cb({ message: 'name is missing' });
+            } else {
+                json.name = name;
+                if (typeof (network_ids) == 'undefined') {
+                    json.network_ids = [];
+                } else {
+                    json.network_ids = network_ids;
+                }
+
+                if (typeof (_id) !== 'undefined') {
+                    json._id = _id;
+                    _self._request('/v2/api/site/<SITE>/firewall/zone/' + _id.trim(), json, sites, cb, 'PUT');
+                } else {
+                    _self._request('/v2/api/site/<SITE>/firewall/zone', json, sites, cb, 'POST');
+                }
+            }
+        }
+    }
+
+    /**
+     * List firewall policies - getFirewallPolicies()
+     * ----------------
+     *
+     * required paramater <sites>   = name or array of site names
+     */
+    _self.getFirewallPolicies = function (sites, cb) {
+        _self._request('/v2/api/site/<SITE>/firewall-policies', null, sites, cb);
+    };
+
+    /**
+     * Set firewall policy - setFirewallPolicy()
+     * ----------------
+     *
+     * required paramater <sites>   = name or array of site names
+     * required paramater <enabled>   = true | false
+     * required paramater <_id>   = Firewall Policy Id
+     */
+    _self.setFirewallPolicy = function (sites, enabled, _id, cb) {
+        var json = [];
+        if (typeof (enabled) == 'undefined') {
+            cb({ message: 'Parameter enabled is missing' });
+        } else if (typeof (_id) == 'undefined') {
+            cb({ message: 'Parameter _id is missing' });
+        } else {
+            var newObject = {
+                _id: _id,
+                enabled: enabled
+            };
+            json.push(newObject);
+            _self._request('/v2/api/site/<SITE>/firewall-policies/batch', json, sites, cb, 'PUT');
+        }
+    };
+
     //#endregion
 
     _self._request = function (url, json, sites, cb, method) {

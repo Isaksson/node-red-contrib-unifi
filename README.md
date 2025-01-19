@@ -1,9 +1,10 @@
 node-red-contrib-unifi is a Node-RED module that allows to query/control [UniFi devices](http://www.ubnt.com/) via the official UniFi-Controller API. Based on npm package node-unifi
 
 ##  New functions
-Version 0.3.19
-* New command getCustomDNS, setCustomDNS
-* Added brightness to command setAPLed
+Version 0.3.20
+* New commands to support v9 Zone-Based Firewall
+* getFirewallZones, getNetworks, setFirewallZone, getFirewallPolicies and setFirewallPolicy
+
 
 ## Supports the following Commands
 * SitesStats : Site stats
@@ -74,6 +75,11 @@ Version 0.3.19
 * getDPIstats : Get array of DPI stats { command: "getDPIstats" }
 * getCustomDNS : Get array of Custom DNS entries { command: "getCustomDNS" }
 * setCustomDNS : Create new Custom DNS entry { command: "setCustomDNS", record_type: "A|AAAA|MX|TXT|SRV", value: "IP address|Text|Domain name", key: "Domain name", priority: 0-65535, weight: 0-65535, ttl: 1-86400, port: 1-65535, enabled: true|false, _id: "_id of current Custom DNS entry if you want to update" }
+* getFirewallZones : Get array of Firewall Zones { command: "getFirewallZones" }
+* getNetworks : Get array of Networks { command: "getNetworks" }
+* setFirewallZone : Create, Update or Delete Firewall Zone { command: "setFirewallZone", name: "Zone name - create or update", network_ids: "Network Id - create or update", _id: "Zone id - update or delete", remove: "true - delete" }
+* getFirewallPolicies : Get array of Firewall Policies { command: "getFirewallPolicies" }
+* setFirewallPolicy : Set status of Firewall Policy { command: "setFirewallPolicy", enabled: "true | false", _id: "Firewall Policy Id" }
 
 ## Tips
 * Use the command SiteStats to get your Unifi Site Name
@@ -86,7 +92,7 @@ Version 0.3.19
 * See working examples in the examples folder
 
 ## Requirements
-* Installed [UniFi-Controller](https://www.ubnt.com/download/unifi) version v4, v5, v6, v7 or v8
+* Installed [UniFi-Controller](https://www.ubnt.com/download/unifi) version v4, v5, v6, v7, v8 or v9
 * Unifi controller user must have at least 'administrator' rights (not read-only)
 
 ## Installation recommended
@@ -105,7 +111,7 @@ user-directory (default $HOME/.node-red) and prefixed with sudo.
 ## License
 MIT License
 
-Copyright (c) 2024 Kristoffer Isaksson
+Copyright (c) 2025 Kristoffer Isaksson
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

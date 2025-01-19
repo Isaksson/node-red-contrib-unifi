@@ -261,9 +261,14 @@
             <li><code>getDPIstats</code> : Get array of DPI stats { command: "getDPIstats" }</li>
             <li><code>getCustomDNS</code> : Get array of Custom DNS entries { command: "getCustomDNS" }</li>
             <li><code>setCustomDNS</code> : Create new Custom DNS entry { command: "setCustomDNS", record_type: "A|AAAA|MX|TXT|SRV", value: "IP address|Text|Domain name", key: "Domain name", priority: 0-65535, weight: 0-65535, ttl: 1-86400, port: 1-65535, enabled: true|false, _id: "_id of current Custom DNS entry if you want to update" }</li>
+            <li><code>getFirewallZones</code> : Get array of Firewall Zones { command: "getFirewallZones" }</li>
+            <li><code>getNetworks</code> : Get array of Networks { command: "getNetworks" }</li>
+            <li><code>setFirewallZone</code> : Create, Update or Delete Firewall Zone { command: "setFirewallZone", name: "Zone name - create or update", network_ids: "Network Id - create or update", _id: "Zone id - update or delete", remove: "true - delete" }</li>
+            <li><code>getFirewallPolicies</code> : Get array of Firewall Policies { command: "getFirewallPolicies" }</li>
+            <li><code>setFirewallPolicy</code> : Set status of Firewall Policy { command: "setFirewallPolicy", enabled: "true | false", _id: "Firewall Policy Id" }</li>
             <p>Returns all data in JSON parsable strings/objects</p>
     <p>For more information see the <a href="https://github.com/Isaksson/node-red-contrib-unifi" target="_blank">GitHub</a> site.</p>
-    <p>Version 0.3.19</p>
+    <p>Version 0.3.20</p>
 </script>
 
 <script type="text/x-red" data-help-name="UnifiWS">
@@ -271,5 +276,5 @@
     <p>Connects to a Unifi Controller</p>
 	<p>Returns all data in JSON parsable strings/objects</p>
     <p>For more information see the <a href="https://github.com/Isaksson/node-red-contrib-unifi" target="_blank">GitHub</a> site.</p>
-    <p>Version 0.3.19</p>
+    <p>Version 0.3.20</p>
 </script>
