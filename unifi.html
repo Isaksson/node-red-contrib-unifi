@@ -117,15 +117,38 @@
         category: 'output',
         color: '#C0DEED',
         defaults: {
-            name: { value: "" },
-            server: { type: "unificonfig", required: true },
+            name: { value: '' },
+            server: { type: 'unificonfig', required: true },
+            events: { value: 'EVT_WU_Connected, EVT_WU_Disconnected, EVT_WU_Roam, EVT_WU_Roam_Radio, EVT_WG_Connected, EVT_WG_Disconnected, EVT_WG_Roam, EVT_WG_Roam_Radio, EVT_LU_Disconnected, EVT_LU_Connected' },
+            reconnect: {
+                value: '5',
+                required: true,
+                label: 'Reconnect Timeout',
+                validate: function(value, opt) {
+                    if (RED.validators.number(value) && value >= -1) {
+                        return true;
+                    } else {
+                        return 'Invalid Reconnect Timeout';
+                    }
+                }
+            },
+            reconnectUnits: { value: 'seconds' },
         },
         inputs: 0,
         outputs: 1,
-        icon: "bridge.png",
+        icon: 'bridge.png',
         label: function () {
             if (this.name) {
                 return this.name;
+            }
+        },
+        oneditprepare: function() {
+            $('#node-input-reconnect').spinner({ min: -1 });
+
+            if (!this.reconnectUnits) {
+                $('#node-input-reconnectUnits option').filter(function() {
+                    return $(this).val() == 'seconds';
+                }).attr('selected', true);
             }
         }
     });
@@ -183,6 +206,31 @@
 	<div class="form-row">
         <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
         <input type="text" id="node-input-server" placeholder="">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-events"><i class="fa fa-filter"></i> Event Filter</label>
+        <input type="text" id="node-input-events" placeholder="">
+    </div>
+    <div id="node-input-tip" class="form-tips">
+        Comma separated list of events to forward to the output, leave empty for all events.
+    </div>
+
+    <hr align="middle">
+
+    <div class="form-row">
+        <label for="node-input-reconnect"><i class="fa fa-clock-o"></i> Reconnect</label>
+        <input type="text" id="node-input-reconnect" style="text-align:end; width:50px !important">
+        <select id="node-input-reconnectUnits" style="width:200px !important">
+          <option value="milliseconds">Milliseconds</option>
+          <option value="seconds">Seconds</option>
+          <option value="minutes">Minutes</option>
+          <option value="hours">Hours</option>
+          <option value="days">Days</option>
+        </select>
+    </div>
+    <div id="node-input-tip" class="form-tips">
+        Set to -1 to disable reconnecting on error.
     </div>
 </script>
 
