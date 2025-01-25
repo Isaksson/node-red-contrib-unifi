@@ -2236,6 +2236,27 @@ var Controller = function (hostname, port, unifios, ssl, debug) {
         }
     };
 
+    /**
+     * Power-Cycle PoE Port - powerCyclePoEPort()
+     * ------------------------------
+     * required paramater <port>   = port Id
+     * required paramater <mac>    = Switch MAC address
+     */
+    _self.powerCyclePoEPort = function (sites, port, mac, cb) {
+        var json = {};
+
+        if (typeof (port) == 'undefined') {
+            cb({ message: 'port is missing' });
+        } else if (typeof (mac) == 'undefined') {
+            cb({ message: 'MAC is missing' });
+        } else {
+            json.port_idx = port;
+            json.mac = mac;
+            json.cmd = "power-cycle";
+            _self._request('/api/s/<SITE>/cmd/devmgr', json, sites, cb, 'POST');
+        }
+    };
+
     //#endregion
 
     _self._request = function (url, json, sites, cb, method) {

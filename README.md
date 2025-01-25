@@ -1,10 +1,8 @@
 node-red-contrib-unifi is a Node-RED module that allows to query/control [UniFi devices](http://www.ubnt.com/) via the official UniFi-Controller API. Based on npm package node-unifi
 
-##  New functions
-Version 0.3.20
-* New commands to support v9 Zone-Based Firewall
-* getFirewallZones, getNetworks, setFirewallZone, getFirewallPolicies and setFirewallPolicy
-
+## New functions
+Version 0.3.21
+* New command to support Power-Cycle of Switch PoE port
 
 ## Supports the following Commands
 * SitesStats : Site stats
@@ -80,6 +78,7 @@ Version 0.3.20
 * setFirewallZone : Create, Update or Delete Firewall Zone { command: "setFirewallZone", name: "Zone name - create or update", network_ids: "Network Id - create or update", _id: "Zone id - update or delete", remove: "true - delete" }
 * getFirewallPolicies : Get array of Firewall Policies { command: "getFirewallPolicies" }
 * setFirewallPolicy : Set status of Firewall Policy { command: "setFirewallPolicy", enabled: "true | false", _id: "Firewall Policy Id" }
+* powerCyclePoEPort : Power-Cycle Switch PoE port { command: "powerCyclePoEPort", port: "Port Id", mac: "Switch MAC address" }
 
 ## Tips
 * Use the command SiteStats to get your Unifi Site Name

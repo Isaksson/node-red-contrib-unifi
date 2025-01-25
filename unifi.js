@@ -314,6 +314,9 @@ module.exports = function (RED) {
                     case 'setfirewallpolicy':
                         controller.setFirewallPolicy(site, msg.payload.enabled, msg.payload._id, handleDataCallback);
                         break;
+                    case 'powercyclepoeport':
+                        controller.powerCyclePoEPort(site, msg.payload.port, msg.payload.mac, handleDataCallback);
+                        break;    
                     default:
                         //controller.logout();
                         node.status({
