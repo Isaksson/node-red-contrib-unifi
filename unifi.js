@@ -353,82 +353,52 @@ module.exports = function (RED) {
     function UnifiWSNode(config) {
         RED.nodes.createNode(this, config);
         const node = this;
+        const msg = {};
 
-        const server = RED.nodes.getNode(config.server);
+        var server = RED.nodes.getNode(config.server);
         if (!server) {
             this.error(RED._('missing client config'));
             return;
         }
 
-        const { username, password, site, ip, port, unifios, ssl } = server;
-        const { events } = config;
+        let { username, password, site, ip, port, unifios, ssl } = server;
+        let { command } = config;
 
-        let reconnect = typeof config.reconnect === "string" ? parseInt(config.reconnect) : config.reconnect;
-        if (typeof reconnect !== "number" || isNaN(reconnect)) { // fallback to 5 seconds (sometimes I simply love JavaScript: the type of NaN (not (!) a number) is, you guessed it, "number"!)
-            reconnect = 5000;
-        } else if (config.reconnectUnits === "milliseconds") {
-            // take value as is
-        } else if (config.reconnectUnits === "minutes") {
-            reconnect *= 60 * 1000;
-        } else if (config.reconnectUnits === "hours") {
-            reconnect *= 60 * 60 * 1000;
-        } else if (config.reconnectUnits === "days") {
-            reconnect *= 24 * 60 * 60 * 1000;
-        } else { // defaults to seconds
-            reconnect *= 1000;
+        const controllerWS = new unifiWS.ControllerWS(ip, port, unifios, ssl, username, password, site);
+
+        //controllerWS.loginws(handleDataCallback);
+
+        wslogin();
+
+        function wslogin() {
+            node.tout = null;
+            controllerWS.loginws(handleDataCallback);
         }
 
-        const controllerWS = new unifiWS.ControllerWS(ip, port, unifios, ssl, username, password, site, events);
-
-        wsConnect();
-        node.on('close', function() {
-            node.closed = true;
-            wsClose();
-        });
-
-        function wsConnect() {
-            wsClose();
-            node.status(STATUS_CONNECTING);
-            controllerWS.connect(wsCallback, function wsTrace() {
-                this.trace.apply(this, arguments);
-            });
-        }
-        function wsClose() {
-            clearTimeout(node.reconnect);
-            node.reconnect = null;
-            controllerWS.close();
-            node.status(STATUS_DISCONNECTED);
-        }
-        function wsReconnect() {
-            wsClose();
-            if (!node.closed && reconnect > -1) {
-                if (reconnect === 0) {
-                    wsConnect();
-                } else {
-                    node.reconnect = setTimeout(() => {
-                        wsConnect();
-                    }, reconnect);
-                }
-            }
-        }
-        function wsCallback(err, data) {
+        function handleDataCallback(err, data) {
             if (err) {
-                // forward to node.error which allows catching the error in a Catch node on the same flow
-                node.error(err.message, err);
+                //console.log('ERROR: ' + err.message);
+                msg.error = err.message;
+                node.send(msg);
                 node.status({
-                    fill: 'red',
-                    shape: 'dot',
+                    fill: "red",
+                    shape: "dot",
                     text: err.message
                 });
+
             } else {
-                if (data == "INVALID_MESSAGE") {
-                    node.warn("Invalid message received");
-                } else if (data == 'STATUS_CONNECTED') {
+                if (data == 'STATUS_CONNECTED') {
                     node.status(STATUS_CONNECTED);
                 } else if (data == 'STATUS_DISCONNECTED') {
-                    wsReconnect();
+                    node.status(STATUS_DISCONNECTED);
+                    clearTimeout(node.tout);
+                    node.tout = setTimeout(function () {
+                        node.status(STATUS_CONNECTING);
+                        wslogin();
+                    }, 5000);
                 } else {
-                    node.send({ payload: data });
+                    msg.payload = data;
+                    node.send(msg);
                     node.status(STATUS_OK);
                 }
             }
