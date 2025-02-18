@@ -267,6 +267,8 @@
             <li><code>getFirewallPolicies</code> : Get array of Firewall Policies { command: "getFirewallPolicies" }</li>
             <li><code>setFirewallPolicy</code> : Set status of Firewall Policy { command: "setFirewallPolicy", enabled: "true | false", _id: "Firewall Policy Id" }</li>
             <li>powerCyclePoEPort</code> : Power-Cycle Switch PoE port { command: "powerCyclePoEPort", port: "Port Id", mac: "Switch MAC address" }</li>
+            <li><code>startPingDevice</code> : Send 30 ping requests to a specific device { command: "startPingDevice", mac: "Device MAC address" }</li>
+            <li><code>stopPingDevice</code> : Stop pinging a specific device { command: "stopPingDevice", mac: "Device MAC address" }</li>
             <p>Returns all data in JSON parsable strings/objects</p>
     <p>For more information see the <a href="https://github.com/Isaksson/node-red-contrib-unifi" target="_blank">GitHub</a> site.</p>
     <p>Version 0.3.21</p>

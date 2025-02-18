@@ -317,6 +317,12 @@ module.exports = function (RED) {
                     case 'powercyclepoeport':
                         controller.powerCyclePoEPort(site, msg.payload.port, msg.payload.mac, handleDataCallback);
                         break;    
+                    case 'startpingdevice':
+                        controller.startPingDevice(site, msg.payload.mac, handleDataCallback);
+                        break;
+                    case 'stoppingdevice':
+                        controller.stopPingDevice(site, msg.payload.mac, handleDataCallback);
+                        break;
                     default:
                         //controller.logout();
                         node.status({

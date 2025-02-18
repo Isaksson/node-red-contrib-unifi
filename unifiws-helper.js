@@ -80,6 +80,8 @@ var ControllerWS = function (hostname, port, unifios, ssl, username, password, s
                                     cb(false, obj);
                                 }
                             }
+                        } else if (obj.meta.message == 'ping-test:update') {
+                            cb(false, obj);
                         }
                         } catch (error) {
                             //Ignore this message

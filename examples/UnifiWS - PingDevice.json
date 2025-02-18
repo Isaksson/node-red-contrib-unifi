@@ -1,0 +1,217 @@
+[
+    {
+        "id": "803bc9d8451f97ae",
+        "type": "tab",
+        "label": "Ping",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "8652545faa541cce",
+        "type": "UnifiWS",
+        "z": "803bc9d8451f97ae",
+        "name": "",
+        "server": "3935534c4b7f9eda",
+        "x": 220,
+        "y": 240,
+        "wires": [
+            [
+                "905a45d6b9b1bc75"
+            ]
+        ]
+    },
+    {
+        "id": "502865c12505b7b7",
+        "type": "Unifi",
+        "z": "803bc9d8451f97ae",
+        "name": "",
+        "server": "3935534c4b7f9eda",
+        "command": 1,
+        "debug": true,
+        "x": 430,
+        "y": 360,
+        "wires": [
+            [
+                "950b8beb4135fc7e"
+            ],
+            [
+                "c627ac193510e531"
+            ]
+        ]
+    },
+    {
+        "id": "0fdd3cb04b40368f",
+        "type": "debug",
+        "z": "803bc9d8451f97ae",
+        "name": "Ping",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 750,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "950b8beb4135fc7e",
+        "type": "debug",
+        "z": "803bc9d8451f97ae",
+        "name": "Response",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 640,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "1f42efd844aabea6",
+        "type": "inject",
+        "z": "803bc9d8451f97ae",
+        "name": "Start",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"command\":\"startPingDevice\",\"mac\":\"00:00:00:00:00:00\"}",
+        "payloadType": "json",
+        "x": 230,
+        "y": 340,
+        "wires": [
+            [
+                "502865c12505b7b7"
+            ]
+        ]
+    },
+    {
+        "id": "c627ac193510e531",
+        "type": "debug",
+        "z": "803bc9d8451f97ae",
+        "name": "Error",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 630,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "bc25198742d8de60",
+        "type": "inject",
+        "z": "803bc9d8451f97ae",
+        "name": "Stop",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"command\":\"stopPingDevice\",\"mac\":\"00:00:00:00:00:00\"}",
+        "payloadType": "json",
+        "x": 230,
+        "y": 380,
+        "wires": [
+            [
+                "502865c12505b7b7"
+            ]
+        ]
+    },
+    {
+        "id": "905a45d6b9b1bc75",
+        "type": "function",
+        "z": "803bc9d8451f97ae",
+        "name": "Prepare",
+        "func": "if (msg.payload.meta.message === 'ping-test:update') {\n    const data = msg.payload.data[0]\n    msg.result = {\n        status: data.status,\n        isp_name: data.isp_name,\n        gateway: data.gateway,\n        client: data.client,\n        ap: data.ap,\n        avg_ap_latency: data.avg_ap_latency,\n        avg_isp_latency: data.avg_isp_latency,\n        avg_latency: data.avg_latency,\n        max_latency: data.max_latency,\n        min_latency: data.min_latency,\n        packet_loss: data.packet_loss,\n        last_latency: data.replies[data.replies.length- 1].time,\n    }\n    return [msg, msg];\n}\nreturn [null, msg];",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 240,
+        "wires": [
+            [
+                "15b82b6e3e0245e9"
+            ],
+            [
+                "fb087278bbd9b1d1"
+            ]
+        ],
+        "outputLabels": [
+            "Ping result",
+            "WS message"
+        ]
+    },
+    {
+        "id": "fb087278bbd9b1d1",
+        "type": "debug",
+        "z": "803bc9d8451f97ae",
+        "name": "WS",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 530,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "15b82b6e3e0245e9",
+        "type": "template",
+        "z": "803bc9d8451f97ae",
+        "name": "Format message",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "Ping is {{result.status}}.\nLatency is between {{result.min_latency}}ms and {{result.max_latency}}ms\nCurrent latency is {{result.last_latency}}ms\n{{result.isp_name}} ―{{result.avg_isp_latency}}ms→ {{result.gateway}} ―{{result.avg_ap_latency}}ms→ {{result.ap}} ―{{result.avg_latency}}ms→ {{result.client}}\n{{result.packet_loss}} packet loss",
+        "output": "str",
+        "x": 570,
+        "y": 220,
+        "wires": [
+            [
+                "0fdd3cb04b40368f"
+            ]
+        ]
+    },
+    {
+        "id": "3935534c4b7f9eda",
+        "type": "unificonfig",
+        "name": "Dream Router",
+        "ip": "10.0.0.1",
+        "port": 443,
+        "site": "default",
+        "unifios": true,
+        "ssl": false
+    }
+]
