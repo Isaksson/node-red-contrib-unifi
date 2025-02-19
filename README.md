@@ -1,8 +1,8 @@
 node-red-contrib-unifi is a Node-RED module that allows to query/control [UniFi devices](http://www.ubnt.com/) via the official UniFi-Controller API. Based on npm package node-unifi
 
 ## New functions
-Version 0.3.21
-* New command to support Power-Cycle of Switch PoE port
+Version 0.3.22
+* New command to send ping requests to a specific device, results are retrieved via Websocket
 
 ## Supports the following Commands
 * SitesStats : Site stats
@@ -79,6 +79,8 @@ Version 0.3.21
 * getFirewallPolicies : Get array of Firewall Policies { command: "getFirewallPolicies" }
 * setFirewallPolicy : Set status of Firewall Policy { command: "setFirewallPolicy", enabled: "true | false", _id: "Firewall Policy Id" }
 * powerCyclePoEPort : Power-Cycle Switch PoE port { command: "powerCyclePoEPort", port: "Port Id", mac: "Switch MAC address" }
+* startPingDevice : Send 30 ping requests to a specific device, results are retrieved via Websocket { command: "startPingDevice", mac: "Device MAC address" }
+* stopPingDevice : Stop pinging a specific device { command: "stopPingDevice", mac: "Device MAC address" }
 
 ## Tips
 * Use the command SiteStats to get your Unifi Site Name

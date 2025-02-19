@@ -69,6 +69,7 @@
         },
         inputs: 1,
         outputs: 2,
+        outputLabels: ["data", "error"],
         icon: "bridge.png",
         label: function () {
             if (this.name) {
@@ -137,12 +138,12 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
 
-	<div class="form-row">
+    <div class="form-row">
         <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
         <input type="text" id="node-input-server" placeholder="">
     </div>
 
-	<div class="form-row">
+    <div class="form-row">
         <label for="node-input-command"><i class="fa fa-dot-circle-o"></i> Command</label>
         <select id="node-input-command">
            <option value="1">SitesStats</option>
@@ -180,7 +181,7 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
 
-	<div class="form-row">
+    <div class="form-row">
         <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
         <input type="text" id="node-input-server" placeholder="">
     </div>
@@ -208,6 +209,7 @@
             <li><code>PortForwardSettings</code> : Port Forward Settings</li>
     </ul>
     <p>Special Commands: (No GUI)</p>
+    <ul>
             <li><code>DisableWLan</code> : Disable/Enable WLan { command: "disableWLan", wlan_id: "use _id from command WLanSettings", disable: true }</li>
             <li><code>DisablePortForward</code> : Disable/Enable PortForward { command: "disablePortForward", portforward_id: "use _id from command PortForwardSettings", disable: true }</li>
             <li><code>blockClient</code> : Block Client { command: "blockClient", mac: "client MAC address" }</li>
@@ -266,8 +268,11 @@
             <li><code>setFirewallZone</code> : Create, Update or Delete Firewall Zone { command: "setFirewallZone", name: "Zone name - create or update", network_ids: "Network Id - create or update", _id: "Zone id - update or delete", remove: "true - delete" }</li>
             <li><code>getFirewallPolicies</code> : Get array of Firewall Policies { command: "getFirewallPolicies" }</li>
             <li><code>setFirewallPolicy</code> : Set status of Firewall Policy { command: "setFirewallPolicy", enabled: "true | false", _id: "Firewall Policy Id" }</li>
-            <li>powerCyclePoEPort</code> : Power-Cycle Switch PoE port { command: "powerCyclePoEPort", port: "Port Id", mac: "Switch MAC address" }</li>
+            <li><code>powerCyclePoEPort</code> : Power-Cycle Switch PoE port { command: "powerCyclePoEPort", port: "Port Id", mac: "Switch MAC address" }</li>
+            <li><code>startPingDevice</code> : Send 30 ping requests to a specific device { command: "startPingDevice", mac: "Device MAC address" }</li>
+            <li><code>stopPingDevice</code> : Stop pinging a specific device { command: "stopPingDevice", mac: "Device MAC address" }</li>
             <p>Returns all data in JSON parsable strings/objects</p>
+    </ul>
     <p>For more information see the <a href="https://github.com/Isaksson/node-red-contrib-unifi" target="_blank">GitHub</a> site.</p>
     <p>Version 0.3.21</p>
 </script>
@@ -275,7 +280,7 @@
 <script type="text/x-red" data-help-name="UnifiWS">
     <p><u>BETA</u></p>
     <p>Connects to a Unifi Controller</p>
-	<p>Returns all data in JSON parsable strings/objects</p>
+    <p>Returns all data in JSON parsable strings/objects</p>
     <p>For more information see the <a href="https://github.com/Isaksson/node-red-contrib-unifi" target="_blank">GitHub</a> site.</p>
     <p>Version 0.3.21</p>
 </script>

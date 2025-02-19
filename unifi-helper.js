@@ -2257,6 +2257,32 @@ var Controller = function (hostname, port, unifios, ssl, debug) {
         }
     };
 
+    /**
+     * Send 30 ping requests to a specific device - startPingDevice()
+     * ------------------------------
+     * required paramater <mac>    = device MAC address
+     */
+    _self.startPingDevice = function (sites, mac, cb) {
+        if (typeof (mac) == 'undefined') {
+            cb({ message: 'MAC is missing' });
+        } else {
+            _self._request(`/v2/api/site/<SITE>/ping-start/${mac}?mac=${mac}`, {}, sites, cb, 'POST');
+        }
+    };
+
+    /**
+     * Stop pinging a specific device - stopPingDevice()
+     * ------------------------------
+     * required paramater <mac>    = device MAC address
+     */
+    _self.stopPingDevice = function (sites, mac, cb) {
+        if (typeof (mac) == 'undefined') {
+            cb({ message: 'MAC is missing' });
+        } else {
+            _self._request(`/v2/api/site/<SITE>/ping-stop/${mac}`, {}, sites, cb, 'POST');
+        }
+    };
+
     //#endregion
 
     _self._request = function (url, json, sites, cb, method) {
