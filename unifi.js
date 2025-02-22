@@ -39,23 +39,25 @@ module.exports = function (RED) {
             return;
         }
 
-        let { username, password, site, ip, port, unifios, ssl } = server;
-        let { command, debug } = config;
+        let { username, password, ip, port, unifios, ssl } = server;
+        let { debug } = config;
 
         const controller = new unifi.Controller(ip, port, unifios, ssl, debug);
 
         this.on('input', function (msg) {
 
-            if (msg.payload.command != null) {
-                command = msg.payload.command;
-            } else {
-                command = config.command;
-            }
+            // get default command and site from node config
+            let command = config.command;
+            let site = server.site;
 
-            if (msg.payload.site != null) {
-                site = msg.payload.site;
-            } else {
-                site = server.site;
+            if (msg.payload) {
+                // override command and site from current message
+                if (msg.payload.command != null) {
+                    command = msg.payload.command;
+                }
+                if (msg.payload.site != null) {
+                    site = msg.payload.site;
+                }
             }
 
             login()
@@ -371,7 +373,6 @@ module.exports = function (RED) {
         }
 
         let { username, password, site, ip, port, unifios, ssl } = server;
-        let { command } = config;
 
         const controllerWS = new unifiWS.ControllerWS(ip, port, unifios, ssl, username, password, site);
 
