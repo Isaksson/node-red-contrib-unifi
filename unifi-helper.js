@@ -1154,7 +1154,7 @@ var Controller = function (hostname, port, unifios, ssl, debug) {
      * optional parameter <name>
      *
      */
-    _self.setWLanSettings = function (sites, wlan_id, cb, x_passphrase, name) {
+    _self.setWLanSettings = function (sites, wlan_id, x_passphrase, name, cb) {
         var json = {};
 
         if (typeof (x_passphrase) !== 'undefined')

@@ -233,6 +233,9 @@ module.exports = function (RED) {
                     case 'setwlanpassword':
                         controller.setWLanPassword(site, msg.payload.wlan_id, msg.payload.x_passphrase, handleDataCallback);
                         break;
+                    case 'setwlansettings':
+                        controller.setWLanSettings(site, msg.payload.wlan_id, msg.payload.x_passphrase, msg.payload.name, handleDataCallback);
+                        break;
                     case 'getvouchers':
                         controller.getVouchers(site, handleDataCallback)
                         break;
