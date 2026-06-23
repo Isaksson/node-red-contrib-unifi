@@ -3,9 +3,9 @@ const { CookieJar } = require('tough-cookie');
 const { HttpCookieAgent, HttpsCookieAgent } = require('http-cookie-agent/http');
 const WebSocket = require('ws');
 
-var ControllerWS = function (hostname, port, unifios, ssl, username, password, site) {
+let ControllerWS = function (hostname, port, unifios, ssl, username, password, site, allowedMessages, allowedEventsKey) {
 
-    var _self = this;
+    let _self = this;
     _self._cookieJar = new CookieJar();
     _self._unifios = unifios;
     _self._ssl = ssl;
@@ -13,6 +13,8 @@ var ControllerWS = function (hostname, port, unifios, ssl, username, password, s
     _self._username = username;
     _self._password = password;
     _self._site = site;
+    _self._ws = null;
+    _self._needReconnect = true;
 
     if (typeof (hostname) !== 'undefined' && typeof (port) !== 'undefined') {
         _self._baseurl = 'https://' + hostname + ':' + port;
@@ -31,76 +33,96 @@ var ControllerWS = function (hostname, port, unifios, ssl, username, password, s
         else
             url = _self._baseurl + '/api/login';
 
-        axiosinstance.post(url, {
-            username: _self._username,
-            password: _self._password
-        })
-            .then(function (response) {
-                if (response.headers['x-csrf-token']) {
-                    axiosinstance.defaults.headers.common['x-csrf-token'] = response.headers['x-csrf-token'];
-                }
+        try {
+            // http POST request login to receive a cookie
+            const response = await axiosinstance.post(url, {
+                username: _self._username,
+                password: _self._password
             })
-            .catch(function (error) {
+            if (response.headers['x-csrf-token']) {
+                axiosinstance.defaults.headers.common['x-csrf-token'] = response.headers['x-csrf-token'];
+            }
+            const cookies = await jar.getCookieString(_self._baseurl)
 
-            })
-            .then(function () {
+            // prepare websocket URL
+            const queryParams = new URLSearchParams();
+            // request client messages in query param
+            if (allowedMessages.length === 0 || allowedMessages.includes('client:sync')) {
+                queryParams.append('clients', 'v2');
+            }
+            const eventsUrl = _self._baseurl.replace('https://', 'wss://')+`${_self._unifios
+                ? `/proxy/network/wss/s/${_self._site}/events`
+                : `/wss/s/${_self._site}/events`
+            }?`+queryParams.toString();
 
-                jar.getCookieString(_self._baseurl).then(cookies => {
-                    const baseurl = _self._baseurl.replace('https://', 'wss://')
-                    var eventsUrl = baseurl + '/wss/s/<SITE>/events'.replace('<SITE>', _self._site);
-                    if (_self._unifios)
-                        eventsUrl = baseurl + '/proxy/network/wss/s/<SITE>/events'.replace('<SITE>', _self._site);
-
-                    _ws = new WebSocket(eventsUrl, {
-                        perMessageDeflate: false,
-                        rejectUnauthorized: _self._ssl,
-                        headers: {
-                            Cookie: cookies
-                        }
-                    });
-
-                    _ws.on('open', function open() {
-                        if (typeof (cb) === 'function') {
-                            cb(false, 'STATUS_CONNECTED');
-                        }
-                    });
-
-                    _ws.on('message', function message(data) {
-                        try {
-                            var obj = JSON.parse(data);
-                            var listenTo = ['EVT_WU_Connected', 'EVT_WU_Disconnected', 'EVT_WU_Roam', 'EVT_WU_Roam_Radio', 'EVT_WG_Connected', 'EVT_WG_Disconnected', 'EVT_WG_Roam', 'EVT_WG_Roam_Radio', 'EVT_LU_Disconnected', 'EVT_LU_Connected']
-                            if (obj.meta.message == 'events') {
-                                if (listenTo.indexOf(obj.data[0].key) == -1) {
-                                    //nothing
-                                    //console.log('-----------------------NEW EVENT-----------------------');
-                                    //console.log('%s', data);
-                                    //console.log('-----------------------NEW EVENT-----------------------');
-                                } else {
-                                    if (typeof (cb) === 'function') {
-                                        cb(false, obj);
-                                    }
-                                }
-                            } else if (obj.meta.message == 'ping-test:update') {
-                                cb(false, obj);
+            // declare events handlers
+            _self._needReconnect = true;
+            function onOpenHandler() {
+                cb({type: 'STATUS_CONNECTED'});
+            }
+            function onMessageHandler(data) {
+                try {
+                    const message = JSON.parse(data);
+                    if (allowedMessages.length === 0) {
+                        // no filter, all messages are allowed
+                        cb({type: 'MESSAGE', message});
+                        return;
+                    }
+                    if (allowedMessages.includes(message.meta.message)) {
+                        // this type of message is allowed
+                        if (message.meta.message === 'events') {
+                            // it is an event, apply an additional filter on the event key
+                            if (allowedEventsKey.includes(message.data[0].key)) {
+                                cb({type: 'MESSAGE', message});
                             }
-                        } catch (error) {
-                            //Ignore this message
+                        } else {
+                            cb({type: 'MESSAGE', message});
                         }
-                    });
+                    }
+                } catch (error) {
+                    // send back the error
+                    cb({type: 'ERROR', error});
+                }
+            }
+            function onErrorHandler(error) {
+                cb({type: 'ERROR', error});
+            }
+            function onCloseHandler() {
+                // remove events listeners
+                _ws.off('open', onOpenHandler);
+                _ws.off('message', onMessageHandler);
+                _ws.off('error', onErrorHandler);
+                _ws.off('close', onCloseHandler);
+                cb({type: 'STATUS_DISCONNECTED', needReconnect: _self._needReconnect});
+            }
 
-                    _ws.on('error', function error(error) {
-                        if (typeof (cb) === 'function') {
-                            cb({ message: error });
-                        }
-                    });
-
-                    _ws.on('close', function close() {
-                        if (typeof (cb) === 'function') {
-                            cb(false, 'STATUS_DISCONNECTED');
-                        }
-                    });
-                })
+            // create websocket
+            _ws = new WebSocket(eventsUrl, {
+                perMessageDeflate: false,
+                rejectUnauthorized: _self._ssl,
+                headers: {
+                    Cookie: cookies
+                }
             });
+
+            // associate events handlers with events listeners
+            _ws.on('open', onOpenHandler);
+            _ws.on('message', onMessageHandler);
+            _ws.on('error', onErrorHandler);
+            _ws.on('close', onCloseHandler);
+
+            _self._ws = _ws;
+        } catch (error) {
+            cb({type: 'ERROR', error});
+        }
+    };
+
+    _self.close = function () {
+        if (_self._ws) {
+            // graceful close connection without reconnect
+            _self._needReconnect = false;
+            _self._ws.close(1001);
+        }
     };
 };
 

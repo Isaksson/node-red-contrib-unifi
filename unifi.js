@@ -27,7 +27,7 @@ module.exports = function (RED) {
     };
 
     const unifi = require('./unifi-helper');
-    const unifiWS = require('./unifiws-helper')
+    const unifiWS = require('./unifiws-helper');
 
     function UnifiNode(config) {
         RED.nodes.createNode(this, config);
@@ -39,23 +39,25 @@ module.exports = function (RED) {
             return;
         }
 
-        let { username, password, site, ip, port, unifios, ssl } = server;
-        let { command, debug } = config;
+        let { username, password, ip, port, unifios, ssl } = server;
+        let { debug } = config;
 
         const controller = new unifi.Controller(ip, port, unifios, ssl, debug);
 
         this.on('input', function (msg) {
 
-            if (msg.payload.command != null) {
-                command = msg.payload.command;
-            } else {
-                command = config.command;
-            }
+            // get default command and site from node config
+            let command = config.command;
+            let site = server.site;
 
-            if (msg.payload.site != null) {
-                site = msg.payload.site;
-            } else {
-                site = server.site;
+            if (msg.payload) {
+                // override command and site from current message
+                if (msg.payload.command != null) {
+                    command = msg.payload.command;
+                }
+                if (msg.payload.site != null) {
+                    site = msg.payload.site;
+                }
             }
 
             login()
@@ -365,7 +367,6 @@ module.exports = function (RED) {
     function UnifiWSNode(config) {
         RED.nodes.createNode(this, config);
         const node = this;
-        const msg = {};
 
         var server = RED.nodes.getNode(config.server);
         if (!server) {
@@ -374,11 +375,11 @@ module.exports = function (RED) {
         }
 
         let { username, password, site, ip, port, unifios, ssl } = server;
-        let { command } = config;
+        // get message filters from config or default values
+        let messages = config.messages || ['events'];
+        let eventsKey = config.eventsKey || ['EVT_WU_Connected', 'EVT_WU_Disconnected', 'EVT_WU_Roam', 'EVT_WU_Roam_Radio', 'EVT_WG_Connected', 'EVT_WG_Disconnected', 'EVT_WG_Roam', 'EVT_WG_Roam_Radio', 'EVT_LU_Disconnected', 'EVT_LU_Connected'];
 
-        const controllerWS = new unifiWS.ControllerWS(ip, port, unifios, ssl, username, password, site);
-
-        //controllerWS.loginws(handleDataCallback);
+        const controllerWS = new unifiWS.ControllerWS(ip, port, unifios, ssl, username, password, site, messages, eventsKey);
 
         wslogin();
 
@@ -387,34 +388,40 @@ module.exports = function (RED) {
             controllerWS.loginws(handleDataCallback);
         }
 
-        function handleDataCallback(err, data) {
-            if (err) {
-                //console.log('ERROR: ' + err.message);
-                msg.error = err.message;
-                node.send(msg);
-                node.status({
-                    fill: "red",
-                    shape: "dot",
-                    text: err.message
-                });
-
-            } else {
-                if (data == 'STATUS_CONNECTED') {
+        function handleDataCallback(data) {
+            // console.log('Unifi handleDataCallback debug', JSON.stringify(data))
+            switch (data.type) {
+                case 'ERROR':
+                    node.send({error: data.error.message});
+                    node.status({
+                        fill: "red",
+                        shape: "dot",
+                        text: data.error.message
+                    });
+                    break;
+                case 'STATUS_CONNECTED':
                     node.status(STATUS_CONNECTED);
-                } else if (data == 'STATUS_DISCONNECTED') {
+                    break;
+                case 'STATUS_DISCONNECTED':
                     node.status(STATUS_DISCONNECTED);
                     clearTimeout(node.tout);
-                    node.tout = setTimeout(function () {
-                        node.status(STATUS_CONNECTING);
-                        wslogin();
-                    }, 5000);
-                } else {
-                    msg.payload = data;
-                    node.send(msg);
+                    if (data.needReconnect) {
+                        node.tout = setTimeout(function () {
+                            node.status(STATUS_CONNECTING);
+                            wslogin();
+                        }, 5000);
+                    }
+                    break;
+                case 'MESSAGE':
+                    node.send({payload: data.message});
                     node.status(STATUS_OK);
-                }
+                    break;
             }
         }
+
+        this.on('close', function() {
+            controllerWS.close();
+        });
     }
 
     function unifiConfigNode(n) {

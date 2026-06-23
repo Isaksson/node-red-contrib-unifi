@@ -120,6 +120,8 @@
         defaults: {
             name: { value: "" },
             server: { type: "unificonfig", required: true },
+            messages: { value: [] },
+            eventsKey: { value: [] },
         },
         inputs: 0,
         outputs: 1,
@@ -128,7 +130,71 @@
             if (this.name) {
                 return this.name;
             }
-        }
+        },
+        oneditprepare: function () {
+            // initialize with default values
+            if (this.messages === undefined) {
+                this.messages = ['events']
+            }
+            if (this.eventsKey === undefined) {
+                this.eventsKey = ['EVT_WU_Connected', 'EVT_WU_Disconnected', 'EVT_WU_Roam', 'EVT_WU_Roam_Radio', 'EVT_WG_Connected', 'EVT_WG_Disconnected', 'EVT_WG_Roam', 'EVT_WG_Roam_Radio', 'EVT_LU_Disconnected', 'EVT_LU_Connected']
+            }
+            // add messages checkbox
+            const container = $('#node-input-events')
+            const e = [
+                {v: 'EVT_WU_Connected', l: 'User wifi connected'},
+                {v: 'EVT_WU_Disconnected', l: 'User wifi disconnected'},
+                {v: 'EVT_WU_Roam', l: 'User wifi roam'},
+                {v: 'EVT_WU_Roam_Radio', l: 'User wifi roam radio'},
+                {v: 'EVT_WG_Connected', l: 'Guest wifi connected'},
+                {v: 'EVT_WG_Disconnected', l: 'Guest wifi disconnected'},
+                {v: 'EVT_WG_Roam', l: 'Guest wifi roam'},
+                {v: 'EVT_WG_Roam_Radio', l: 'Guest wifi roam radio'},
+                {v: 'EVT_LU_Disconnected', l: 'Local wifi disconnected'},
+                {v: 'EVT_LU_Connected', l: 'Local wifi connected'},
+            ]
+            e.forEach(({v, l}, index) => {
+                container.append(`
+                    <div class="form-row" style="margin-bottom: unset;">
+                        <input type="checkbox" id="node-input-events-${index}" value="${v}" style="display: inline-block; width: auto; vertical-align: top; margin-left: 120px;">
+                        <label style="width: auto;" for="node-input-events-${index}">${l}</label>
+                    </div>
+                `)
+            });
+            // set messages checkboxs
+            const messages = this.messages
+            $('[id^=node-input-messages-]').each(function() {
+                if (messages.includes($(this).val())) {
+                    $(this).prop('checked', true);
+                }
+            })
+            // set events checkboxs
+            const eventsKey = this.eventsKey
+            $('[id^=node-input-events-]').each(function() {
+                if (eventsKey.includes($(this).val())) {
+                    $(this).prop('checked', true);
+                }
+            })
+            // display/hide event messages keys
+            $('#node-input-events').toggle(this.messages.includes('events'))
+            $('#node-input-messages-events').change(function () {
+                $('#node-input-events').toggle(this.checked)
+            })
+        },
+        oneditsave: function () {
+            // save messages
+            const messages = []
+            $('[id^=node-input-messages-]:checked').each(function() {
+                messages.push($(this).val())
+            })
+            this.messages = messages
+            // save events
+            const eventsKey = []
+            $('[id^=node-input-events-]:checked').each(function() {
+                eventsKey.push($(this).val())
+            })
+            this.eventsKey = eventsKey
+        },
     });
 </script>
 
@@ -184,6 +250,43 @@
     <div class="form-row">
         <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
         <input type="text" id="node-input-server" placeholder="">
+    </div>
+
+    <div class="form-row" style="margin-bottom: unset;">
+        <label><i class="fa fa-envelope"></i> Messages</label>
+        <input type="checkbox" id="node-input-messages-events" value="events" style="display: inline-block; width: auto; vertical-align: top;">
+        <label style="width: auto;" for="node-input-messages-events">events</label>
+    </div>
+    <div id="node-input-events"></div>
+    <div class="form-row" style="margin-bottom: unset;">
+        <label></label>
+        <input type="checkbox" id="node-input-messages-ping-test:update" value="ping-test:update" style="display: inline-block; width: auto; vertical-align: top;">
+        <label style="width: auto;" for="node-input-messages-ping-test:update">ping-test</label>
+    </div>
+    <div class="form-row" style="margin-bottom: unset;">
+        <label></label>
+        <input type="checkbox" id="node-input-messages-session-metadata:sync" value="session-metadata:sync" style="display: inline-block; width: auto; vertical-align: top;">
+        <label style="width: auto;" for="node-input-messages-session-metadata:sync">session-metadata</label>
+    </div>
+    <div class="form-row" style="margin-bottom: unset;">
+        <label></label>
+        <input type="checkbox" id="node-input-messages-sta:sync" value="sta:sync" style="display: inline-block; width: auto; vertical-align: top;">
+        <label style="width: auto;" for="node-input-messages-sta:sync">sta</label>
+    </div>
+    <div class="form-row" style="margin-bottom: unset;">
+        <label></label>
+        <input type="checkbox" id="node-input-messages-device:sync" value="device:sync" style="display: inline-block; width: auto; vertical-align: top;">
+        <label style="width: auto;" for="node-input-messages-device:sync">device</label>
+    </div>
+    <div class="form-row" style="margin-bottom: unset;">
+        <label></label>
+        <input type="checkbox" id="node-input-messages-unifi-device:sync" value="unifi-device:sync" style="display: inline-block; width: auto; vertical-align: top;">
+        <label style="width: auto;" for="node-input-messages-unifi-device:sync">unifi-device</label>
+    </div>
+    <div class="form-row" style="margin-bottom: unset;">
+        <label></label>
+        <input type="checkbox" id="node-input-messages-client:sync" value="client:sync" style="display: inline-block; width: auto; vertical-align: top;">
+        <label style="width: auto;" for="node-input-messages-client:sync">client</label>
     </div>
 </script>
 
@@ -282,6 +385,7 @@
     <p><u>BETA</u></p>
     <p>Connects to a Unifi Controller</p>
     <p>Returns all data in JSON parsable strings/objects</p>
+    <p>Filter messages with checkboxes (if no boxes are checked all messages are returned)</p>
     <p>For more information see the <a href="https://github.com/Isaksson/node-red-contrib-unifi" target="_blank">GitHub</a> site.</p>
     <p>Version 0.3.23</p>
 </script>
